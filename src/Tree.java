@@ -72,4 +72,57 @@ public class Tree {
     find(root.left);
     find(root.right);
   }
+
+  List<Integer> answer = new ArrayList<Integer>();
+  int base;
+  int count;
+  int maxCount;
+
+  /**.
+   * Optimal Solution1
+   * @param root TreeNode
+   * @return int[]
+   */
+  public int[] OptimalFindMode(TreeNode root) {
+    dfs(root);
+    int[] mode = new int[answer.size()];
+    for (int i = 0; i < answer.size(); ++i) {
+      mode[i] = answer.get(i);
+    }
+    return mode;
+  }
+
+  /**.
+   * Mid Order Traverse
+   * @param o TreeNode
+   */
+  public void dfs(TreeNode o) {
+    if (o == null) {
+      return;
+    }
+    dfs(o.left);
+    update(o.val);
+    dfs(o.right);
+  }
+
+  /**.
+   * update max count, which is very important
+   * @param x int
+   */
+  public void update(int x) {
+    if (x == base) {
+      ++count;
+    } else {
+      count = 1;
+      base = x;
+    }
+    if (count == maxCount) {
+      answer.add(base);
+    }
+    if (count > maxCount) {
+      maxCount = count;
+      answer.clear();
+      answer.add(base);
+    }
+  }
 }
