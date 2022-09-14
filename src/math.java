@@ -1,0 +1,25 @@
+/**.
+ * A collection of leetcode problems related to math
+ */
+public class math {
+  /**.
+  * Leetcode 507: perfect number
+  * @Difficulty: Easy
+  * @OptimalComplexity: O(D)&O(1)
+  */
+  public boolean checkPerfectNumber(int num) {
+    double mid = Math.sqrt(num);
+    if (num < 4) {
+      return false;
+    }
+    int sum = 1;
+    for (int i = 2; i <= (int)mid; i++) {
+      if (num % i != 0) {
+        continue;
+      }
+      sum += i;
+      sum += (num / i);
+    }
+    return sum == num;
+  }
+}

@@ -125,4 +125,53 @@ public class Tree {
       answer.add(base);
     }
   }
+
+  /**.
+   * LeetCode 508: Most Frequent Subtree Sum
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   */
+  int max508 = 0;
+  Map<Integer, Integer> map508 = new HashMap<>();
+
+  /**.
+   * Return int[]
+   * @param root TreeNode
+   * @return int[]
+   */
+  public int[] findFrequentTreeSum(TreeNode root) {
+    if (root == null) {
+      return new int[0];
+    }
+    dfs(root);
+    List<Integer> list = new ArrayList<>();
+    for (int key : map508.keySet()) {
+      if (map508.get(key) == max508) {
+        list.add(key);
+      }
+    }
+    int[] ans = new int[list.size()];
+    for (int i = 0; i < list.size(); i++) {
+      ans[i] = list.get(i);
+    }
+    return ans;
+
+  }
+
+  /**.
+   * dfs method for getting all the sum values
+   * @param root TreeNode
+   * @return a int value
+   */
+  public int dfs508(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    int left = dfs508(root.left);
+    int right = dfs508(root.right);
+    int val = root.val + left + right; //If you need get sum from bottom to top, you can code this way.
+    map508.put(val, map508.getOrDefault(val, 0) + 1);
+    max508 = Math.max(max508, map.get(val));
+    return val;
+  }
 }
