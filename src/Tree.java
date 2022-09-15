@@ -1,7 +1,9 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 class TreeNode {
   int val;
@@ -174,4 +176,26 @@ public class Tree {
     max508 = Math.max(max508, map.get(val));
     return val;
   }
+
+  /**.
+   * Leetcode 513: Find Bottom Left Tree Value
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   */
+  public int findBottomLeftValue(TreeNode root) {
+    Queue<TreeNode> queue = new ArrayDeque<>();
+    queue.offer(root);
+    while (!queue.isEmpty()) {
+      root = queue.poll();
+      if (root.right != null) { //If we want to get the left bottom value, we need to add right child to
+        //the queue first.
+        queue.offer(root.right);
+      }
+      if (root.left != null) {
+        queue.offer(root.left);
+      }
+    }
+    return root.val;
+  }
+
 }
