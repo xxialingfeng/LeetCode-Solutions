@@ -1,6 +1,9 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -88,5 +91,47 @@ public class Arrays {
       ans[i] = list.get(i);
     }
     return ans;
+  }
+
+  /**.
+   * Leetcode 519: Random Flip Matrix.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(F) & O(F)
+   */
+  Map<Integer, Integer> map519 = new HashMap<>();
+  int m519;
+  int n519;
+  int total519;
+  Random random = new Random();
+
+  /**.
+   * Constructor
+   * @param m int
+   * @param n int
+   */
+  public Arrays(int m, int n) {
+    this.m519 = m;
+    this.n519 = n;
+    this.total519 = m * n;
+  }
+
+  /**.
+   * Array mapping, 2D -> 1D (i, j) -> i * n + j
+   * @return int[]
+   */
+  public int[] flip() {
+    int x = random.nextInt(total519);
+    total519--;
+    int idx = map519.getOrDefault(x, x);
+    map519.put(x, map519.getOrDefault(total519, total519));
+    return new int[]{idx / n519, idx % n519};
+  }
+
+  /**.
+   * Reset array
+   */
+  public void reset() {
+    total519 = m519 * n519;
+    map519.clear();
   }
 }
