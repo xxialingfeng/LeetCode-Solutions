@@ -37,4 +37,34 @@ public class PrefixSum {
     }
     return maxLength;
   }
+
+  /**.
+   * Leetcode 523 : Continuous Subarray Sum
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @param k int
+   * @return boolean
+   */
+  public boolean checkSubarraySum(int[] nums, int k) {
+    if (nums.length < 2) {
+      return false;
+    }
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, -1);
+    int sum = 0;
+    for (int i = 0; i < nums.length; i++) {
+      sum += nums[i];
+      int mod = sum % k; //if the value mod appears again, it means the sum of the interval
+      //equals n * k
+      if (map.containsKey(mod)) {
+        if (i - map.get(mod) > 1) {
+          return true;
+        }
+      } else {
+        map.put(mod, i);
+      }
+    }
+    return false;
+  }
 }
