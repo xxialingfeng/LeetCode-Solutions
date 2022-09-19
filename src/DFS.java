@@ -43,7 +43,7 @@ public class DFS {
     return ans;
   }
 
-  int[] dx = {-1, -1, -1, 0, 1, 1, 1, 0};
+  int[] dx = {-1, -1, -1, 0, 1, 1, 1, 0}; //direction array
   int[] dy = {-1, 0, 1, 1, 1, 0, -1, -1};
 
   /**.
@@ -74,6 +74,7 @@ public class DFS {
    */
   public void dfs(char[][] board, int x, int y) {
     int count = 0;
+    //count how many mines are surrounded
     for (int i = 0; i < 8; i++) {
       int tx = x + dx[i];
       int ty = y + dy[i];
@@ -86,6 +87,7 @@ public class DFS {
       board[x][y] = (char)(count + '0');
     } else {
       board[x][y] = 'B';
+      //if there is a mine surrounded.
       for (int i = 0; i < 8; i++) {
         int tx = x + dx[i];
         int ty = y + dy[i];
