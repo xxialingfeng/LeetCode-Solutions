@@ -198,4 +198,36 @@ public class Tree {
     return root.val;
   }
 
+  int ans530;
+  int pre530;
+
+  /**
+   * Leetcode 530: Minimum Absolute Difference in BST.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root TreeNode
+   * @return int
+   */
+  public int getMinimumDifference(TreeNode root) {
+    ans530 = Integer.MAX_VALUE;
+    pre530 = -1;
+    dfs530(root);
+    return ans530;
+  }
+
+  /**
+   * mid-order traverse dfs which get the increasing sequence directly.
+   * @param root TreeNode
+   */
+  public void dfs530(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    dfs(root.left);
+    if (pre530 != -1) {
+      ans530 = Math.min(ans530, root.val - pre530);
+    }
+    pre530 = root.val;
+    dfs(root.right);
+  }
 }
