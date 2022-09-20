@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A collection for leetcode problems related to strings
  */
@@ -74,5 +77,38 @@ public class Strings {
       pb++;
     }
     return ps == a.length();
+  }
+
+  Map<String, String> map535 = new HashMap<>();
+  static final String INDEX = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  static final String PREFIX = "http://tinyurl.com/";
+  /**
+   * Encodes a URL to a shortened URL.
+   * Leetcode 535: Encode and Decode TinyURL.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param longUrl String
+   * @return String
+   */
+  public String encode(String longUrl) {
+    char[] chr = new char[6];
+    while (true) {
+      for (int i = 0; i < 6; i++) {
+        chr[i] = INDEX.charAt((int)(Math.random()*62));
+        String shortUrl = PREFIX + new String(chr);
+        if (!map535.containsKey(shortUrl)) {
+          map535.put(shortUrl, longUrl);
+          return shortUrl;
+        }
+      }
+    }
+  }
+
+  /**Decodes a shortened URL to its original URL.
+   * @param shortUrl String
+   * @return String
+   */
+  public String decode(String shortUrl) {
+    return map535.get(shortUrl);
   }
 }
