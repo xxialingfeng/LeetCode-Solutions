@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A collection for leetcode problems related to strings
+ * A collection for leetcode problems related to strings.
  */
 public class Strings {
 
@@ -92,11 +92,12 @@ public class Strings {
    * @param longUrl String
    * @return String
    */
+
   public String encode(String longUrl) {
     char[] chr = new char[6];
     while (true) {
       for (int i = 0; i < 6; i++) {
-        chr[i] = INDEX.charAt((int)(Math.random()*62));
+        chr[i] = INDEX.charAt((int)(Math.random() * 62));
         String shortUrl = PREFIX + new String(chr);
         if (!map535.containsKey(shortUrl)) {
           map535.put(shortUrl, longUrl);
@@ -138,7 +139,7 @@ public class Strings {
       left2++;
     }
     left2++;
-    while (left2 < num1.length()-1) {
+    while (left2 < num1.length() - 1) {
       list2.add(num1.charAt(left2));
       left2++;
     }
@@ -153,18 +154,19 @@ public class Strings {
       left4++;
     }
     left4++;
-    while (left4 < num2.length()-1) {
+    while (left4 < num2.length() - 1) {
       list4.add(num2.charAt(left4));
       left4++;
     }
     String ans = "";
-    ans += (getNum(list1) * getNum(list3) - getNum(list2) * getNum(list4)) +  "+" + (getNum(list1) * getNum(list4) + getNum(list2) * getNum(list3)) + "i";
+    ans += (getNum(list1) * getNum(list3) - getNum(list2) * getNum(list4))
+        +  "+" + (getNum(list1) * getNum(list4) + getNum(list2) * getNum(list3)) + "i";
     return ans;
   }
 
   /**
    * get int value. (Integer.parseInt)
-   * @param list List<Character>
+   * @param list a list of characters
    * @return int
    */
   public int getNum(List<Character> list) {
@@ -195,5 +197,48 @@ public class Strings {
     int bb = a2 * b1 + a1 * b2;
 
     return aa + "+" + bb + "i" ;
+  }
+
+  /**
+   * Leetcode 539 : Minimum Time Difference.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlogn) & O(n)
+   * @param timePoints a list of string
+   * @return int
+   */
+  public int findMinDifference(List<String> timePoints) {
+    if (timePoints.size() > 1440) {
+      return 0;
+    }
+    int min = Integer.MAX_VALUE;
+    List<Integer> list = new ArrayList<>();
+    for (String timePoint : timePoints) {
+      if (timePoint.substring(0, 2).equals("00")) {
+        list.add(getMin("24" + ":" + timePoint.substring(3, 5)));
+      }
+      if (timePoint.substring(0, 2).equals("01")) {
+        list.add(getMin("25" + ":" + timePoint.substring(3, 5)));
+      }
+      list.add(getMin(timePoint));
+    }
+    list.sort((a, b) -> (a - b));
+    for (int i = 1; i < list.size(); i++) {
+      min = Math.min(min, list.get(i) - list.get(i - 1));
+    }
+    return min;
+  }
+
+  /**
+   * Get the time in minute format.
+   * @param str String
+   * @return int
+   */
+  public int getMin(String str) {
+    int sum = 0;
+    sum += (str.charAt(0) - '0') * 10 * 60;
+    sum += (str.charAt(1) - '0') * 60;
+    sum += (str.charAt(3) - '0') * 10;
+    sum += (str.charAt(4) - '0');
+    return sum;
   }
 }
