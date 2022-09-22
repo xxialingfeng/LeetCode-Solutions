@@ -241,4 +241,24 @@ public class Strings {
     sum += (str.charAt(4) - '0');
     return sum;
   }
+
+  /**
+   * Leetcode 541: Reverse String II.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s String
+   * @param k k
+   * @return String
+   */
+  public String reverseStr(String s, int k) {
+    StringBuilder sb = new StringBuilder();
+    if (k - 1 >= s.length()) {
+      return new StringBuffer(s).reverse().toString();
+    }
+    if (s.length() < 2 * k && s.length() >= k) {
+      return new StringBuffer(s.substring(0,k)).reverse().toString() + s.substring(k, s.length());
+    }
+    sb.append(s.substring(0,k));
+    return sb.reverse().toString() + s.substring(k, 2 * k) + reverseStr(s.substring(2 * k), k);
+  }
 }
