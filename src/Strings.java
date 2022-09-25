@@ -261,4 +261,34 @@ public class Strings {
     sb.append(s.substring(0,k));
     return sb.reverse().toString() + s.substring(k, 2 * k) + reverseStr(s.substring(2 * k), k);
   }
+
+  /**
+   * Leetcode 551: Student Attendance Record I.
+   * @param s String
+   * @return boolean
+   */
+  public boolean checkRecord(String s) {
+    int count = 0;
+    int cnt = 1;
+    if (s.charAt(0) == 'A') {
+      count++;
+    }
+    for (int i = 1; i < s.length(); i++) {
+      if (s.charAt(i) == 'A') {
+        count++;
+        if (count >= 2) {
+          return false;
+        }
+      }
+      if (s.charAt(i) == 'L' && s.charAt(i) == s.charAt(i - 1)) {
+        cnt++;
+        if (cnt >= 3) {
+          return false;
+        }
+      } else {
+        cnt = 1;
+      }
+    }
+    return true;
+  }
 }

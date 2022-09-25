@@ -73,4 +73,35 @@ public class DP {
     }
     return dp[l][r][k];
   }
+
+  /**
+   * Leetcode 552: Student Attendance Record II.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   */
+  public int checkRecord(int n) {
+    //Can optimize since dp[i][][] is always transferred from dp[i-1][][].
+    long[][][] dp = new long[n + 1][2][3];
+    int M = 1000000007;
+    dp[0][0][0] = 1;
+    dp[0][0][1] = 1;
+    dp[0][1][0] = 1;
+    for (int i = 1 ;i <= n;i++) {
+      dp[i][0][0] = (dp[i - 1][0][0] + dp[i - 1][0][1] + dp[i - 1][0][2]) % M;
+      dp[i][0][1] = dp[i - 1][0][0] % M;
+      dp[i][0][2] = dp[i - 1][0][1] % M;
+      dp[i][1][0] = (dp[i - 1][0][0] + dp[i - 1][0][1] + dp[i - 1][0][2]
+          + dp[i - 1][1][0] + dp[i - 1][1][1] + dp[i - 1][1][2]) % M;
+      dp[i][1][1] = dp[i - 1][1][0] % M;
+      dp[i][1][2] = dp[i - 1][1][1] % M;
+    }
+    int sum = 0;
+    for (int i = 0;i < 2;i++) {
+      for (int j = 0;j < 3;j++) {
+        sum += dp[n - 1][i][j];
+        sum %= M;
+      }
+    }
+    return sum;
+  }
 }

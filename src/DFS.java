@@ -97,4 +97,47 @@ public class DFS {
       }
     }
   }
+
+
+  private static final int M = 1000000007;
+  /**
+   * Leetcode 552: Student Attendance Record II.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   */
+
+  public int checkRecord(int n) {
+    int[][][] memo = new int[n + 1][3][2];
+    return dfs552(n, 0, 0, 0, memo);
+  }
+
+  /**
+   * memoization dfs.
+   * @param n int
+   * @param index int
+   * @param late int
+   * @param absent int
+   * @param memo int[][][]
+   * @return int
+   */
+
+  public int dfs552 (int n, int index, int late, int absent, int[][][] memo) {
+    //if current is not late, set late to zero
+    if (index == n) {
+      return 1;
+    }
+    int ans = 0;
+    if (memo[index][late][absent] != 0) {
+      return memo[index][late][absent];
+    }
+    ans = (ans + dfs552(n, index + 1, 0, absent, memo)) % M;
+    if (absent < 1) {
+      ans = (ans + dfs552(n, index + 1, 0, 1, memo)) % M;
+    }
+    if (late < 2) {
+      ans = (ans + dfs552(n, index + 1, late+1, absent, memo)) % M;
+    }
+    memo[index][late][absent] = ans;
+    return ans;
+  }
 }
