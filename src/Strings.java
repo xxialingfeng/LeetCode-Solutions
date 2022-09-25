@@ -291,4 +291,31 @@ public class Strings {
     }
     return true;
   }
+
+  /**
+   * Leetcode 553: Optimal Division.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @return String
+   */
+  public String optimalDivision(int[] nums) {
+    StringBuilder arr = new StringBuilder();
+    if (nums.length == 1) {
+      return String.valueOf(nums[0]); //int->string
+    } else if (nums.length == 2) {
+      return nums[0] + "/" + nums[1];
+    } else {
+      for (int i = 0; i < nums.length; i++) {
+        if (i == 1) {
+          arr.append("(").append(nums[i]).append("/");
+        } else if (i == nums.length - 1) {
+          arr.append(nums[i]).append(")");
+        } else {
+          arr.append(nums[i]).append("/");
+        }
+      }
+    }
+    return arr.toString();
+  }
 }
