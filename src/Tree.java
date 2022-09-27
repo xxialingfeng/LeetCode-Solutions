@@ -230,4 +230,31 @@ public class Tree {
     pre530 = root.val;
     dfs(root.right);
   }
+
+  /**
+   * Leetcode 563: Binary Tree Tilt.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root TreeNode
+   * @return int
+   */
+  public int findTilt(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    return Math.abs(sum(root.left) - sum(root.right))
+        + findTilt(root.left) + findTilt(root.right);
+  }
+
+  /**
+   * sum of the nodes.
+   * @param root TreeNode
+   * @return int
+   */
+  public int sum(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    return root.val + sum(root.left) + sum(root.right);
+  }
 }

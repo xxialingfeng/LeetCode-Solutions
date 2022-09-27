@@ -1,3 +1,22 @@
+
+import java.util.List;
+
+class Node {
+  public int val;
+  public List<Node> children;
+
+  public Node() {}
+
+  public Node(int _val) {
+    val = _val;
+  }
+
+  public Node(int _val, List<Node> _children) {
+    val = _val;
+    children = _children;
+  }
+}
+
 /**.
  * A collection for leetcode problems related to DFS
  */
@@ -139,5 +158,27 @@ public class DFS {
     }
     memo[index][late][absent] = ans;
     return ans;
+  }
+
+  /**
+   * Leetcode 559:  Maximum Depth of N-ary Tree.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(height) Recursion will use stack space, yet stack
+   *      space is determined by the depth of recursion.
+   * @param root Node
+   * @return int
+   */
+  public int maxDepth(Node root) {
+    int max = 1;
+    if (root == null) {
+      return 0;
+    }
+    if (root.children == null) {
+      return 1;
+    }
+    for (Node node : root.children) {
+      max = Math.max(max, 1 + maxDepth(node));
+    }
+    return max;
   }
 }

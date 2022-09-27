@@ -318,4 +318,29 @@ public class Strings {
     }
     return arr.toString();
   }
+
+  /**
+   * Leetcode 557: Reverse Words in a String III.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s String
+   * @return String
+   */
+  public String reverseWords(String s) {
+    String[] col = s.split(" ");
+    StringBuilder str = new StringBuilder();
+    for (String value : col) {
+      str.append(reverse(value)).append(" ");
+    }
+    return str.substring(0, str.length() - 1);
+  }
+
+  /**
+   * Reverse string.
+   * @param s string
+   * @return String
+   */
+  public String reverse(String s) {
+    return new StringBuffer(s).reverse().toString();
+  }
 }

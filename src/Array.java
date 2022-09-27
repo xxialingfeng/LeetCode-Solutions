@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.Arrays;
 
 /**
  * A collection of Leetcode problems related to Arrays.
  * @author xialingfeng
  */
-public class Arrays {
+public class Array {
 
   /**.
    * @leetcode 500: Keyboard Row.
@@ -109,7 +110,7 @@ public class Arrays {
    * @param m int
    * @param n int
    */
-  public Arrays(int m, int n) {
+  public Array(int m, int n) {
     this.m519 = m;
     this.n519 = n;
     this.total519 = m * n;
@@ -152,5 +153,21 @@ public class Arrays {
       }
     }
     return wall.size() - max;
+  }
+
+  /**
+   * Leetcode 561 : Array Partition.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(longn) & O(logn) sorting will use stack space which is log n
+   * @param nums int[]
+   * @return int
+   */
+  public int arrayPairSum(int[] nums) {
+    Arrays.sort(nums);
+    int sum = 0;
+    for(int i = 0; i < nums.length; i += 2) {
+      sum += nums[i];
+    }
+    return sum;
   }
 }
