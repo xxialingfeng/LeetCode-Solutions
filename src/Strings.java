@@ -343,4 +343,42 @@ public class Strings {
   public String reverse(String s) {
     return new StringBuffer(s).reverse().toString();
   }
+
+  /**
+   * Leetcode 564:Find the Closest Palindrome.
+   * @Difficulty: Hard
+   * @OptimalComplexity:
+   * @param n O(n) & O(n)
+   * @return String
+   */
+  public String nearestPalindromic(String n) {
+    if (n.length() == 1) {
+      return (Integer.parseInt(n) - 1) + "";
+    }
+    long org = Long.parseLong(n);
+    long thousand = (long)(Math.pow(10, n.length() - 1));
+    if (org == thousand || org == thousand + 1) {
+      return String.valueOf(thousand - 1);
+    }
+    thousand = thousand * 10L - 1L;
+    if (org == thousand) {
+      return String.valueOf(thousand + 2L);
+    }
+    int left = Integer.parseInt(n.substring(0, (n.length() + 1)/2));
+    long ans = Long.MAX_VALUE;
+    long diff = Long.MAX_VALUE;
+    for (int a : new int[]{-1, 0, 1}) {
+      String lf = (left + a) + "";
+      String full = new StringBuilder(n.length() % 2 == 0 ? lf : lf.substring(0, lf.length()-1)).reverse().insert(0, lf).toString();
+      if (n.equals(full)) {
+        continue;
+      }
+      long _full = Long.parseLong(full);
+      if (Math.abs(_full - org) < diff) {
+        diff = Math.abs(_full - org);
+        ans = _full;
+      }
+    }
+    return ans + "";
+  }
 }
