@@ -170,4 +170,81 @@ public class Array {
     }
     return sum;
   }
+
+  /**
+   * Leetcode 565: Array Nesting.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param nums int[]
+   * @return int
+   */
+  public int arrayNesting(int[] nums) {
+    boolean[] isUsed = new boolean[nums.length];
+    int max = 0;
+    for (int i = 0; i < nums.length; i++) {
+      if (isUsed[i]) {
+        continue;
+      }
+      int t = i;
+      int count = 0;
+      Set<Integer> set = new HashSet<>();
+      while (!set.contains(nums[t])) {
+        set.add(nums[t]);
+        isUsed[t] = true;
+        count++;
+        t = nums[t];
+      }
+      max = Math.max(max, count);
+    }
+    return max;
+  }
+
+  /**
+   * Leetcode 566: Reshape the Matrix.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(m*n) & O(m*n)
+   * @param mat int[][]
+   * @param r int
+   * @param c int
+   * @return int[][]
+   */
+  public int[][] matrixReshape(int[][] mat, int r, int c) {
+    if (r * c != mat.length * mat[0].length) {
+      return mat;
+    }
+    List<Integer> list = new ArrayList<>();
+    for (int[] ints : mat) {
+      for (int j = 0; j < mat[0].length; j++) {
+        list.add(ints[j]);
+      }
+    }
+    int[][] res = new int[r][c];
+    int count = 0;
+    for (int i = 0; i < r; i++) {
+      for (int j = 0; j < c; j++) {
+        res[i][j] = list.get(count);
+        count++;
+      }
+    }
+    return res;
+  }
+
+  /**
+   * Leetcode 575: Distribute Candies.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(nlogn) & O(1)
+   * @param candyType int[]
+   * @return int
+   */
+  public int distributeCandies(int[] candyType) {
+    Arrays.sort(candyType);
+    int canEat = candyType.length / 2;
+    int count = 1;
+    for (int i = 1; i < candyType.length; i++) {
+      if (candyType[i] != candyType[i-1]) {
+        count++;
+      }
+    }
+    return Math.min(count, canEat);
+  }
 }

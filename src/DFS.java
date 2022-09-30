@@ -1,4 +1,5 @@
 
+import java.util.Arrays;
 import java.util.List;
 
 class Node {
@@ -181,4 +182,60 @@ public class DFS {
     }
     return max;
   }
+
+  private int[][][] memo;
+  private final int mod = 1000000007;
+
+  /**
+   * Leetcode 576: Out of Boundary Paths.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(maxMove*m*n) & O(m*n)
+   * @param m int
+   * @param n int
+   * @param maxMove int
+   * @param startRow int
+   * @param startColumn int
+   * @return int
+   */
+  public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+    memo = new int[m][n][maxMove + 1];
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        Arrays.fill(memo[i][j], -1);
+      }
+    }
+    return dfs576(0, maxMove, m, n, startRow, startColumn);
+  }
+
+  /**
+   * DFS + memoization.
+   * @param index int
+   * @param maxMove int
+   * @param m int
+   * @param n int
+   * @param startRow int
+   * @param startColumn int
+   * @return int
+   */
+  public int dfs576(int index, int maxMove, int m, int n, int startRow, int startColumn) {
+    if (startRow < 0 || startRow >= m || startColumn < 0 || startColumn >= n) {
+      return 1;
+    }
+    if (index >= maxMove) {
+      return 0;
+    }
+
+    if (memo[startRow][startColumn][index] != -1) {
+      return memo[startRow][startColumn][index];
+    }
+    int ans = 0;
+    ans =  (ans + dfs576(index + 1, maxMove, m, n, startRow + 1, startColumn)) % mod;
+    ans =  (ans + dfs576(index + 1, maxMove, m, n, startRow - 1, startColumn)) % mod;
+    ans =  (ans + dfs576(index + 1, maxMove, m, n, startRow, startColumn + 1)) % mod;
+    ans =  (ans + dfs576(index + 1, maxMove, m, n, startRow, startColumn - 1)) % mod;
+    memo[startRow][startColumn][index] = ans;
+    return ans;
+  }
+
+
 }
