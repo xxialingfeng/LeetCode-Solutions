@@ -1,4 +1,5 @@
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -237,5 +238,25 @@ public class DFS {
     return ans;
   }
 
+  List<Integer> res = new ArrayList<Integer>();
 
+  /**
+   * Leetcoee 589: N-ary Tree Preorder Traversal.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root Node
+   * @return list
+   */
+  public List<Integer> preorder(Node root) {
+    //递归版
+
+    if (root == null)
+      return res;
+    res.add(root.val);
+    for (Node child:root.children) {
+      preorder(child);
+    }
+
+    return res;
+  }
 }
