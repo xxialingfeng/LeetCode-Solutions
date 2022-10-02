@@ -259,4 +259,31 @@ public class DFS {
 
     return res;
   }
+
+
+  List<Integer> list = new ArrayList<>();
+
+  /**
+   * Leetcode 590 : N-ary Tree Postorder Traversal.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   */
+  public List<Integer> postorder(Node root) {
+    dfs590(root);
+    return list;
+  }
+
+  /**
+   * dfs method.
+   * @param root Node
+   */
+  public void dfs590(Node root) {
+    if (root == null) {
+      return;
+    }
+    for (Node node : root.children) {
+      dfs590(node);
+    }
+    list.add(root.val);
+  }
 }

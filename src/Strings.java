@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * A collection for leetcode problems related to strings.
@@ -380,5 +381,80 @@ public class Strings {
       }
     }
     return ans + "";
+  }
+
+  /**
+   * Leetcode 591 : Tag Validator.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param code String
+   * @return boolean
+   */
+  public boolean isValid(String code) {
+    int n = code.length();
+    Stack<String> stack = new Stack<>();
+
+    int i = 0;
+    while (i < n) {
+      if (code.charAt(i) == '<') {
+        if (i == n - 1) {
+          return false;
+        }
+        if (code.charAt(i + 1) == '/') {
+          int j = code.indexOf('>', i);
+          if (j < 0) {
+            return false;
+          }
+          String tagname = code.substring(i + 2, j);
+          if (stack.isEmpty() || !stack.peek().equals(tagname)) {
+            return false;
+          }
+          stack.pop();
+          i = j + 1;
+          if (stack.isEmpty() && i != n) {
+            return false;
+          }
+        } else if (code.charAt(i + 1) == '!') {
+          if (stack.isEmpty()) {
+            return false;
+          }
+          if (i + 9 > n) {
+            return false;
+          }
+          String cdata = code.substring(i + 2, i + 9);
+          if (!"[CDATA[".equals(cdata)) {
+            return false;
+          }
+          int j = code.indexOf("]]>", i);
+          if (j < 0) {
+            return false;
+          }
+          i = j + 3;
+        } else {
+          int j = code.indexOf('>' , i);
+          if (j < 0) {
+            return false;
+          }
+          String tagname = code.substring(i + 1, j);
+          if (tagname.length() < 1 || tagname.length() > 9) {
+            return false;
+          }
+
+          for (int k = 0; k < tagname.length(); k++) {
+            if (!Character.isUpperCase(tagname.charAt(k))) {
+              return false;
+            }
+          }
+          stack.push(tagname);
+          i = j + 1;
+        }
+      } else {
+        if (stack.isEmpty()) {
+          return false;
+        }
+        ++i;
+      }
+    }
+    return stack.isEmpty();
   }
 }
