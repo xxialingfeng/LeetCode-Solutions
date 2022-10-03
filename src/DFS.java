@@ -286,4 +286,38 @@ public class DFS {
     }
     list.add(root.val);
   }
+
+  int max_num;
+  int res600 = 1;
+
+  /**
+   * Leetcode 600 : Non-negative Integers without Consecutive Ones.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param n int
+   * @return int
+   */
+  public int findIntegers(int n) {
+    max_num = n;
+    dfs600(1);
+    return res600;
+  }
+
+  /**
+   * dfs method.
+   * @param n int
+   */
+  public void dfs600(int n) {
+    if (n > max_num)
+      return ;
+    res600++;
+    if (n % 2 == 1) {
+      dfs600(n << 1);
+    }
+    else {
+      dfs600(n << 1);
+      dfs600((n << 1) + 1);
+    }
+  }
+
 }

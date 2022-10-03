@@ -247,4 +247,62 @@ public class Array {
     }
     return Math.min(count, canEat);
   }
+
+  /**
+   * Leetcode 599 : Minimum Index Sum of Two Lists.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(m+n) & O(m+n)
+   * @param list1 string list
+   * @param list2 string list
+   * @return string list
+   */
+  public String[] findRestaurant(String[] list1, String[] list2) {
+    List<String> list = new ArrayList<>();
+    Map<String, Integer> map = new HashMap<>();
+    Map<String, Integer> map2 = new HashMap<>();
+    int min = Integer.MAX_VALUE;
+    for (int i = 0; i < list1.length; i++) {
+      map.put(list1[i], i);
+    }
+    for (int i = 0; i < list2.length; i++) {
+      if (map.containsKey(list2[i])) {
+        map2.put(list2[i], map.get(list2[i]) + i);
+      }
+    }
+    for (String str : map2.keySet()) {
+      min = Math.min(map2.get(str), min);
+    }
+    for (String str : map2.keySet()) {
+      if (map2.get(str) == min) {
+        list.add(str);
+      }
+    }
+    String[] res = new String[list.size()];
+    for (int i = 0; i < res.length; i++) {
+      res[i] = list.get(i);
+    }
+    return res;
+  }
+
+  /**
+   * Leetcode 598 : Range Addition..
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param m int
+   * @param n int
+   * @param ops int[][]
+   * @return int
+   */
+  public int maxCount(int m, int n, int[][] ops) {
+    if (ops.length == 0) {
+      return m * n;
+    }
+    int minR = Integer.MAX_VALUE;
+    int minC = Integer.MAX_VALUE;
+    for(int i = 0; i < ops.length; i++) {
+      minR = Math.min(minR, ops[i][0]);
+      minC = Math.min(minC, ops[i][1]);
+    }
+    return minR * minC;
+  }
 }

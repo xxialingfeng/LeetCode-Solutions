@@ -457,4 +457,59 @@ public class Strings {
     }
     return stack.isEmpty();
   }
+
+  /**
+   * Leetcode 592: Fraction addition and subtraction.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param expression string
+   * @return string
+   */
+  public String fractionAddition(String expression) {
+    long x = 0;
+    long y = 1;
+    int sign = 1;
+    int index = 0;
+    while (index < expression.length()) {
+      if (expression.charAt(index) == '-' || expression.charAt(index) == '+') {
+        sign = expression.charAt(index) == '-' ? -1 : 1;
+        index++;
+      }
+      long x1 = 0;
+      while (index < expression.length() && Character.isDigit(expression.charAt(index))) {
+        x1 = x1 * 10 + expression.charAt(index) - '0';
+        index++;
+      }
+      x1 = sign * x1;
+      index++;
+      long y1 = 0;
+      while (index < expression.length() && Character.isDigit(expression.charAt(index))) {
+        y1 = y1 * 10 + expression.charAt(index) - '0';
+        index++;
+      }
+      x = x * y1 + x1 * y;
+      y *= y1;
+    }
+    if (x == 0) {
+      return "0/1";
+    }
+    long g = gcd(Math.abs(x), y);
+    return Long.toString(x / g) + "/" + Long.toString(y / g);
+  }
+
+  /**
+   * Greatest common divisor.
+   * @param a long
+   * @param b long
+   * @return long
+   */
+  public long gcd(long a, long b) {
+    long remainder = a % b;
+    while (remainder != 0) {
+      a = b;
+      b = remainder;
+      remainder = a % b;
+    }
+    return b;
+  }
 }
