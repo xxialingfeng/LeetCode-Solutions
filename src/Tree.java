@@ -257,4 +257,66 @@ public class Tree {
     }
     return root.val + sum(root.left) + sum(root.right);
   }
+
+  /**
+   * Leetcode 623 : Add One Row to Tree.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root TreeNode
+   * @param val int
+   * @param depth int
+   * @return TreeNode
+   */
+  public TreeNode addOneRow(TreeNode root, int val, int depth) {
+    if (root == null) {
+      return null;
+    }
+    if (depth == 1) {
+      TreeNode node = new TreeNode(val);
+      node.left = root;
+      return node;
+    }
+    Queue<TreeNode> queue = new ArrayDeque<>();
+    int count = 1;
+    queue.offer(root);
+    while (count < depth - 1) {
+      int size = queue.size();
+      while (size > 0) {
+        TreeNode node = queue.poll();
+        if (node.left != null) {
+          queue.offer(node.left);
+        }
+        if (node.right != null) {
+          queue.offer(node.right);
+        }
+        size--;
+      }
+      count++;
+    }
+    while (!queue.isEmpty()) {
+      TreeNode node = queue.poll();
+      node.left = new TreeNode(val, node.left, null);
+      node.right = new TreeNode(val, null, node.right);
+    }
+    return root;
+  }
+
+  /**
+   * Leetcode 617 : Merge Two Binary Trees.
+   * @param root1 TreeNode
+   * @param root2 TreeNode
+   * @return TreeNode
+   */
+  public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+    if (root1 == null) {
+      return root2;
+    }
+    if (root2 == null) {
+      return root1;
+    }
+    TreeNode node = new TreeNode(root1.val + root2.val);
+    node.left = mergeTrees(root1.left, root2.left);
+    node.right = mergeTrees(root1.right, root2.right);
+    return node;
+  }
 }

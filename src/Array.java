@@ -299,10 +299,47 @@ public class Array {
     }
     int minR = Integer.MAX_VALUE;
     int minC = Integer.MAX_VALUE;
-    for(int i = 0; i < ops.length; i++) {
-      minR = Math.min(minR, ops[i][0]);
-      minC = Math.min(minC, ops[i][1]);
+    for (int[] op : ops) {
+      minR = Math.min(minR, op[0]);
+      minC = Math.min(minC, op[1]);
     }
     return minR * minC;
+  }
+
+  /**
+   * Leetcode 605 : Can Place Flowers.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param flowerbed int[]
+   * @param n int
+   * @return boolean
+   */
+  public boolean canPlaceFlowers(int[] flowerbed, int n) {
+    if (n == 0) {
+      return true;
+    }
+    if (flowerbed.length == 1) {
+      return flowerbed[0] == 0 && n <= 1;
+    }
+    if (flowerbed.length == 2) {
+      return flowerbed[0] == 0 && flowerbed[1] == 0 && n <= 1;
+    }
+    int cnt = 0;
+    for (int i = 0; i < flowerbed.length; i++) {
+      if (flowerbed[i] == 1) {
+        continue;
+      }
+      if (i == 0 && flowerbed[i] == 0 && flowerbed[i + 1] == 0) {
+        cnt++;
+        flowerbed[i] = 1;
+      } else if (i == flowerbed.length-1 && flowerbed[i] == 0 && flowerbed[i - 1] == 0) {
+        cnt++;
+        flowerbed[i] = 1;
+      } else if (i >= 1 && i <= flowerbed.length-1 && flowerbed[i-1] == 0 && flowerbed[i+1] == 0) {
+        cnt++;
+        flowerbed[i] = 1;
+      }
+    }
+    return cnt >= n;
   }
 }

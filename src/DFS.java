@@ -320,4 +320,35 @@ public class DFS {
     }
   }
 
+  StringBuilder sb606 = new StringBuilder();
+
+  /**
+   * Leetcode 606 : Construct String from Binary Tree.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root TreeNode
+   * @return String
+   */
+  public String tree2str606(TreeNode root) {
+    dfs606(root);
+    return sb606.toString();
+  }
+
+  public void dfs606(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    sb606.append(root.val);
+    if (root.left != null || root.right != null) {
+      sb606.append("(");
+      dfs606(root.left);
+      sb606.append(")");
+      if (root.right != null) {
+        sb606.append("(");
+        dfs606(root.right);
+        sb606.append(")");
+      }
+    }
+  }
+
 }

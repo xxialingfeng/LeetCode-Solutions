@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 /**
  * A collection for leetcode problems related to strings.
@@ -511,5 +512,29 @@ public class Strings {
       remainder = a % b;
     }
     return b;
+  }
+
+  /**
+   * Leetcode 609 : Find Duplicate File in System.
+   * @param paths list of string
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n*l) & O(n*l)
+   * @return list of list of string
+   */
+  public List<List<String>> findDuplicate(String[] paths) {
+    Map<String, List<String>> map = new HashMap<>();
+    for (String str : paths) {
+      String[] files = str.split(" ");
+      for (int i = 1; i < files.length; i++) {
+        StringBuilder filePath = new StringBuilder();
+        String content = files[i].substring(files[i].indexOf("("));
+        files[i] = files[i].substring(0, files[i].indexOf("("));
+        filePath.append(files[0]).append('/').append(files[i]);
+        map.computeIfAbsent(content, k -> new ArrayList<>());
+        List<String> tmp = map.get(content);
+        tmp.add(filePath.toString());
+      }
+    }
+    return map.values().stream().filter(item -> item.size() > 1).collect(Collectors.toList());
   }
 }
