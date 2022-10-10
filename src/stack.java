@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -25,5 +26,37 @@ public class stack {
       stack.push(i % nums.length);
     }
     return res;
+  }
+
+  /**
+   * Leetcode 636 : Exclusive Time of Functions.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param n int
+   * @param logs list of string
+   * @return int[]
+   */
+  public int[] exclusiveTime(int n, List<String> logs) {
+    int[] ans = new int[n];
+    Stack<int[]> stack = new Stack<>();
+    for (String log : logs) {
+      String[] str = log.split(":");
+      int id = Integer.parseInt(str[0]);
+      int timestamp = Integer.parseInt(str[2]);
+      if (str[1].equals("start")) {
+        if (!stack.isEmpty()) {
+          ans[stack.peek()[0]] += timestamp - stack.peek()[1];
+          stack.peek()[1] = timestamp;
+        }
+        stack.push(new int[]{id, timestamp});
+      } else {
+        int[] temp = stack.pop();
+        ans[temp[0]] += timestamp - temp[1] + 1;
+        if (!stack.isEmpty()) {
+          stack.peek()[1] = timestamp + 1;
+        }
+      }
+    }
+    return ans;
   }
 }

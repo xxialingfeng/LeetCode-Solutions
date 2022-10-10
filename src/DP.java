@@ -143,4 +143,58 @@ public class DP {
     }
     return outCounts;
   }
+
+  /**
+   * Leetcode 629 : K Inverse Pairs Array.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n * k) & O(k)
+   * @param n int
+   * @param k int
+   * @return int
+   */
+  public int kInversePairs(int n, int k) {
+    int mod = 1000000007;
+    if (k == 0) {
+      return 1;
+    }
+    int[][] dp = new int[n + 1][k + 1];
+    for (int i = 1; i <= n; i++) {
+      dp[i][0] = 1;
+    }
+    dp[1][0] = 1;
+    for (int i = 2; i <= n; i++) {
+      for (int j = 1; j <= k; j++) {
+        dp[i][j] = (dp[i - 1][j] + dp[i][j - 1]) % mod;
+        if (j >= i) {
+          dp[i][j] = (dp[i][j] + mod - dp[i - 1][j - i]) % mod;
+        }
+      }
+    }
+    return dp[n][k];
+  }
+
+  /**
+   * Leetcode 630 : Course Schedule III.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param courses int[][]
+   * @return int
+   */
+  public int scheduleCourse(int[][] courses) {
+    if (courses.length == 1) {
+      return 1;
+    }
+    Arrays.sort(courses, (a, b) -> (a[1] - b[1]));
+    int[] dp = new int[10001];
+    int ans = 0;
+    for (int[] course : courses) {
+      int start = course[0];
+      int end = course[1];
+      for (int i = end; i >= start; i--) {
+        dp[i] = Math.max(dp[i - start] + 1, dp[i]);
+        ans = Math.max(ans, dp[i]);
+      }
+    }
+    return ans;
+  }
 }

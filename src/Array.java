@@ -342,4 +342,24 @@ public class Array {
     }
     return cnt >= n;
   }
+
+  /**
+   * Leetcode 628 : Maximum Product of Three Numbers.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(nlogn) & O(1)
+   * @param nums int[]
+   * @return int
+   */
+  public int maximumProduct(int[] nums) {
+    int n = nums.length - 1;
+    if (nums.length == 3) {
+      return nums[0] * nums[1] * nums[2];
+    }
+    Arrays.sort(nums);
+    if (nums[1] < 0) {
+      return Math.max(nums[n] * nums[n - 1] * nums[n - 2], nums[0] * nums[1] * nums[n]);
+    }
+    return nums[n] * nums[n - 1] * nums[n - 2];
+  }
+
 }
