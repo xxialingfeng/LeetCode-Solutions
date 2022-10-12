@@ -362,4 +362,79 @@ public class Array {
     return nums[n] * nums[n - 1] * nums[n - 2];
   }
 
+  /**
+   * Leetcode 639 :Decode Ways II.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s String
+   * @return int
+   */
+  public int numDecodings(String s) {
+    if (s.length() == 0) {
+      return 0;
+    }
+    if (s.length() == 1) {
+      return s.charAt(0) == '0' ? 0 : s.charAt(0) == '*' ? 9 : 1;
+    }
+    if (s.charAt(0) == '0') {
+      return 0;
+    }
+    long[] dp = new long[s.length() + 1];
+    char[] chr = s.toCharArray();
+    dp[0] = 1;
+    dp[1] = chr[0] == '*' ? 9 : 1;
+    for (int i = 2; i <= chr.length; i++) {
+      char charOne = chr[i - 1];
+      char charTwo = chr[i - 2];
+      //dp[i-1]
+      if (charOne == '*') {
+        dp[i] += dp[i - 1] * 9;
+      } else if (charOne > '0') {
+        dp[i] += dp[i - 1];
+      }
+
+      //dp[i-2]
+      if (charTwo == '*') {
+        if (charOne == '*') {
+          dp[i] += dp[i - 2] * 15;
+        } else if (charOne <= '6') {
+          dp[i] += dp[i - 2] * 2;
+        } else {
+          dp[i] += dp[i - 2];
+        }
+      } else if (charTwo == '1' || charTwo == '2') {
+        if (charOne == '*') {
+          dp[i] += charTwo == '1' ? 9 * dp[i - 2] : 6 * dp[i - 2];
+        } else if ((charTwo - '0') * 10 + charOne - '0' <= 26) {
+          dp[i] += dp[i - 2];
+        }
+      }
+      dp[i] %= 1000000007;
+    }
+    return (int)dp[s.length()];
+  }
+
+  /**
+   * Leetcode 645 : Set Mismatch.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(2)
+   * @param nums int[]
+   * @return int[]
+   */
+  public int[] findErrorNums(int[] nums) {
+    Arrays.sort(nums);
+    int sum = (1 + nums.length) * nums.length / 2;
+    int count = 0;
+    int mul = 0;
+    Set<Integer> set = new HashSet<>();
+    for (int num : nums) {
+      count += num;
+      if (set.contains(num)) {
+        mul = num;
+      }
+      set.add(num);
+    }
+    return new int[]{mul, mul + sum - count};
+  }
+
 }

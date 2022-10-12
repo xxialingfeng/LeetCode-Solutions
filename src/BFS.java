@@ -1,4 +1,7 @@
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -43,5 +46,44 @@ public class BFS {
       }
     }
     return mat;
+  }
+
+  List<Double> list637 = new ArrayList<>();
+
+  /**
+   * Leetcode 637 : Average of Levels in Binary Tree.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root TreeNode
+   * @return list of doubles
+   */
+  public List<Double> averageOfLevels(TreeNode root) {
+    if (root == null) {
+      return list637;
+    }
+    if (root.left == null && root.right == null) {
+      list637.add(root.val * 1.0);
+      return list637;
+    }
+    Queue<TreeNode> queue = new ArrayDeque<>();
+    queue.offer(root);
+    while (!queue.isEmpty()) {
+      int size = queue.size();
+      int temp = size;
+      double sum = 0;
+      while (temp > 0) {
+        TreeNode node = queue.poll();
+        sum += node.val;
+        if (node.left != null) {
+          queue.offer(node.left);
+        }
+        if (node.right != null) {
+          queue.offer(node.right);
+        }
+        temp--;
+      }
+      list637.add(sum / size);
+    }
+    return list637;
   }
 }
