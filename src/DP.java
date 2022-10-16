@@ -216,4 +216,27 @@ public class DP {
     }
     return dp[pairs.length - 1];
   }
+
+  /**
+   * Leetcode 650 : 2 Keys Keyboard.
+   * @param n int
+   * @return int
+   */
+  public int minSteps(int n) {
+    if (n == 1) {
+      return 0;
+    }
+    int[] dp = new int[n + 1];
+    dp[1] = 0;
+    for (int i = 2; i <= n; i++) {
+      dp[i] = i;
+      for (int j = 2; j <= i; j++) {
+        if (i % j == 0) {
+          dp[i] = dp[j] + dp[i/j];
+          break;
+        }
+      }
+    }
+    return dp[n];
+  }
 }

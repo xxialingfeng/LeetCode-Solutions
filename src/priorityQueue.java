@@ -1,6 +1,8 @@
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
  * This is a new Node class.
@@ -62,5 +64,37 @@ public class priorityQueue {
       }
     }
     return new int[]{start, end};
+  }
+
+  /**
+   * Leetcode 649 : Dota2 Senate.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param senate String
+   * @return String
+   */
+  public String predictPartyVictory(String senate) {
+    Queue<Integer> radiant = new LinkedList<>();
+    Queue<Integer> dire = new LinkedList<>();
+    int n = senate.length();
+    char c;
+    for (int i = 0; i < n; i++) {
+      c = senate.charAt(i);
+      if (c == 'R') {
+        radiant.offer(i);
+      } else {
+        dire.offer(i);
+      }
+    }
+    while (!radiant.isEmpty() && !dire.isEmpty()) {
+      int r = radiant.remove();
+      int d = dire.remove();
+      if (r < d) {
+        radiant.offer(r + n);
+      } else {
+        dire.offer(d + n);
+      }
+    }
+    return radiant.isEmpty() ? "Dire" : "Radiant";
   }
 }

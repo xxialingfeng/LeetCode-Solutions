@@ -319,4 +319,35 @@ public class Tree {
     node.right = mergeTrees(root1.right, root2.right);
     return node;
   }
+
+  /**
+   * Leetcode 652 : Find Duplicate Subtrees.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root TreeNode
+   * @return list of tree nodes
+   */
+  public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+    List<TreeNode> res = new ArrayList<>();
+    dfs(root);
+    return res;
+  }
+
+  Map<String,Integer> map653 = new HashMap<>();
+
+  /**
+   * dfs method.
+   * @param root TreeNode
+   * @param res list of tree nodes
+   * @return String
+   */
+  private String dfs652(TreeNode root, List<TreeNode> res) {
+    if (root == null) return "#";
+    String s = root.val + " " + dfs652(root.left, res) + " " + dfs652(root.right, res);
+    if (map653.containsKey(s) && map653.get(s) == 1) {
+      res.add(root);
+    }
+    map653.put(s, map653.getOrDefault(s,0) + 1);
+    return s;
+  }
 }
