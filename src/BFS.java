@@ -86,4 +86,43 @@ public class BFS {
     }
     return list637;
   }
+
+  private int maxW = 1;
+
+  /**
+   * Leetcode 662 : Maximum Width of Binary Tree.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root TreeNode
+   * @return int
+   */
+  public int widthOfBinaryTree(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    Queue<TreeNode> queue = new LinkedList<>();
+    LinkedList<Integer> list = new LinkedList<>();
+    list.add(1);
+    queue.offer(root);
+    while (!queue.isEmpty()) {
+      int size = queue.size();
+      while (size-- > 0) {
+        TreeNode node = queue.poll();
+        int index = list.removeFirst();
+        assert node != null;
+        if (node.left != null) {
+          queue.offer(node.left);
+          list.add(2 * index);
+        }
+        if (node.right != null) {
+          queue.offer(node.right);
+          list.add(2 * index + 1);
+        }
+      }
+      if (list.size() >= 2) {
+        maxW = Math.max(maxW, list.getLast() - list.getFirst() + 1);
+      }
+    }
+    return maxW;
+  }
 }

@@ -334,6 +334,10 @@ public class DFS {
     return sb606.toString();
   }
 
+  /**
+   * dfs method.
+   * @param root TreeNode
+   */
   public void dfs606(TreeNode root) {
     if (root == null) {
       return;
@@ -348,6 +352,63 @@ public class DFS {
         dfs606(root.right);
         sb606.append(")");
       }
+    }
+  }
+
+  /**
+   * Leetcode 655 : Print Binary Tree.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(height * pow (2, height)) & O(height)
+   * @param root TreeNode
+   * @return list of list of string
+   */
+  public List<List<String>> printTree(TreeNode root) {
+    int height = calDepth(root);
+    int m = height + 1;
+    int n = (1 << (height + 1)) - 1;
+    List<List<String>> res = new ArrayList<List<String>>();
+    for (int i = 0; i < m; i++) {
+      List<String> row = new ArrayList<String>();
+      for (int j = 0; j < n; j++) {
+        row.add("");
+      }
+      res.add(row);
+    }
+    dfs655(res, root, 0, (n - 1) / 2, height);
+    return res;
+  }
+
+  /**
+   * return depth.
+   * @param root TreeNode
+   * @return depth
+   */
+  public int calDepth(TreeNode root) {
+    int h = 0;
+    if (root.left != null) {
+      h = Math.max(h, calDepth(root.left) + 1);
+    }
+    if (root.right != null) {
+      h = Math.max(h, calDepth(root.right) + 1);
+    }
+    return h;
+  }
+
+  /**
+   * dfs method.
+   * @param res list of list of string
+   * @param root TreeNode
+   * @param r int
+   * @param c int
+   * @param height int
+   */
+  public void dfs655(List<List<String>> res, TreeNode root, int r, int c, int height) {
+    res.get(r).set(c, Integer.toString(root.val));
+    if (root.left != null) {
+      dfs655(res, root.left, r + 1, c - (1 << (height - r - 1)), height);
+    }
+    if (root.right != null) {
+      dfs655(res, root.right, r + 1, c + (1 << (height - r - 1)), height);
     }
   }
 

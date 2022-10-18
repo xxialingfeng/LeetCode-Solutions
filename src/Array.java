@@ -437,4 +437,30 @@ public class Array {
     return new int[]{mul, mul + sum - count};
   }
 
+  /**
+   * Leetcode 665 : Non-decreasing Array.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param nums int[]
+   * @return boolean
+   */
+  public boolean checkPossibility(int[] nums) {
+    if (nums == null || nums.length <= 1) {
+      return true;
+    }
+    int cnt = 0;
+    for (int i = 1; i < nums.length && cnt < 2; i++) {
+      if (nums[i - 1] <= nums[i]) {
+        continue;
+      }
+      cnt++;
+      if (i - 2 >= 0 && nums[i - 2] > nums[i]) {
+        nums[i] = nums[i - 1];
+      } else {
+        nums[i - 1] = nums[i];
+      }
+    }
+    return cnt <= 1;
+  }
+
 }
