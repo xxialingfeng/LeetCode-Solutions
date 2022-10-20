@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TreeSet;
 
 class Node {
   public int val;
@@ -412,4 +413,40 @@ public class DFS {
     }
   }
 
+  TreeSet<Integer> set = new TreeSet<>();
+
+  /**
+   * Leetcode 671 : Second Minimum Node In a Binary Tree.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param root TreeNode
+   * @return int
+   */
+  public int findSecondMinimumValue(TreeNode root) {
+    if (root == null) {
+      return -1;
+    }
+    if (root.left == null && root.right == null) {
+      return -1;
+    }
+    dfs671(root);
+    if (set.size() < 2) {
+      return -1;
+    }
+    set.pollFirst();
+    return set.pollFirst();
+  }
+
+  /**
+   * dfs method.
+   * @param node TreeNode
+   */
+  public void dfs671(TreeNode node) {
+    if (node == null) {
+      return;
+    }
+    dfs671(node.left);
+    dfs671(node.right);
+    set.add(node.val);
+  }
 }

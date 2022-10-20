@@ -463,4 +463,28 @@ public class Array {
     return cnt <= 1;
   }
 
+  /**
+   * Leetcode 667 : Beautiful Arrangement II.
+   * @param n int
+   * @param k int
+   * @return int[]
+   */
+  public int[] constructArray(int n, int k) {
+    int[] ans = new int[n];
+    int a = 1;
+    for (int i = 0; i <= k; i += 2) {
+      ans[i] = a;
+      a++;
+    }
+    int b = k + 1;
+    for (int i = 1; i <= k; i = i + 2) {
+      ans[i] = b;
+      b--;
+    }
+    for (int i = k + 1; i < n; i++) {
+      ans[i] = i + 1;
+    }
+    return ans;
+  }
+
 }

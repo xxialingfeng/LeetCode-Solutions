@@ -350,4 +350,64 @@ public class Tree {
     map653.put(s, map653.getOrDefault(s,0) + 1);
     return s;
   }
+
+  /**
+   * Leetcode 669 : Trim a Binary Search Tree.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root TreeNode
+   * @param low int
+   * @param high int
+   * @return TreeNode
+   */
+  public TreeNode trimBST(TreeNode root, int low, int high) {
+    if (root == null) {
+      return root;
+    }
+
+    if (root.val < low) {
+      return trimBST(root.right, low, high);
+    }
+    if (root.val > high) {
+      return trimBST(root.left, low, high);
+    }
+    root.left = trimBST(root.left, low, high);
+    root.right = trimBST(root.right, low, high);
+    return root;
+  }
+
+  /**
+   * Leetcode 670 : Maximum Swap.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(1) while n is the length of the string.
+   * @param num int
+   * @return int
+   */
+  public int maximumSwap(int num) {
+    String str = String.valueOf(num);
+    char[] temp = str.toCharArray();
+    int max = num;
+    for (int i = 0; i < temp.length; i++) {
+      for (int j = 0; j < temp.length; j++) {
+        if (i != j) {
+          swap(temp, i, j);
+          max = Math.max(max, Integer.parseInt(new String(temp)));
+        }
+        temp = str.toCharArray();
+      }
+    }
+    return max;
+  }
+
+  /**
+   * swap method.
+   * @param temp char[]
+   * @param i int
+   * @param j int
+   */
+  public void swap(char[] temp, int i, int j) {
+    char t = temp[i];
+    temp[i] = temp[j] ;
+    temp[j] = t;
+  }
 }
