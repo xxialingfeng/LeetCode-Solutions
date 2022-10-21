@@ -267,4 +267,44 @@ public class DP {
     }
     return dp[0][s.length() - 1];
   }
+
+  /**
+   * Leetcode 673 : Number of Longest Increasing Subsequence.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(n)
+   * @param nums int[]
+   * @return int
+   */
+  public int findNumberOfLIS(int[] nums) {
+    if (nums.length == 1) {
+      return 1;
+    }
+
+    int[] dp = new int[nums.length + 1];
+    int[] res = new int[nums.length];
+    Arrays.fill(dp, 1);
+    Arrays.fill(res, 1);
+    int max = 1;
+    for (int i = 1; i < nums.length; i++) {
+      for (int j = 0; j < i; j++) {
+        if (nums[i] > nums[j]) {
+          if (dp[i] < dp[j] + 1) {
+            dp[i] = dp[j] + 1;
+            res[i] = res[j];
+          } else if (dp[i] == dp[j] + 1) {
+            res[i] += res[j];
+          }
+        }
+      }
+      max = Math.max(max, dp[i]);
+    }
+
+    int ans = 0;
+    for (int i = 0; i < nums.length; i++) {
+      if (dp[i] == max) {
+        ans += res[i];
+      }
+    }
+    return ans;
+  }
 }

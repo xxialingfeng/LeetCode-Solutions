@@ -1,5 +1,7 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -124,5 +126,81 @@ public class BFS {
       }
     }
     return maxW;
+  }
+
+  /**
+   * Leetcode 675 : Cut Off Trees for Golf Event.
+   * @param forest list of list of integer
+   * @return int
+   */
+  public int cutOffTree(List<List<Integer>> forest) {
+    List<int[]> list = new ArrayList<>();
+    for (int i = 0; i < forest.size(); i++) {
+      for (int j = 0; j < forest.get(0).size(); j++) {
+        if (forest.get(i).get(j) > 1) {
+          list.add(new int[]{i, j});
+        }
+      }
+    }
+    list.sort(Comparator.comparingInt(a -> forest.get(a[0]).get(a[1])));
+    int cx = 0;
+    int cy = 0;
+    int ans = 0;
+    for (int[] ints : list) {
+      int step = bfs(forest, cx, cy, ints[0], ints[1]);
+      if (step == -1) {
+        return -1;
+      } else {
+        ans += step;
+        cx = ints[0];
+        cy = ints[1];
+      }
+    }
+    return ans;
+  }
+
+  /**
+   * bfs method.
+   * @param forest list
+   * @param cx current x
+   * @param cy current y
+   * @param tx target x
+   * @param ty target y
+   * @return int
+   */
+  public int bfs(List<List<Integer>> forest, int cx, int cy, int tx, int ty) {
+    if (cx == tx && cy == ty) {
+      return 0;
+    }
+    Queue<int[]> queue = new LinkedList<>();
+    queue.offer(new int[]{cx, cy});
+    int row = forest.size();
+    int col = forest.get(0).size();
+    boolean[][] visited = new boolean[row][col];
+    int step = 0;
+    int[][] directions = new int[][]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+    while (!queue.isEmpty()) {
+      step++;
+      int size = queue.size();
+      while (size-- > 0) {
+        int[] temp = queue.poll();
+        for (int[] dir : directions) {
+          assert temp != null;
+          int newR = temp[0] + dir[0];
+          int newC = temp[1] + dir[1];
+          if (newR >= 0 && newR < row && newC >= 0 && newC < col) {
+            if (!visited[newR][newC] && forest.get(newR).get(newC) > 0) {
+              if (newR == tx && newC == ty) {
+                return step;
+              } else {
+                queue.offer(new int[]{newR, newC});
+                visited[newR][newC] = true;
+              }
+            }
+          }
+        }
+      }
+    }
+    return -1;
   }
 }
