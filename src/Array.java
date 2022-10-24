@@ -487,4 +487,32 @@ public class Array {
     return ans;
   }
 
+  /**
+   * Leetcode 678 : Valid Parenthesis String.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param s String
+   * @return boolean
+   */
+  public boolean checkValidString(String s) {
+    int min = 0;
+    int max = 0;
+    for (int i = 0; i < s.length(); i++) {
+      char crr = s.charAt(i);
+      if (crr == '(') {
+        min++;
+        max++;
+      } else if (crr == ')') {
+        min = Math.max(0, min - 1);
+        max--;
+        if (max < 0 ) {
+          return false;
+        }
+      } else {
+        min = Math.max(0, min - 1);
+        max += 1;
+      }
+    }
+    return min == 0;
+  }
 }

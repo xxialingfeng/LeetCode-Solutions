@@ -59,4 +59,43 @@ public class stack {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 678 : Valid Parenthesis String.
+   * @OptimalComplexity: O(n) & O(1)
+   * @Difficulty: Medium
+   * @param s String
+   * @return boolean
+   */
+  public boolean checkValidString(String s) {
+    if (s.length() == 0) {
+      return true;
+    }
+    Stack<Integer> stackOne = new Stack<>();
+    Stack<Integer> stackTwo = new Stack<>();
+    char[] temp = s.toCharArray();
+    for (int i = 0; i < temp.length; i++) {
+      if (temp[i] == '(') {
+        stackOne.push(i);
+      } else if (temp[i] == '*') {
+        stackTwo.push(i);
+      } else if (temp[i] == ')') {
+        if (!stackOne.isEmpty()) {
+          stackOne.pop();
+        } else if (!stackTwo.isEmpty()) {
+          stackTwo.pop();
+        } else {
+          return false;
+        }
+      }
+    }
+    while (!stackOne.isEmpty() && !stackTwo.isEmpty()) {
+      int leftIndex = stackOne.pop();
+      int asteriskIndex = stackTwo.pop();
+      if (leftIndex > asteriskIndex) {
+        return false;
+      }
+    }
+    return stackOne.isEmpty();
+  }
 }
