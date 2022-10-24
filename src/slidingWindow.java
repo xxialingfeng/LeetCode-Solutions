@@ -25,4 +25,45 @@ public class slidingWindow {
     }
     return max;
   }
+
+  /**
+   * Leetcode 680 : Valid Palindrome II.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param s String
+   * @return boolean
+   */
+  public boolean validPalindrome(String s) {
+    if (isPalin(s)) {
+      return true;
+    }
+    int l = 0;
+    int r = s.length() - 1;
+    while (l < r) {
+      if (s.charAt(l) != s.charAt(r)) {
+        return isPalin(s.substring(l, r)) || isPalin(s.substring(l + 1, r + 1));
+      }
+      l++;
+      r--;
+    }
+    return false;
+  }
+
+  /**
+   * return if it's palindrome.
+   * @param s string
+   * @return boolean
+   */
+  public boolean isPalin(String s) {
+    int left = 0;
+    int right = s.length() - 1;
+    while (left < right) {
+      if (s.charAt(left) != s.charAt(right)) {
+        return false;
+      }
+      left++;
+      right--;
+    }
+    return true;
+  }
 }
