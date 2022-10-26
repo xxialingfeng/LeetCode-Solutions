@@ -67,4 +67,51 @@ public class PrefixSum {
     }
     return false;
   }
+
+  /**
+   * Leetcode 689 : Maximum Sum of 3 Non-Overlapping Subarrays.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(1)
+   * @param nums int[]
+   * @param k int
+   * @return int[]
+   */
+  public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
+    int[] ans = new int[3];
+    int sum1 = 0;
+    int sum2 = 0;
+    int sum3 = 0;
+    int idx1 = 0;
+    int idx2 = 0;
+    int maxSum2 = 0;
+    int maxSum1 = 0;
+    int maxSum3 = 0;
+    int maxSumIdx1 = 0;
+    for (int i = 2 * k; i < nums.length; i++) {
+      sum1 += nums[i - 2 * k];
+      sum2 += nums[i - k];
+      sum3 += nums[i];
+      if (i >= 3 * k - 1) {
+        if (sum1 > maxSum1) {
+          maxSum1 = sum1;
+          idx1 = i - 3 * k + 1;
+        }
+        if (maxSum1 + sum2 > maxSum2) {
+          maxSum2 = maxSum1 + sum2;
+          maxSumIdx1 = idx1;
+          idx2 = i - 2 * k + 1;
+        }
+        if (maxSum2 + sum3 > maxSum3) {
+          maxSum3 = maxSum2 + sum3;
+          ans[0] = maxSumIdx1;
+          ans[1] = idx2;
+          ans[2] = i - k + 1;
+        }
+        sum1 -= nums[i - k * 3 + 1];
+        sum2 -= nums[i - k * 2 + 1];
+        sum3 -= nums[i - k + 1];
+      }
+    }
+    return ans;
+  }
 }

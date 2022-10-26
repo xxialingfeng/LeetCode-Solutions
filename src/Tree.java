@@ -410,4 +410,42 @@ public class Tree {
     temp[i] = temp[j] ;
     temp[j] = t;
   }
+
+  private int max687 = 0;
+
+  /**
+   * Leetcode 687 : Longest Univalue Path.
+   * @param root TreeNode
+   * @return int
+   */
+  public int longestUnivaluePath(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    if (root.left == null && root.right == null) {
+      return 0;
+    }
+    getMax(root, root.val);
+    return max687;
+  }
+
+  /**
+   * get the max length.
+   * @param root TreeNode
+   * @param val int
+   * @return int
+   */
+  public int getMax(TreeNode root, int val) {
+    if (root == null) {
+      return 0;
+    }
+    int l = getMax(root.left, root.val);
+    int r = getMax(root.right, root.val);
+    max687 = Math.max(max687, l + r);
+    if (root.val == val) {
+      return Math.max(l, r) + 1;
+    } else {
+      return 0;
+    }
+  }
 }

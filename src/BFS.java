@@ -203,4 +203,45 @@ public class BFS {
     }
     return -1;
   }
+
+  /**
+   * Leetcode 691 : Stickers to Spell Word.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param stickers list of string
+   * @param target string
+   * @return int
+   */
+  public int minStickers(String[] stickers, String target) {
+    int n = target.length();
+    int[] dp = new int[1 << n];
+    Queue<Integer> queue = new LinkedList<>();
+    queue.offer(0);
+    while (!queue.isEmpty()) {
+      int size = queue.size();
+      while (size-- > 0) {
+        int base = queue.poll();
+        for (String sticker : stickers) {
+          int state = base;
+          System.out.println(base);
+          int[] chr = new int[26];
+          for (char c : sticker.toCharArray()) {
+            chr[c - 'a']++;
+          }
+          for (int i = 0; i < target.length(); i++) {
+            char temp = target.charAt(i);
+            if (chr[temp - 'a'] != 0 && (state >> i) % 2 == 0) {
+              chr[temp - 'a']--;
+              state |= 1 << i;//填充
+            }
+          }
+          if (dp[state] != 0 || state == 0) continue;
+          queue.offer(state);
+          dp[state] = dp[base] + 1;
+          if (state == (1 << n) - 1) return dp[state];
+        }
+      }
+    }
+    return -1;
+  }
 }

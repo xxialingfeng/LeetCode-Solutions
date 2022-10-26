@@ -307,4 +307,38 @@ public class DP {
     }
     return ans;
   }
+
+  int[][] directions = new int[][]{{-2, -1}, {-2, 1}, {2, -1}, {2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}};
+
+  /**
+   * Leetcode 688 : Knight Probability in Chessboard.
+   * @OptimalComplexity: O（n2 * k) & O(n2 * k)
+   * @Difficulty: Medium
+   * @param n int
+   * @param k int
+   * @param row int
+   * @param column int
+   * @return double
+   */
+  public double knightProbability(int n, int k, int row, int column) {
+    double[][][] dp = new double[k+1][n][n];
+    for (int step = 0; step <= k; step++) {
+      for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+          if (step == 0) {
+            dp[step][i][j] = 1;
+          } else {
+            for (int[] direction : directions) {
+              int newR = direction[0] + i;
+              int newC = direction[1] + j;
+              if (newR >= 0 && newR < n && newC >= 0 && newC < n) {
+                dp[step][i][j] += dp[step - 1][newR][newC] / 8.0;
+              }
+            }
+          }
+        }
+      }
+    }
+    return dp[k][row][column];
+  }
 }

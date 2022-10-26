@@ -590,4 +590,27 @@ public class Strings {
       return "x=" + right/left;
     }
   }
+
+  /**
+   * Leetcode 686 : Repeated String Match.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param a String
+   * @param b String
+   * @return int
+   */
+  public int repeatedStringMatch(String a, String b) {
+    int count = 1;
+    int max = 2 * a.length() + b.length();
+    StringBuilder temp = new StringBuilder(a);
+    while (temp.length() < max) {
+      if (temp.toString().contains(b)) {
+        return count;
+      } else {
+        temp.append(a);
+        count++;
+      }
+    }
+    return -1;
+  }
 }

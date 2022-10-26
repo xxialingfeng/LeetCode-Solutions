@@ -1,7 +1,9 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 class Node {
@@ -448,5 +450,41 @@ public class DFS {
     dfs671(node.left);
     dfs671(node.right);
     set.add(node.val);
+  }
+
+  static class Employee {
+    public int id;
+    public int importance;
+    public List<Integer> subordinates;
+  }
+
+  private int sum690 = 0;
+
+  /**
+   * Leetcode 690 : Employee Importance.
+   * @param employees list of employees
+   * @param id int
+   * @return int
+   */
+  public int getImportance(List<Employee> employees, int id) {
+    Map<Integer, Employee> map = new HashMap<>();
+    for (Employee e : employees) {
+      map.put(e.id, e);
+    }
+    return dfs690(id, map);
+  }
+
+  /**
+   * dfs method. (using hashmap to optimize)
+   * @param id int
+   * @param map map
+   * @return int
+   */
+  public int dfs690(int id, Map<Integer, Employee> map) {
+    sum690 += map.get(id).importance;
+    for (int a : map.get(id).subordinates) {
+      dfs690(a, map);
+    }
+    return sum690;
   }
 }
