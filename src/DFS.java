@@ -27,12 +27,13 @@ class Node {
  */
 public class DFS {
 
-  /**.
-   * Leetcode 526: Beautiful Arrangement
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(n!) & O(n)
+  /**
+   * . Leetcode 526: Beautiful Arrangement
+   *
    * @param n int
    * @return int
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n !) & O(n)
    */
   public int countArrangement(int n) {
     if (n == 1) {
@@ -41,15 +42,16 @@ public class DFS {
     if (n == 2) {
       return 2;
     }
-    boolean[] visited = new boolean[n+1];
+    boolean[] visited = new boolean[n + 1];
     return dfs526(visited, 1, n);
   }
 
-  /**.
-   * DFS function find all the possibilities
+  /**
+   * . DFS function find all the possibilities
+   *
    * @param visited boolean[]
-   * @param step int
-   * @param n int
+   * @param step    int
+   * @param n       int
    * @return int
    */
   public int dfs526(boolean[] visited, int step, int n) {
@@ -70,13 +72,14 @@ public class DFS {
   int[] dx = {-1, -1, -1, 0, 1, 1, 1, 0}; //direction array
   int[] dy = {-1, 0, 1, 1, 1, 0, -1, -1};
 
-  /**.
-   * Leetcode 529: Minesweeper
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(mn) & O(mn)
+  /**
+   * . Leetcode 529: Minesweeper
+   *
    * @param board char[][]
    * @param click int[]
    * @return char[][]
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(mn) & O(mn)
    */
   public char[][] updateBoard(char[][] board, int[] click) {
     if (board[click[0]][click[1]] == 'M') {
@@ -90,11 +93,12 @@ public class DFS {
     return board;
   }
 
-  /**.
-   * DFS function
+  /**
+   * . DFS function
+   *
    * @param board char[][]
-   * @param x int
-   * @param y int
+   * @param x     int
+   * @param y     int
    */
   public void dfs(char[][] board, int x, int y) {
     int count = 0;
@@ -108,14 +112,15 @@ public class DFS {
     }
 
     if (count > 0) {
-      board[x][y] = (char)(count + '0');
+      board[x][y] = (char) (count + '0');
     } else {
       board[x][y] = 'B';
       //if there is a mine surrounded.
       for (int i = 0; i < 8; i++) {
         int tx = x + dx[i];
         int ty = y + dy[i];
-        if (tx >= 0 && tx < board.length && ty >= 0 && ty < board[0].length && board[tx][ty] == 'E') {
+        if (tx >= 0 && tx < board.length && ty >= 0 && ty < board[0].length
+            && board[tx][ty] == 'E') {
           dfs(board, tx, ty);
         }
       }
@@ -124,8 +129,10 @@ public class DFS {
 
 
   private static final int M = 1000000007;
+
   /**
    * Leetcode 552: Student Attendance Record II.
+   *
    * @Difficulty: Hard
    * @OptimalComplexity: O(n) & O(n)
    */
@@ -137,15 +144,16 @@ public class DFS {
 
   /**
    * memoization dfs.
-   * @param n int
-   * @param index int
-   * @param late int
+   *
+   * @param n      int
+   * @param index  int
+   * @param late   int
    * @param absent int
-   * @param memo int[][][]
+   * @param memo   int[][][]
    * @return int
    */
 
-  public int dfs552 (int n, int index, int late, int absent, int[][][] memo) {
+  public int dfs552(int n, int index, int late, int absent, int[][][] memo) {
     //if current is not late, set late to zero
     if (index == n) {
       return 1;
@@ -159,7 +167,7 @@ public class DFS {
       ans = (ans + dfs552(n, index + 1, 0, 1, memo)) % M;
     }
     if (late < 2) {
-      ans = (ans + dfs552(n, index + 1, late+1, absent, memo)) % M;
+      ans = (ans + dfs552(n, index + 1, late + 1, absent, memo)) % M;
     }
     memo[index][late][absent] = ans;
     return ans;
@@ -167,11 +175,12 @@ public class DFS {
 
   /**
    * Leetcode 559:  Maximum Depth of N-ary Tree.
-   * @Difficulty: Easy
-   * @OptimalComplexity: O(n) & O(height) Recursion will use stack space, yet stack
-   *      space is determined by the depth of recursion.
+   *
    * @param root Node
    * @return int
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(height) Recursion will use stack space, yet stack space is
+   * determined by the depth of recursion.
    */
   public int maxDepth(Node root) {
     int max = 1;
@@ -192,14 +201,15 @@ public class DFS {
 
   /**
    * Leetcode 576: Out of Boundary Paths.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(maxMove*m*n) & O(m*n)
-   * @param m int
-   * @param n int
-   * @param maxMove int
-   * @param startRow int
+   *
+   * @param m           int
+   * @param n           int
+   * @param maxMove     int
+   * @param startRow    int
    * @param startColumn int
    * @return int
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(maxMove * m * n) & O(m*n)
    */
   public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
     memo = new int[m][n][maxMove + 1];
@@ -213,11 +223,12 @@ public class DFS {
 
   /**
    * DFS + memoization.
-   * @param index int
-   * @param maxMove int
-   * @param m int
-   * @param n int
-   * @param startRow int
+   *
+   * @param index       int
+   * @param maxMove     int
+   * @param m           int
+   * @param n           int
+   * @param startRow    int
    * @param startColumn int
    * @return int
    */
@@ -233,10 +244,10 @@ public class DFS {
       return memo[startRow][startColumn][index];
     }
     int ans = 0;
-    ans =  (ans + dfs576(index + 1, maxMove, m, n, startRow + 1, startColumn)) % mod;
-    ans =  (ans + dfs576(index + 1, maxMove, m, n, startRow - 1, startColumn)) % mod;
-    ans =  (ans + dfs576(index + 1, maxMove, m, n, startRow, startColumn + 1)) % mod;
-    ans =  (ans + dfs576(index + 1, maxMove, m, n, startRow, startColumn - 1)) % mod;
+    ans = (ans + dfs576(index + 1, maxMove, m, n, startRow + 1, startColumn)) % mod;
+    ans = (ans + dfs576(index + 1, maxMove, m, n, startRow - 1, startColumn)) % mod;
+    ans = (ans + dfs576(index + 1, maxMove, m, n, startRow, startColumn + 1)) % mod;
+    ans = (ans + dfs576(index + 1, maxMove, m, n, startRow, startColumn - 1)) % mod;
     memo[startRow][startColumn][index] = ans;
     return ans;
   }
@@ -245,10 +256,11 @@ public class DFS {
 
   /**
    * Leetcoee 589: N-ary Tree Preorder Traversal.
-   * @Difficulty: Easy
-   * @OptimalComplexity: O(n) & O(n)
+   *
    * @param root Node
    * @return list
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
    */
   public List<Integer> preorder(Node root) {
     //递归版
@@ -256,7 +268,7 @@ public class DFS {
     if (root == null)
       return res;
     res.add(root.val);
-    for (Node child:root.children) {
+    for (Node child : root.children) {
       preorder(child);
     }
 
@@ -268,6 +280,7 @@ public class DFS {
 
   /**
    * Leetcode 590 : N-ary Tree Postorder Traversal.
+   *
    * @Difficulty: Easy
    * @OptimalComplexity: O(n) & O(n)
    */
@@ -278,6 +291,7 @@ public class DFS {
 
   /**
    * dfs method.
+   *
    * @param root Node
    */
   public void dfs590(Node root) {
@@ -295,10 +309,11 @@ public class DFS {
 
   /**
    * Leetcode 600 : Non-negative Integers without Consecutive Ones.
-   * @Difficulty: Hard
-   * @OptimalComplexity: O(n) & O(n)
+   *
    * @param n int
    * @return int
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
    */
   public int findIntegers(int n) {
     max_num = n;
@@ -308,16 +323,16 @@ public class DFS {
 
   /**
    * dfs method.
+   *
    * @param n int
    */
   public void dfs600(int n) {
     if (n > max_num)
-      return ;
+      return;
     res600++;
     if (n % 2 == 1) {
       dfs600(n << 1);
-    }
-    else {
+    } else {
       dfs600(n << 1);
       dfs600((n << 1) + 1);
     }
@@ -327,10 +342,11 @@ public class DFS {
 
   /**
    * Leetcode 606 : Construct String from Binary Tree.
-   * @Difficulty: Easy
-   * @OptimalComplexity: O(n) & O(n)
+   *
    * @param root TreeNode
    * @return String
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
    */
   public String tree2str606(TreeNode root) {
     dfs606(root);
@@ -339,6 +355,7 @@ public class DFS {
 
   /**
    * dfs method.
+   *
    * @param root TreeNode
    */
   public void dfs606(TreeNode root) {
@@ -360,10 +377,11 @@ public class DFS {
 
   /**
    * Leetcode 655 : Print Binary Tree.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(height * pow (2, height)) & O(height)
+   *
    * @param root TreeNode
    * @return list of list of string
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(height * pow ( 2, height)) & O(height)
    */
   public List<List<String>> printTree(TreeNode root) {
     int height = calDepth(root);
@@ -383,6 +401,7 @@ public class DFS {
 
   /**
    * return depth.
+   *
    * @param root TreeNode
    * @return depth
    */
@@ -399,10 +418,11 @@ public class DFS {
 
   /**
    * dfs method.
-   * @param res list of list of string
-   * @param root TreeNode
-   * @param r int
-   * @param c int
+   *
+   * @param res    list of list of string
+   * @param root   TreeNode
+   * @param r      int
+   * @param c      int
    * @param height int
    */
   public void dfs655(List<List<String>> res, TreeNode root, int r, int c, int height) {
@@ -419,10 +439,11 @@ public class DFS {
 
   /**
    * Leetcode 671 : Second Minimum Node In a Binary Tree.
-   * @Difficulty: Easy
-   * @OptimalComplexity: O(n) & O(1)
+   *
    * @param root TreeNode
    * @return int
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
    */
   public int findSecondMinimumValue(TreeNode root) {
     if (root == null) {
@@ -441,6 +462,7 @@ public class DFS {
 
   /**
    * dfs method.
+   *
    * @param node TreeNode
    */
   public void dfs671(TreeNode node) {
@@ -453,6 +475,7 @@ public class DFS {
   }
 
   static class Employee {
+
     public int id;
     public int importance;
     public List<Integer> subordinates;
@@ -462,8 +485,9 @@ public class DFS {
 
   /**
    * Leetcode 690 : Employee Importance.
+   *
    * @param employees list of employees
-   * @param id int
+   * @param id        int
    * @return int
    */
   public int getImportance(List<Employee> employees, int id) {
@@ -476,7 +500,8 @@ public class DFS {
 
   /**
    * dfs method. (using hashmap to optimize)
-   * @param id int
+   *
+   * @param id  int
    * @param map map
    * @return int
    */
@@ -486,5 +511,55 @@ public class DFS {
       dfs690(a, map);
     }
     return sum690;
+  }
+
+  int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+  /**
+   * Leetcode 695 : Max Area of Island.
+   *
+   * @param grid int[][]
+   * @return int
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(1)
+   */
+  public int maxAreaOfIsland(int[][] grid) {
+    int max = 0;
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[0].length; j++) {
+        cnt = 0;
+        if (grid[i][j] == 1) {
+          dfs695(grid, i, j);
+        }
+        if (cnt > max) {
+          max = cnt;
+        }
+      }
+    }
+    return max;
+  }
+
+  int cnt = 1;
+
+  /**
+   * dfs method.
+   * @param grid int[][]
+   * @param x int
+   * @param y int
+   */
+  public void dfs695(int[][] grid, int x, int y) {
+    if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length) {
+      return;
+    }
+    grid[x][y] = 2;
+    cnt++;
+    for (int[] direction : directions) {
+      int newX = direction[0] + x;
+      int newY = direction[1] + y;
+      if (newX >= 0 && newX < grid.length && newY >= 0 && newY < grid[0].length
+          && grid[newX][newY] == 1) {
+        dfs695(grid, newX, newY);
+      }
+    }
   }
 }
