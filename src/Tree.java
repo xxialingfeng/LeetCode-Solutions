@@ -448,4 +448,25 @@ public class Tree {
       return 0;
     }
   }
+
+  /**
+   * Leetcode 700 : Search in a Binary Search Tree.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root Tree node
+   * @param val int
+   * @return tree node
+   */
+  public TreeNode searchBST(TreeNode root, int val) {
+    if (root == null) {
+      return null;
+    }
+    if (root.val == val) {
+      return root;
+    }
+    if (root.val > val) {
+      return searchBST(root.left, val);
+    }
+    return searchBST(root.right, val);
+  }
 }
