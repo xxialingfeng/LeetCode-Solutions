@@ -515,4 +515,98 @@ public class Array {
     }
     return min == 0;
   }
+
+  /**
+   * Leetcode 696 : Count Binary Substrings.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param s String
+   * @return int
+   */
+  public int countBinarySubstrings(String s) {
+    int ans = 0;
+    int last = 0;
+    int curr = 1;
+    for (int i = 1; i < s.length(); i++) {
+      if (s.charAt(i) == s.charAt(i - 1)) {
+        curr++;
+      } else {
+        last = curr;
+        curr = 1;
+      }
+      if (last >= curr) {
+        ans++;
+      }
+    }
+    return ans;
+  }
+
+  /**
+   * Leetcode 697 : Degree of an Array.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @return int
+   */
+  public int findShortestSubArray(int[] nums) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int num : nums) {
+      map.put(num, map.getOrDefault(num, 0) + 1);
+    }
+    int max = 0;
+    for (int key : map.keySet()) {
+      if (map.get(key) > max) {
+        max = map.get(key);
+      }
+    }
+    List<Integer> list = new ArrayList<>();
+    for (int key : map.keySet()) {
+      if (map.get(key) == max) {
+        list.add(key);
+      }
+    }
+    int res = Integer.MAX_VALUE;;
+    for (int i : list) {
+      int left = 0;
+      int right = nums.length - 1;
+      while (nums[left] != i) {
+        left++;
+      }
+      while (nums[right] != i) {
+        right--;
+      }
+      res = Math.min(res, right - left + 1);
+    }
+    return res;
+  }
+
+  /**
+   * Leetcode 699 : Falling Squares.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n2) & O(n)
+   * @param positions int[][]
+   * @return list of integer.
+   */
+  public List<Integer> fallingSquares(int[][] positions) {
+    List<Integer> ans = new ArrayList<>();
+    int height = 0;
+    int max = 0;
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < positions.length; i++) {
+      height = 0;
+      int left = positions[i][0];
+      int right = positions[i][1]+left;
+      for (int j = 0; j < i; j++) {
+        if (right <= positions[j][0] || left >= positions[j][1] + positions[j][0]) {
+          continue;
+        }
+        height = Math.max(map.get(j), height);
+      }
+      height += positions[i][1];
+      max = Math.max(max, height);
+      ans.add(max);
+      map.put(i, height);
+    }
+    return ans;
+  }
 }
