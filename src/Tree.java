@@ -469,4 +469,24 @@ public class Tree {
     }
     return searchBST(root.right, val);
   }
+
+  /**
+   * Leetcode 701 : Insert into a Binary Search Tree.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param root tree node
+   * @param val int
+   * @return tree node
+   */
+  public TreeNode insertIntoBST(TreeNode root, int val) {
+    if (root == null) {
+      return new TreeNode(val);
+    }
+    if (root.val > val) {
+      root.left = insertIntoBST(root.left, val);
+    } else {
+      root.right = insertIntoBST(root.right, val);
+    }
+    return root;
+  }
 }
