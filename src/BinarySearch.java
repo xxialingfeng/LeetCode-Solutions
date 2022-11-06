@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -72,5 +73,45 @@ public class BinarySearch {
       else r = mid - 1;
     }
     return r + 1 < n && Math.abs(arr[r + 1] - x) < Math.abs(arr[r] - x) ? r + 1 : r;
+  }
+
+  /**
+   * Leetcode 719 : Find K-th Smallest Pair Distance.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n x (logn + logD) & O(logn)
+   * @param nums int[]
+   * @param k int
+   * @return int
+   */
+  public int smallestDistancePair(int[] nums, int k) {
+    /*
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                list.add(Math.abs(nums[i] - nums[j]));
+            }
+        }
+        list.sort((a, b) -> a - b);
+        return list.get(k - 1);
+    */
+    Arrays.sort(nums);
+    int left = 0; int right = nums[nums.length - 1] - nums[0];
+    while (left <= right) {
+      int mid = left + (right - left) / 2;
+      int cnt = 0;
+      for (int j = 0; j < nums.length; j++) {
+        int i = 0;
+        while (nums[j] - nums[i] > mid) {
+          i++;
+        }
+        cnt += j - i;
+      }
+      if (cnt >= k) {
+        right = mid - 1;
+      } else {
+        left = mid + 1;
+      }
+    }
+    return left;
   }
 }

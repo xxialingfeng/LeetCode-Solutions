@@ -609,4 +609,26 @@ public class Array {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 717 : 1-bit and 2-bit Characters.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param bits int[]
+   * @return boolean
+   */
+  public boolean isOneBitCharacter(int[] bits) {
+    int left = 0;
+    while (left < bits.length) {
+      if (left == bits.length - 1) {
+        return true;
+      }
+      if (bits[left] == 1) {
+        left = left + 2;
+      } else if (bits[left] == 0) {
+        left = left + 1;
+      }
+    }
+    return false;
+  }
 }

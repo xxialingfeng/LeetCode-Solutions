@@ -341,4 +341,74 @@ public class DP {
     }
     return dp[k][row][column];
   }
+
+  /**
+   * Leetcode 712 : Minimum ASCII Delete Sum for Two Strings.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(1)
+   * @param s1 string
+   * @param s2 string
+   * @return int
+   */
+  public int minimumDeleteSum(String s1, String s2) {
+    int[][] dp = new int[s1.length() + 1][s2.length() + 1];
+    for (int i = 1; i <= s1.length(); i++) {
+      dp[i][0] = dp[i - 1][0] + s1.charAt(i - 1);
+    }
+    for (int i = 1; i <= s2.length(); i++) {
+      dp[0][i] = dp[0][i - 1] + s2.charAt(i - 1);
+    }
+    for (int i = 1; i <= s1.length(); i++) {
+      for (int j = 1; j <= s2.length(); j++) {
+        if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+          dp[i][j] = dp[i - 1][j - 1];
+        } else {
+          dp[i][j] = Math.min(dp[i - 1][j] + s1.charAt(i - 1), dp[i][j - 1] + s2.charAt(j - 1));
+        }
+      }
+    }
+    return dp[s1.length()][s2.length()];
+  }
+
+  /**
+   * Leetcode 714 : Best Time to Buy and Sell Stock with Transaction Fee.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param prices int[]
+   * @param fee int
+   * @return int
+   */
+  public int maxProfit(int[] prices, int fee) {
+    int[] dp = new int[prices.length + 1]; // with s
+    int[] dp2 = new int[prices.length + 1]; // without s
+    dp[0] = -prices[0];
+    for (int i = 1; i < prices.length; i++) {
+      dp[i] = Math.max(dp2[i - 1] - prices[i], dp[i - 1]);
+      dp2[i] = Math.max(dp2[i - 1], dp[i - 1] + prices[i] - fee);
+    }
+    return Math.max(dp[prices.length - 1], dp2[prices.length - 1]);
+  }
+
+  /**
+   * Leetcode 718 : Maximum Length of Repeated Subarray.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(1)
+   * @param nums1 int[]
+   * @param nums2 int[]
+   * @return int
+   */
+  public int findLength(int[] nums1, int[] nums2) {
+    int res = 0;
+    int[][] dp = new int[nums1.length + 1][nums2.length + 1];
+    for (int i = 1; i <= nums1.length; i++) {
+      for (int j = 1; j <= nums2.length; j++) {
+        if (nums1[i - 1] == nums2[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1] + 1;
+        }
+        res = Math.max(res, dp[i][j]);
+      }
+    }
+    return res;
+  }
+
 }

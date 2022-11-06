@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -96,5 +97,40 @@ public class priorityQueue {
       }
     }
     return radiant.isEmpty() ? "Dire" : "Radiant";
+  }
+
+  /**
+   * Leetcode 703 : Kth Largest Element in a Stream.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   */
+  class KthLargest {
+    PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> a - b);
+    int k;
+    public KthLargest(int k, int[] nums) {
+      Arrays.sort(nums);
+      int idx = nums.length - 1;
+      while (idx >= 0 && queue.size() != k) {
+        queue.offer(nums[idx--]);
+      }
+      this.k = k;
+    }
+
+    public int add(int val) {
+      if (queue.isEmpty()) {
+        queue.offer(val);
+        return val;
+      }
+      if (queue.size() < k) {
+        queue.offer(val);
+        return queue.peek();
+      } else if (val <= queue.peek() && queue.size() >= k) {
+        return queue.peek();
+      } else {
+        queue.poll();
+        queue.offer(val);
+        return queue.peek();
+      }
+    }
   }
 }

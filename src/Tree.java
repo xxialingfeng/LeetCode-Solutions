@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.TreeMap;
 
 class TreeNode {
   int val;
@@ -488,5 +489,52 @@ public class Tree {
       root.right = insertIntoBST(root.right, val);
     }
     return root;
+  }
+
+  /**
+   * Leetcode 715 : Range Module.
+   * @Difficulty: Hard
+   *     TreeMap lowerKey() and floorKey()
+   */
+  class RangeModule {
+    TreeMap<Integer, Integer> map;
+    public RangeModule() {
+      map = new TreeMap<>();
+    }
+
+    public void addRange(int left, int right) {
+      while (true) {
+        Integer a = map.floorKey(right);
+        if (a == null || map.get(a) < left) {
+          break;
+        }
+        left = Math.min(left, a);
+        right = Math.max(map.get(a), right);
+        map.remove(a);
+      }
+      map.put(left, right);
+    }
+
+    public boolean queryRange(int left, int right) {
+      Integer a = map.floorKey(left);
+      return a != null && map.get(a) >= right;
+    }
+
+    public void removeRange(int left, int right) {
+      while (true) {
+        Integer a = map.lowerKey(right);
+        if (a == null || map.get(a) <= left) {
+          break;
+        }
+        if (map.get(a) > right) {
+          map.put(right, map.get(a));
+        }
+        if (a >= left) {
+          map.remove(a);
+        } else {
+          map.put(a, left);
+        }
+      }
+    }
   }
 }

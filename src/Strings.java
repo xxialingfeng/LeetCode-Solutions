@@ -1,7 +1,10 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -612,5 +615,38 @@ public class Strings {
       }
     }
     return -1;
+  }
+
+  /**
+   * Leetcode 720 : Longest Word in Dictionary.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n x m) & O(n)
+   * @param words
+   * @return
+   */
+  public String longestWord(String[] words) {
+    Set<String> set = new HashSet<String>();
+    for (String str : words) {
+      set.add(str);
+    }
+    set.add("");
+    Arrays.sort(words);
+    String ans = "";
+    for (int i = words.length - 1; i >= 0; i--) {
+      boolean flag = true;
+      String temp = words[i];
+      for (int j = words[i].length() - 1; j >= 0; j--) {
+        if (!set.contains(temp.substring(0, j))) {
+          flag = false;
+          break;
+        }
+      }
+      if (flag) {
+        if (temp.length() >= ans.length()) {
+          ans = temp;
+        }
+      }
+    }
+    return ans;
   }
 }
