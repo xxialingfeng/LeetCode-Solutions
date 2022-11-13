@@ -114,4 +114,29 @@ public class PrefixSum {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 724 : Find Pivot Index.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @return int
+   */
+  public int pivotIndex(int[] nums) {
+    int[] prefix = new int[nums.length];
+    prefix[0] = nums[0];
+    for (int i = 1; i < prefix.length; i++) {
+      prefix[i] = prefix[i - 1] + nums[i];
+    }
+    int Sleft = 0;
+    int Sright = 0;
+    for (int i = 0; i < nums.length; i++) {
+      Sleft = prefix[i] - nums[i];
+      Sright = prefix[nums.length - 1] - prefix[i];
+      if (Sleft == Sright) {
+        return i;
+      }
+    }
+    return -1;
+  }
 }
