@@ -4,7 +4,8 @@ import java.util.List;
 /**.
  * A collection of leetcode problems related to math
  */
-public class math {
+public class
+math {
   /**.
   * Leetcode 507: perfect number
   * @Difficulty: Easy
@@ -101,5 +102,38 @@ public class math {
       }
     }
     return false;
+  }
+
+  List<Integer> list = new ArrayList<>();
+
+  /**
+   * Leetcode 728 : Self Dividing Numbers.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n * m) & O(n)
+   * @param left int
+   * @param right right
+   * @return list of integer
+   */
+  public List<Integer> selfDividingNumbers(int left, int right) {
+    for (int i = left; i <= right; i++) {
+      if (isValid(i)) {
+        list.add(i);
+      }
+    }
+    return list;
+  }
+
+  public boolean isValid(int n) {
+    int s = n;
+    int least = n % 10;
+    int last = n;
+    while (n > 0) {
+      if (least == 0  || (s % least) != 0) {
+        return false;
+      }
+      n /= 10;
+      least = n % 10;
+    }
+    return true;
   }
 }

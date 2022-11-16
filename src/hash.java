@@ -44,4 +44,36 @@ class hash {
     int x = random.nextInt(bound);
     return map.getOrDefault(x, x);
   }
+
+  /**
+   * Leetcode 729 : My Calendar I.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   */
+  static class MyCalendar {
+    Map<Integer, Integer> map;
+
+    /**
+     * my calendar class.
+     */
+    public MyCalendar() {
+      map = new HashMap<>();
+    }
+
+    public boolean book(int start, int end) {
+      for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+        int s = entry.getKey();
+        int e = entry.getValue();
+        if (start >= s && start < e) {
+          return false;
+        }
+        if (end > s && start < s) {
+          return false;
+        }
+      }
+      map.put(start, end);
+      return true;
+    }
+  }
+
 }

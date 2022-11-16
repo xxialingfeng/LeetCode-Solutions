@@ -411,4 +411,68 @@ public class DP {
     return res;
   }
 
+  /**
+   * Leetcode 1928: Minimum Cost to Reach Destination in Time.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n * m) & O(n * m)
+   * @param maxTime int
+   * @param edges int[][]
+   * @param passingFees int[]
+   * @return int
+   */
+  public int minCost(int maxTime, int[][] edges, int[] passingFees) {
+    int[][] dp = new int[maxTime + 1][passingFees.length];
+    for (int i = 0; i < maxTime + 1; i++) {
+      Arrays.fill(dp[i], Integer.MAX_VALUE/2);
+    }
+    dp[0][0] = passingFees[0];
+    for (int i = 1; i <= maxTime; i++) {
+      for (int[] edge : edges) {
+        int from = edge[0];
+        int to = edge[1];
+        int cost = edge[2];
+        if (i >= cost) {
+          dp[i][to] = Math.min(dp[i][to], dp[i - cost][from] + passingFees[to]);
+          dp[i][from] = Math.min(dp[i][from], dp[i - cost][to] + passingFees[from]);
+        }
+      }
+    }
+    int minFees = Integer.MAX_VALUE/2;
+    for (int time = 1; time <= maxTime; ++time) {
+      minFees = Math.min(minFees, dp[time][passingFees.length - 1]);
+    }
+    return minFees == Integer.MAX_VALUE/2 ? -1 : minFees;
+  }
+
+  /**
+   * Leetcode 787 : Cheapest Flights Within K Stops.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(n * m)
+   * @param n int
+   * @param flights int[][]
+   * @param src int
+   * @param dst int
+   * @param k int
+   * @return int
+   */
+  public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+    int[][] dp = new int[n][k + 2];
+    for (int i = 0; i < n; i++) {
+      Arrays.fill(dp[i], Integer.MAX_VALUE);
+    }
+    for (int j = 0; j <= k + 1; j++) {
+      dp[src][j] = 0;
+    }
+    for (int l = 1; l <= k + 1; l++) {
+      for (int[] flight : flights) {
+        int from = flight[0];
+        int to = flight[1];
+        int cost = flight[2];
+        if (dp[from][l - 1] != Integer.MAX_VALUE) {
+          dp[to][l] = Math.min(dp[to][l], dp[from][l - 1] + cost);
+        }
+      }
+    }
+    return dp[dst][k + 1] == Integer.MAX_VALUE ? -1 : dp[dst][k + 1];
+  }
 }
