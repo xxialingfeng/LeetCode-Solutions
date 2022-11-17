@@ -562,4 +562,43 @@ public class DFS {
       }
     }
   }
+
+  int ori;
+
+  /**
+   * Leetcode 733 : Flood Fill.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n * m) & O(n * m)
+   * @param image int[][]
+   * @param sr int
+   * @param sc int
+   * @param color int
+   * @return int[][]
+   */
+  public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+    ori = image[sr][sc];
+    boolean[][] visited = new boolean[image.length][image[0].length];
+    dfs733(image, sr, sc, color, visited);
+    return image;
+  }
+
+  /**
+   * dfs method.
+   * @param image int[][]
+   * @param i int
+   * @param j int
+   * @param color int
+   * @param visited boolean[][]
+   */
+  public void dfs733(int[][] image, int i, int j, int color, boolean[][] visited) {
+    if ((i < 0 || i >= image.length || j < 0 || j >= image[0].length) || image[i][j] != ori || visited[i][j] == true) {
+      return;
+    }
+    image[i][j] = color;
+    visited[i][j] = true;
+    dfs733(image, i + 1, j, color, visited);
+    dfs733(image, i - 1, j, color, visited);
+    dfs733(image, i, j + 1, color, visited);
+    dfs733(image, i, j - 1, color, visited);
+  }
 }

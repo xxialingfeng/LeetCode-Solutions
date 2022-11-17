@@ -175,4 +175,59 @@ public class stack {
     }
     return sb.toString();
   }
+
+  /**
+   * Leetcode 735 : Asteroid Collision.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param asteroids int[]
+   * @return int[]
+   */
+  public int[] asteroidCollision(int[] asteroids) {
+    Stack<Integer> stack = new Stack<>();
+    for (int asteroid : asteroids) {
+      if (stack.isEmpty() || isSameDir(stack.peek(), asteroid)) {
+        stack.push(asteroid);
+      } else {
+        boolean flag = false;
+        while (!stack.isEmpty() && !isSameDir(stack.peek(), asteroid)) {
+          if (stack.peek() < 0 && asteroid > 0) {
+            flag = true;
+            break;
+          }
+          if (stack.peek() == -1 * asteroid) {
+            flag = false;
+            stack.pop();
+            break;
+          } else if (stack.peek() < asteroid * -1) {
+            flag = true;
+            stack.pop();
+          } else {
+            flag = false;
+            break;
+          }
+        }
+        if (flag) {
+          stack.push(asteroid);
+        }
+      }
+    }
+    int[] ans = new int[stack.size()];
+    int i = stack.size() - 1;
+    while (!stack.isEmpty()) {
+      ans[i] = stack.pop();
+      i--;
+    }
+    return ans;
+  }
+
+  /**
+   * Return if the two asteroids are walking in the same direction.
+   * @param a int
+   * @param b int
+   * @return boolean
+   */
+  public boolean isSameDir(int a, int b) {
+    return (a > 0 && b > 0) || (a < 0 && b < 0);
+  }
 }
