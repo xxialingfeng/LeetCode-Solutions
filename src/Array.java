@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.Arrays;
+import java.util.TreeMap;
 
 /**
  * A collection of Leetcode problems related to Arrays.
@@ -630,5 +631,61 @@ public class Array {
       }
     }
     return false;
+  }
+
+  /**
+   * Leetcode 732 : My Calendar III.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   */
+  static class MyCalendarThree {
+
+    private final TreeMap<Integer, Integer> cnt;
+
+    public MyCalendarThree() {
+      cnt = new TreeMap<Integer, Integer>();
+    }
+
+    public int book(int start, int end) {
+      int ans = 0;
+      int gap = 0;
+      cnt.put(start, cnt.getOrDefault(start, 0) + 1);
+      cnt.put(end, cnt.getOrDefault(end, 0) - 1);
+
+      for (Map.Entry<Integer, Integer> entry : cnt.entrySet()) {
+        int count = entry.getValue();
+        gap += count;
+        ans = Math.max(gap, ans);
+      }
+      return ans;
+    }
+  }
+
+  /**
+   * Leetcode 731 : My Calendar II.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   */
+  class MyCalendarTwo {
+    TreeMap<Integer, Integer> map;
+    public MyCalendarTwo() {
+      map = new TreeMap<>();
+    }
+
+    public boolean book(int start, int end) {
+      int ans = 0;
+      map.put(start, map.getOrDefault(start, 0) + 1);
+      map.put(end, map.getOrDefault(end, 0) - 1);
+      for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+        int cnt = entry.getValue();
+        ans += cnt;
+        if (ans > 2) {
+          map.put(start, map.getOrDefault(start, 0) - 1);
+          map.put(end, map.getOrDefault(end, 0) + 1);
+          return false;
+        }
+      }
+      return true;
+    }
   }
 }

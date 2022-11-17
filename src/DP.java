@@ -475,4 +475,23 @@ public class DP {
     }
     return dp[dst][k + 1] == Integer.MAX_VALUE ? -1 : dp[dst][k + 1];
   }
+
+  /**
+   * Leetcode 940 : Distinct Subsequences II.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(26)
+   * @param s String
+   * @return int
+   */
+  public int distinctSubseqII(String s) {
+    int n = s.length();
+    long[] dp = new long[26];
+    dp[s.charAt(0) - 'a'] = 1;
+    for (int i = 1; i < n; i++) {
+      dp[s.charAt(i) - 'a'] = (1 + Arrays.stream(dp).sum()) % 1000000007;
+    }
+    return (int) (Arrays.stream(dp).sum() % 1000000007);
+  }
+
+
 }
