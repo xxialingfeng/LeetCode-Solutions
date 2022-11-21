@@ -688,4 +688,72 @@ public class Array {
       return true;
     }
   }
+
+  /**
+   * Leetcode 738 : Monotone Increasing Digits.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param n int
+   * @return int
+   */
+  public int monotoneIncreasingDigits(int n) {
+    if (isIncreasing(n)) {
+      return n;
+    }
+    if (n <= 10) {
+      return n == 10 ? 9 : n - 1;
+    }
+    char[] s = String.valueOf(n).toCharArray();
+    int flag = s.length;
+    for (int i = s.length - 1; i >= 1; i--) {
+      if (s[i] < s[i - 1]) {
+        flag = i;
+        s[i - 1]--;;
+      }
+    }
+    for (int i = flag; i < s.length; i++) {
+      s[i] = '9';
+    }
+    return Integer.parseInt(new String(s));
+  }
+
+  /**
+   * if the number is nonotone increasing digits.
+   * @param n int
+   * @return boolean
+   */
+  public boolean isIncreasing(int n) {
+    String num = String.valueOf(n);
+    for (int i = 1; i < num.length(); i++) {
+      if (num.charAt(i) < num.charAt(i - 1)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Leetcode 739 : Daily Temperatures.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param temperatures int[]
+   * @return int[]
+   */
+  public int[] dailyTemperatures(int[] temperatures) {
+    int[] ans = new int[temperatures.length];
+    for (int i = temperatures.length - 1; i >= 0; i--) {
+      int j = i + 1;
+      while (j < temperatures.length) {
+        if (temperatures[j] > temperatures[i]) {
+          ans[i] = j - i;
+          break;
+        } else if (ans[j] == 0) {
+          break;
+        } else {
+          j += ans[j];
+        }
+      }
+    }
+    return ans;
+  }
 }

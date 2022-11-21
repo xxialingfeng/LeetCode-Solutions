@@ -230,4 +230,27 @@ public class stack {
   public boolean isSameDir(int a, int b) {
     return (a > 0 && b > 0) || (a < 0 && b < 0);
   }
+
+  /**
+   * Leetcode 739 : Daily Temperatures.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param temperatures int[]
+   * @return int[]
+   */
+  public int[] dailyTemperatures(int[] temperatures) {
+    Stack<Integer> stack = new Stack<>();
+    int i = 0;
+    int[] ans = new int[temperatures.length];
+    stack.push(0);
+    while (i < temperatures.length) {
+      while (!stack.isEmpty() && temperatures[stack.peek()] < temperatures[i]) {
+        int temp = stack.pop();
+        ans[temp] = i - temp;
+      }
+      stack.push(i);
+      i++;
+    }
+    return ans;
+  }
 }
