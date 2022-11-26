@@ -69,4 +69,67 @@ public class TrieNode {
     }
     return idx;
   }
+
+  class WordFilter {
+    Trie745 root;
+
+    /**
+     * Leetcode 745 : Prefix and Suffix Search.
+     * @Difficulty: Hard
+     * @OptimalComplexity: O(n * m) & O(n * m)
+     * @param words list of string
+     */
+    public WordFilter(String[] words) {
+      root = new Trie745();
+      int idx = 0;
+      for (String str : words) {
+        for (int i = 0; i < str.length(); i++) {
+          insert(str.substring(i, str.length()) + "{" + str, idx);
+        }
+        idx++;
+      }
+    }
+
+    public int f(String pref, String suff) {
+      return search(suff + "{" + pref);
+    }
+
+    public void insert(String str, int idx) {
+      Trie745 curr = root;
+      for (int i = 0; i < str.length(); i++) {
+        int temp = str.charAt(i) - 'a';
+        if (curr.next[temp] == null) {
+          curr.next[temp] = new Trie745();
+        }
+        curr = curr.next[temp];
+        curr.idx = idx;
+      }
+      curr.isWord = true;
+    }
+
+    public int search(String str) {
+      Trie745 curr = root;
+      for (int i = 0; i < str.length(); i++) {
+        int temp = str.charAt(i) - 'a';
+        if (curr.next[temp] == null) {
+          return -1;
+        }
+        curr = curr.next[temp];
+      }
+      return curr.idx;
+    }
+  }
+
+  class Trie745 {
+    boolean isWord;
+    Trie745[] next;
+    int idx;
+
+    Trie745() {
+      idx = -1;
+      next = new Trie745[27];
+      isWord = false;
+    }
+  }
+
 }

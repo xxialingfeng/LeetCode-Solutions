@@ -493,5 +493,91 @@ public class DP {
     return (int) (Arrays.stream(dp).sum() % 1000000007);
   }
 
+  /**
+   * Leetcode 740 : Delete and Earn.
+   * @Difficulty: Mediun
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @return int
+   */
+  public int deleteAndEarn(int[] nums) {
+    int[] s = new int[10001];
+    for (int num : nums) {
+      s[num] += num;
+    }
+    int[] dp = new int[s.length + 1];
+    dp[0] = s[0];
+    dp[1] = Math.max(s[0], s[1]);
+    for (int i = 2; i < s.length; i++) {
+      dp[i] = Math.max(dp[i - 1], dp[i - 2] + s[i]);
+    }
+    return dp[s.length - 1];
+  }
 
+  /**
+   * Leetcode 741 : Cherry Pickup.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n3) & O(n3)
+   * @param grid int[][]
+   * @return int
+   */
+  public int cherryPickup(int[][] grid) {
+    int n = grid.length;
+    int[][][] f = new int[n * 2 - 1][n][n];
+    for (int i = 0; i < n * 2 - 1; ++i) {
+      for (int j = 0; j < n; ++j) {
+        Arrays.fill(f[i][j], Integer.MIN_VALUE);
+      }
+    }
+    f[0][0][0] = grid[0][0];
+    for (int k = 1; k < n * 2 - 1; ++k) {
+      for (int x1 = Math.max(k - n + 1, 0); x1 <= Math.min(k, n - 1); ++x1) {
+        int y1 = k - x1;
+        if (grid[x1][y1] == -1) {
+          continue;
+        }
+        for (int x2 = x1; x2 <= Math.min(k, n - 1); ++x2) {
+          int y2 = k - x2;
+          if (grid[x2][y2] == -1) {
+            continue;
+          }
+          int res = f[k - 1][x1][x2]; // both go right
+          if (x1 > 0) {
+            res = Math.max(res, f[k - 1][x1 - 1][x2]); // down, right
+          }
+          if (x2 > 0) {
+            res = Math.max(res, f[k - 1][x1][x2 - 1]); // right, down
+          }
+          if (x1 > 0 && x2 > 0) {
+            res = Math.max(res, f[k - 1][x1 - 1][x2 - 1]); // both go down
+          }
+          res += grid[x1][y1];
+          if (x2 != x1) { //avoid picking the same cherry
+            res += grid[x2][y2];
+          }
+          f[k][x1][x2] = res;
+        }
+      }
+    }
+    return Math.max(f[n * 2 - 2][n - 1][n - 1], 0);
+  }
+
+  /**
+   * Leetcode 746 : Min Cost Climbing Stairs.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param cost int[]
+   * @return int
+   */
+  public int minCostClimbingStairs(int[] cost) {
+    if (cost.length == 2) {
+      return Math.min(cost[0], cost[1]);
+    }
+    int[] dp = new int[cost.length + 1];
+    System.arraycopy(cost, 0, dp, 0, cost.length);
+    for (int i = 2; i < cost.length; i++) {
+      dp[i] = Math.min(dp[i - 1] + cost[i], dp[i - 2] + cost[i]);
+    }
+    return Math.min(dp[cost.length - 1], dp[cost.length - 2]);
+  }
 }

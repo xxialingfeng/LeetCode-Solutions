@@ -756,4 +756,23 @@ public class Array {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 747 : Largest Number At Least Twice of Others.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param nums
+   * @return
+   */
+  public int dominantIndex(int[] nums) {
+    TreeMap<Integer, Integer> map = new TreeMap<>();
+    for (int i = 0; i < nums.length; i++) {
+      map.put(nums[i], i);
+    }
+    int max = map.lastKey();
+    int idx = map.get(max);
+    map.remove(max);
+    int sec = map.lastKey();
+    return max / 2 >= sec ? idx : -1;
+  }
 }
