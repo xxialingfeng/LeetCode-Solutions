@@ -685,4 +685,50 @@ public class Strings {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 748 : Shortest Completing Word.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(m * n) & O(26)
+   * @param licensePlate String
+   * @param words list of string
+   * @return string
+   */
+  public String shortestCompletingWord(String licensePlate, String[] words) {
+    char[] tar = new char[26];
+    licensePlate = licensePlate.toLowerCase();
+    for (int i = 0; i < licensePlate.length(); i++) {
+      if (Character.isLetter(licensePlate.charAt(i))) {
+        tar[licensePlate.charAt(i) - 'a']++;
+      }
+    }
+    String ans = "xxxxxxxxxxxxxxxxxxxxx";
+    for (String str : words) {
+      char[] src = new char[26];
+      for (int i = 0; i < str.length(); i++) {
+        src[str.charAt(i) - 'a']++;
+      }
+      if (isMore(tar, src)) {
+        if (str.length() < ans.length()) {
+          ans = str;
+        }
+      }
+    }
+    return ans;
+  }
+
+  /**
+   * char[] b has more elements than any element in char[] a
+   * @param a char[]
+   * @param b char[]
+   * @return boolean
+   */
+  public boolean isMore(char[] a, char[] b) {
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] > b[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

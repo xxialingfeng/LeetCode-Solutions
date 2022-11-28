@@ -2,9 +2,11 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  * A collection for leetcode problems related to BFS.
@@ -243,5 +245,155 @@ public class BFS {
       }
     }
     return -1;
+  }
+
+  /**
+   * Leetcode 749 : Contain Virus.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(mn(m+n)) & O(mn)
+   * @param isInfected int[][]
+   * @return int
+   */
+  public int containVirus(int[][] isInfected) {
+    int[][] dirs = new int[][]{{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+    int m = isInfected.length;
+    int n = isInfected[0].length;
+    int res = 0;
+    List<Set<Integer>> neighbors;
+    do {
+      neighbors = new ArrayList<>();
+      int maxFireWallCount = 0;
+      int maxInfectIndex = -1;
+      int maxNeighborSize = 0;
+      //BFS for every element in the matrix
+      for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+          if (isInfected[i][j] == 1) {
+            Queue<int[]> queue = new LinkedList<>();
+            queue.offer(new int[]{i, j});
+            Set<Integer> neighbor = new HashSet<>();
+            int index = neighbors.size() + 1;
+            int firewall = 0;
+            isInfected[i][j] = -index;
+            while (!queue.isEmpty()) {
+              int[] point = queue.poll();
+              for (int[] dir : dirs) {
+                int nx = point[0] + dir[0];
+                int ny = point[1] + dir[1];
+                if (nx >= 0 && nx < m && ny >= 0 && ny < n) {
+                  if (isInfected[nx][ny] == 1) {
+                    queue.offer(new int[]{nx, ny});
+                    isInfected[nx][ny] = -index;
+                  } else if (isInfected[nx][ny] == 0) {
+                    firewall++;
+                    neighbor.add((nx << 16) ^ ny);
+                  }
+                }
+              }
+            }
+            neighbors.add(neighbor);
+
+            if (neighbor.size() > maxNeighborSize) {
+              maxFireWallCount = firewall;
+              maxInfectIndex = index;
+              maxNeighborSize = neighbor.size();
+            }
+          }
+        }
+      }
+
+      if (neighbors.isEmpty()) {
+        break;
+      }
+      res += maxFireWallCount;
+      maxInfectIndex--;
+      for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+          if (isInfected[i][j] < 0) {
+            if (isInfected[i][j] != -(maxInfectIndex + 1)) {
+              isInfected[i][j] = 1;
+            } else {
+              isInfected[i][j] = 2;
+            }
+          }
+        }
+      }
+      int neighborsSize = neighbors.size();
+      for (int i = 0; i < neighborsSize; i++) {
+        if (i != maxInfectIndex) {
+          for (int val : neighbors.get(i)) {
+            int x = val >> 16;
+            int y = val & ((1 << 16) - 1);
+            isInfected[x][y] = 1;
+          }
+        }
+      }
+    }
+    while (neighbors.size() > 1);
+    return res;
+  }
+
+  /**
+   * Leetcode 752 : Open the Lock.
+   * @Difficulty: Medium
+   * @OptimalComplexity:
+   * @param deadends String[]
+   * @param target String
+   * @return int
+   */
+  public int openLock(String[] deadends, String target) {
+    if (target.equals("0000")) {
+      return 0;
+    }
+    Set<String> set = new HashSet<>();
+    Collections.addAll(set, deadends);
+    if (set.contains("0000")) {
+      return -1;
+    }
+    Queue<String> queue = new LinkedList<>();
+    queue.offer("0000");
+    Set<String> seen = new HashSet<String>();
+    seen.add("0000");
+    int step = 0;
+    while (!queue.isEmpty()) {
+      int size = queue.size();
+      step++;
+      while (size-- > 0) {
+        String str = queue.poll();
+        assert str != null;
+        for (String nextStatus : get(str)) {
+          if (!set.contains(nextStatus) && !seen.contains(nextStatus)) {
+            if (nextStatus.equals(target)) {
+              return step;
+            }
+            queue.offer(nextStatus);
+            seen.add(nextStatus);
+          }
+        }
+      }
+    }
+    return -1;
+  }
+
+  public char numPrev(char x) {
+    return x == '0' ? '9' : (char) (x - 1);
+  }
+
+  public char numSucc(char x) {
+    return x == '9' ? '0' : (char) (x + 1);
+  }
+
+  public List<String> get(String str) {
+    List<String> res = new ArrayList<>();
+    char[] temp = str.toCharArray();
+    for (int i = 0; i < 4; i++) {
+      char t = temp[i];
+      temp[i] = numPrev(t);
+      res.add(new String(temp));
+      temp[i] = numSucc(t);
+      res.add(new String(temp));
+      temp[i] = t;
+    }
+    return res;
   }
 }
