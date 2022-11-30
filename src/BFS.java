@@ -336,7 +336,7 @@ public class BFS {
   /**
    * Leetcode 752 : Open the Lock.
    * @Difficulty: Medium
-   * @OptimalComplexity:
+   * @OptimalComplexity: O(Math.pow(10, 4) * 4 * 4 + m * 4) & O(Math.pow(10, 4) + m)
    * @param deadends String[]
    * @param target String
    * @return int

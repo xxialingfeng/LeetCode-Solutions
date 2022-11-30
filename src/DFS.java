@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
@@ -600,5 +601,113 @@ public class DFS {
     dfs733(image, i - 1, j, color, visited);
     dfs733(image, i, j + 1, color, visited);
     dfs733(image, i, j - 1, color, visited);
+  }
+
+  List<List<String>> ans = new ArrayList<>();
+  LinkedList<String> path = new LinkedList<>();
+  boolean[] used = new boolean[301];
+  boolean find = false;
+
+  /**
+   * Leetcode 322 : Reconstruct Itinerary.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n2) & O(n2) TLE
+   * @param tickets list of list of strings
+   * @return list of string
+   */
+  public List<String> findItinerary(List<List<String>> tickets) {
+    int n = tickets.size();
+    String[][] t = new String[n][2];
+    for (int i = 0; i < n; i++) {
+      t[i][0] = tickets.get(i).get(0);
+      t[i][1] = tickets.get(i).get(1);
+    }
+    Arrays.sort(t, (a , b) -> (a[1].compareTo(b[1])));
+    path.offer("JFK");
+    backtracking(t, "JFK");
+    return ans.get(0);
+  }
+
+  /**
+   * dfs method for 322.
+   * @param t String[][]
+   * @param now String
+   */
+  public void backtracking(String[][] t, String now) {
+    if (find)
+      return;
+    if (path.size() == t.length + 1) {
+      find = true;
+      ans.add(new ArrayList<>(path));
+      return;
+    }
+    for (int i = 0; i < t.length; i++) {
+      if (t[i][0].equals(now) && !used[i]) {
+        used[i] = true;
+        path.offer(t[i][1]);
+        backtracking(t, t[i][1]);
+        used[i] = false;
+        path.removeLast();
+      }
+    }
+  }
+
+  Map<String, List<String>> map = new HashMap<>();
+
+  /**
+   * Leetcode 756 ： Pyramid Transition Matrix.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m * n * level) * O(m)
+   * @param bottom String
+   * @param allowed list of String
+   * @return boolean
+   */
+  public boolean pyramidTransition(String bottom, List<String> allowed) {
+    for (String str : allowed) {
+      String key = str.substring(0, 2);
+      if (!map.containsKey(key)) {
+        map.put(key, new ArrayList<>());
+      }
+      map.get(key).add(String.valueOf(str.charAt(2)));
+    }
+    return dfs(bottom);
+  }
+
+  /**
+   * Dfs method for leetcode 756.
+   * @param bottom String
+   * @return boolean
+   */
+  public boolean dfs(String bottom) {
+    if (bottom.length() < 2) {
+      return true;
+    }
+    List<String> res = new ArrayList<>();
+    String first = bottom.substring(0, 2);
+    if (!map.containsKey(first)) {
+      return false;
+    }
+    res = map.get(first);
+    for (int i = 1; i < bottom.length() - 1; i++) {
+      String curr = bottom.substring(i, i + 2);
+      if (!map.containsKey(curr)) {
+        return false;
+      }
+      List<String> now = map.get(curr);
+      List<String> newStr = new ArrayList<>();
+      for (String re : res) {
+        for (String s : now) {
+          String t = re + s;
+          newStr.add(t);
+        }
+      }
+      res = newStr;
+    }
+    for (String str : res) {
+      if (dfs(str)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
