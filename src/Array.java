@@ -775,4 +775,52 @@ public class Array {
     int sec = map.lastKey();
     return max / 2 >= sec ? idx : -1;
   }
+
+  /**
+   * Leetcode 452 : Minimum Number of Arrows to Burst Balloons.
+   * @param points int[][]
+   * @return int
+   */
+  public int findMinArrowShots(int[][] points) {
+    Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
+    int count = 1;
+    for (int i = 1; i < points.length; i++) {
+      if (points[i][0] <= points[i - 1][1]) {
+        points[i][1] = Math.min(points[i][1], points[i - 1][1]);
+      } else {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  /**
+   * Leetcode 757 : Set Intersection Size At Least Two.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(nlogn) & O(1)
+   * @param intervals int[][]
+   * @return int
+   */
+  public int intersectionSizeTwo(int[][] intervals) {
+    Arrays.sort(intervals, (a, b) -> (a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]));
+    int n = intervals.length;
+    int curr = intervals[n - 1][0];
+    int next = intervals[n - 1][0] + 1;
+    int ans = 2;
+    for (int i = n - 2; i >= 0; i--) {
+      int[] temp = intervals[i];
+      if (temp[1] < curr) {
+        curr = temp[0];
+        next = temp[0] + 1;
+        ans += 2;
+      } else if (temp[1] >= next) {
+        continue;
+      } else {
+        next = curr;
+        curr = temp[0];
+        ans++;
+      }
+    }
+    return ans;
+  }
 }
