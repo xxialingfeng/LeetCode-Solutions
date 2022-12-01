@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -730,5 +732,35 @@ public class Strings {
       }
     }
     return true;
+  }
+
+  /**
+   * Leetcode 761 : Special Binary String.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s String
+   * @return String
+   */
+  public String makeLargestSpecial(String s) {
+    int last = 0;
+    int count = 0;
+    List<String> list = new ArrayList<>();
+    for (int i = 0; i < s.length(); i++) {
+      if (s.charAt(i) == '1') {
+        count++;
+      } else {
+        count--;
+      }
+      if (count == 0) {
+        list.add("1" + makeLargestSpecial(s.substring(last + 1, i)) + "0");
+        last = i + 1;
+      }
+    }
+    list.sort(Comparator.reverseOrder());
+    StringBuilder res = new StringBuilder();
+    for (String str : list) {
+      res.append(str);
+    }
+    return res.toString();
   }
 }
