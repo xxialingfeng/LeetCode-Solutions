@@ -666,8 +666,12 @@ public class Array {
    * @Difficulty: Medium
    * @OptimalComplexity: O(n) & O(n)
    */
-  class MyCalendarTwo {
+  static class MyCalendarTwo {
     TreeMap<Integer, Integer> map;
+
+    /**
+     * constructor.
+     */
     public MyCalendarTwo() {
       map = new TreeMap<>();
     }
