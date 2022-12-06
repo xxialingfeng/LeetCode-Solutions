@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.TreeSet;
 
 class Node {
@@ -709,5 +710,139 @@ public class DFS {
       }
     }
     return false;
+  }
+
+  /**
+   * Leetcode 764 : Largest Plus Sign.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(n)
+   * @param n int
+   * @param mines int[][]
+   * @return int
+   */
+  public int orderOfLargestPlusSign(int n, int[][] mines) {
+    int[][] board = new int[n][n];
+    for (int[] ints : board) {
+      Arrays.fill(ints, 1);
+    }
+    for (int[] mine : mines) {
+      board[mine[0]][mine[1]] = 0;
+    }
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        int temp = dfs(board, i, j);
+        ans = Math.max(temp, ans);
+      }
+    }
+    return ans;
+  }
+
+  /**
+   * dfs method for leetcode 764.
+   * @param board int[][]
+   * @param i int
+   * @param j int
+   * @return int
+   */
+  public int dfs(int[][] board, int i, int j) {
+    int up = 0;
+    int down = 0;
+    int left = 0;
+    int right = 0;
+    int curi = i;
+    int curj = j;
+    while (curi >= 0 && board[curi][curj] == 1) {
+      curi--;
+      up++;
+    }
+    curi = i;
+    curj = j;
+    while (curi < board.length && board[curi][curj] == 1) {
+      curi++;
+      down++;
+    }
+    curi = i;
+    curj = j;
+    while (curj >= 0 && board[curi][curj] == 1) {
+      curj--;
+      left++;
+    }
+    curi = i;
+    curj = j;
+    while (curj < board.length && board[curi][curj] == 1) {
+      curj++;
+      right++;
+    }
+    return min(left, right, up, down);
+  }
+
+  /**
+   * minimum number of the four numbers.
+   * @param a int
+   * @param b int
+   * @param c int
+   * @param d int
+   * @return int
+   */
+  public int min(int a, int b, int c, int d) {
+    PriorityQueue<Integer> queue = new PriorityQueue<>();
+    queue.offer(a);
+    queue.offer(b);
+    queue.offer(c);
+    queue.offer(d);
+    return queue.peek();
+  }
+
+  boolean flag = true;
+  boolean[][] visited;
+
+  /**
+   * Leetcode 766 : Toeplitz Matrix.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(mn) & O(mn)
+   * @param matrix int[][]
+   * @return boolean
+   */
+  public boolean isToeplitzMatrix(int[][] matrix) {
+    int n = matrix.length;
+    int m = matrix[0].length;
+    visited = new boolean[n][m];
+    for (int i = 0; i < n; i++) {
+      flag = true;
+      for (int j = 0; j < m; j++) {
+        int val = matrix[i][j];
+        if (!visited[i][j]) {
+          dfs(matrix, i, j, val);
+          if (!flag) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Dfs method for leetcode 766.
+   * @param matrix int[][]
+   * @param i int
+   * @param j int
+   * @param val int
+   */
+  public void dfs(int[][] matrix, int i, int j, int val) {
+    if (i < 0 || i >= matrix.length || j < 0 || j > matrix[0].length) {
+      return;
+    }
+    visited[i][j] = true;
+    int temp = matrix[i][j];
+    if (temp == val) {
+      if ( i + 1 < matrix.length  && j + 1 < matrix[0].length) {
+        dfs(matrix, i + 1, j + 1, val);
+      } else {
+      }
+    } else {
+      flag = false;
+    }
   }
 }

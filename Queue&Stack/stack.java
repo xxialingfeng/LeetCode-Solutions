@@ -253,4 +253,27 @@ public class stack {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 768 : Max Chunks To Make Sorted II.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param arr int[]
+   * @return int
+   */
+  public int maxChunksToSorted(int[] arr) {
+    Stack<Integer> stack = new Stack<>();
+    for (int num : arr) {
+      if (stack.isEmpty() || stack.peek() <= num) {
+        stack.push(num);
+      } else {
+        int n = stack.pop();
+        while (!stack.isEmpty() && stack.peek() > num) {
+          stack.pop();
+        }
+        stack.push(n);
+      }
+    }
+    return stack.size();
+  }
 }

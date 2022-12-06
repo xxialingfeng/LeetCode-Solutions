@@ -78,4 +78,43 @@ public class Greedy {
     }
     return true;
   }
+
+  /**
+   * Leetcode 767 : Reorganize String.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m + 26) & O(26)
+   * @param s String
+   * @return String
+   */
+  public String reorganizeString(String s) {
+    int[] counts = new int[26];
+    for (char c : s.toCharArray()) {
+      counts[c - 'a']++;
+    }
+    int max = Integer.MIN_VALUE;
+    int index = -1;
+    for (int i = 0; i < 26; i++) {
+      if (counts[i] > (s.length() + 1) / 2) return "";
+      if (counts[i] > max) {
+        max = counts[i];
+        index = i;
+      }
+    }
+    char[] chars = new char[s.length()];
+    int cur = -2;
+    while (counts[index] > 0) {
+      cur += 2;
+      chars[cur] = (char) ('a' + index);
+      counts[index]--;
+    }
+    for (int i = 0; i < 26; i++) {
+      while (counts[i] > 0) {
+        cur += 2;
+        if (cur >= s.length()) cur = 1;
+        chars[cur] = (char) ('a' + i);
+        counts[i]--;
+      }
+    }
+    return String.valueOf(chars);
+  }
 }
