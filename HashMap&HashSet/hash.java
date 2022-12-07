@@ -194,4 +194,26 @@ class hash {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 771 : Jewels and Stones.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param jewels String
+   * @param stones String
+   * @return int
+   */
+  public int numJewelsInStones(String jewels, String stones) {
+    Set<Character> set = new HashSet<>();
+    for (char c : jewels.toCharArray()) {
+      set.add(c);
+    }
+    int ans = 0;
+    for (char c : stones.toCharArray()) {
+      if (set.contains(c)) {
+        ans++;
+      }
+    }
+    return ans;
+  }
 }
