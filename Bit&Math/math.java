@@ -136,4 +136,21 @@ math {
     }
     return true;
   }
+
+  /**
+   * Leetcode 775 : Global and Local Inversions.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param nums
+   * @return
+   */
+  public boolean isIdealPermutation(int[] nums) {
+    int local = 0;
+    for (int i = 0; i < nums.length; i ++ ) {
+      if (Math.abs(nums[i] - i) > 1) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

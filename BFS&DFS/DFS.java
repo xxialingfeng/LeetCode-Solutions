@@ -845,4 +845,90 @@ public class DFS {
       flag = false;
     }
   }
+
+  /**
+   * Leetcode 778 : Swim in Rising Water.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n2logn) & O(n2)
+   * @param grid int[][]
+   * @return int
+   */
+  public int swimInWater(int[][] grid) {
+    int low = grid[0][0];
+    int high = 2500;
+    while (low < high) {
+      int mid = low + (high - low) / 2;
+      if (dfs(grid, 0, 0, new boolean[grid.length][grid[0].length], mid)) {
+        high = mid;
+      } else {
+        low = mid + 1;
+      }
+    }
+    return low;
+  }
+
+  /**
+   * dfs method for leetcode 778.
+   * @param grid int[][]
+   * @param i int
+   * @param j int
+   * @param visited boolean[][]
+   * @param tar int
+   * @return boolean
+   */
+  public boolean dfs(int[][] grid, int i, int j, boolean[][] visited, int tar) {
+    if ((i == grid.length - 1 && j == grid[0].length - 1)) {
+      return true;
+    }
+    visited[i][j] = true;
+    for (int[] dir : directions) {
+      int x = dir[0] + i;
+      int y = dir[1] + j;
+      if (x >= 0 && y >= 0 && x < grid.length && y < grid[0].length && !visited[x][y] && grid[x][y] <= tar) {
+        if (dfs(grid, x, y, visited, tar)) {
+          return true;
+        }
+      }
+
+    }
+    return false;
+  }
+
+  /**
+   * Leetcode 1663 : Path With Minimum Effort.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2logn) & O(n2)
+   * @param heights int[][]
+   * @return int
+   */
+  public int minimumEffortPath(int[][] heights) {
+    int low = 0;
+    int high = 1000000;
+    while (low < high) {
+      int mid = low + (high - low) / 2;
+      if (dfs(heights, 0, 0, new boolean[heights.length][heights[0].length], mid)) {
+        high = mid;
+      } else {
+        low = mid + 1;
+      }
+    }
+    return low;
+  }
+
+  public boolean dfs(int[][] heights, int i, int j, boolean[][] v, int tar) {
+    if (i == heights.length - 1 && j == heights[0].length - 1) {
+      return true;
+    }
+    v[i][j] = true;
+    for (int[] dir : directions) {
+      int x = dir[0] + i;
+      int y = dir[1] + j;
+      if (x >= 0 && y >= 0 && x < heights.length && y < heights[0].length && !v[x][y] && Math.abs(heights[x][y] - heights[i][j]) <= tar) {
+        if (dfs(heights, x, y, v, tar)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }

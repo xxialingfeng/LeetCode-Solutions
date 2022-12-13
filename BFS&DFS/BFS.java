@@ -396,4 +396,77 @@ public class BFS {
     }
     return res;
   }
+
+  int[][] neighbors = new int[][]{{1, 3}, {0, 2, 4}, {1, 5}, {0 ,4}, {1, 3, 5}, {2, 4}};
+
+  /**
+   * Leetcode 773 : Sliding Puzzle.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(mn!mn) & O(mn!mn)
+   * @param board int[][]
+   * @return int
+   */
+  public int slidingPuzzle(int[][] board) {
+    StringBuilder sb = new StringBuilder();
+    for (int[] ints : board) {
+      for (int j = 0; j < board[0].length; j++) {
+        sb.append(ints[j]);
+      }
+    }
+    String start = sb.toString();
+    if (start.equals("123450")) {
+      return 0;
+    }
+    Queue<String> queue = new LinkedList<>();
+    Set<String> set = new HashSet<>();
+    queue.offer(start);
+    int ans = 0;
+    while (!queue.isEmpty()) {
+      ans++;
+      int size = queue.size();
+      while (size-- > 0) {
+        String temp = queue.poll();
+        assert temp != null;
+        for (String str : getString(temp)) {
+          if (!set.contains(str)) {
+            if (str.equals("123450")) {
+              return ans;
+            }
+            queue.offer(str);
+            set.add(str);
+          }
+        }
+      }
+    }
+    return -1;
+  }
+
+  /**
+   * get the list of strings that will be added to queue.
+   * @param str String
+   * @return list of string
+   */
+  public List<String> getString(String str) {
+    List<String> res = new ArrayList<>();
+    char[] crr = str.toCharArray();
+    int x = str.indexOf('0');
+    for (int y : neighbors[x]) {
+      swap(crr, x, y);
+      res.add(new String(crr));
+      swap(crr, x, y);
+    }
+    return res;
+  }
+
+  /**
+   * swap elements in array.
+   * @param array char[]
+   * @param x int
+   * @param y int
+   */
+  public void swap(char[] array, int x, int y) {
+    char temp = array[x];
+    array[x] = array[y];
+    array[y] = temp;
+  }
 }
