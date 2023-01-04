@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**.
  * A collection of leetcode problems related to math
@@ -152,5 +154,50 @@ math {
       }
     }
     return true;
+  }
+
+  /**
+   * Leetcode 780 : Reaching Points.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(logn) & O(1)
+   * @param sx int
+   * @param sy int
+   * @param tx int
+   * @param ty int
+   * @return boolean
+   */
+  public boolean reachingPoints(int sx, int sy, int tx, int ty) {
+    while (tx >= sx && ty >= sy) {
+      if (tx == sx && ty == sy) {
+        return true;
+      }
+      if (tx < ty) {
+        ty -= Math.max((ty - sy) / tx, 1) * tx;
+      } else {
+        tx -= Math.max((tx - sx) / ty, 1) * ty;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Leetcode 781 : Rabbits in Forest.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param answers int[]
+   * @return int
+   */
+  public int numRabbits(int[] answers) {
+    Map<Integer,Integer> map = new HashMap<>();
+    int num = 0;
+    for (int answer : answers) {
+      if (map.containsKey(answer) && map.get(answer) > 0) {
+        map.put(answer,map.get(answer) - 1);
+      } else {
+        num += answer + 1;
+        map.put(answer,answer);
+      }
+    }
+    return num;
   }
 }

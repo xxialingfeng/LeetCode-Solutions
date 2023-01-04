@@ -906,7 +906,7 @@ public class DFS {
     int high = 1000000;
     while (low < high) {
       int mid = low + (high - low) / 2;
-      if (dfs(heights, 0, 0, new boolean[heights.length][heights[0].length], mid)) {
+      if (dfs1663(heights, 0, 0, new boolean[heights.length][heights[0].length], mid)) {
         high = mid;
       } else {
         low = mid + 1;
@@ -915,7 +915,7 @@ public class DFS {
     return low;
   }
 
-  public boolean dfs(int[][] heights, int i, int j, boolean[][] v, int tar) {
+  public boolean dfs1663(int[][] heights, int i, int j, boolean[][] v, int tar) {
     if (i == heights.length - 1 && j == heights[0].length - 1) {
       return true;
     }
@@ -924,11 +924,49 @@ public class DFS {
       int x = dir[0] + i;
       int y = dir[1] + j;
       if (x >= 0 && y >= 0 && x < heights.length && y < heights[0].length && !v[x][y] && Math.abs(heights[x][y] - heights[i][j]) <= tar) {
-        if (dfs(heights, x, y, v, tar)) {
+        if (dfs1663(heights, x, y, v, tar)) {
           return true;
         }
       }
     }
     return false;
+  }
+
+  List<String> list784 = new ArrayList<>();
+
+  /**
+   * Leetcode 784 : Letter Case Permutation.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(2^n * n) & O(2 ^ n)
+   * @param s String
+   * @return list of string
+   */
+  public List<String> letterCasePermutation(String s) {
+    char[] store = s.toCharArray();
+    dfs(0, store);
+    return list784;
+  }
+
+  /**
+   * Dfs method for leetcode 784.
+   * @param idx int
+   * @param store char[]
+   */
+  public void dfs(int idx, char[] store) {
+    list784.add(String.valueOf(store));
+    for (int i = idx; i < store.length; i++) {
+      char c = store[i];
+      if (Character.isDigit(c)) {
+        continue;
+      } else if (Character.isUpperCase(c)) {
+        store[i] = Character.toLowerCase(c);
+        dfs(i + 1, store);
+        store[i] = c;
+      } else {
+        store[i] = Character.toUpperCase(c);
+        dfs(i + 1, store);
+        store[i] = c;
+      }
+    }
   }
 }
