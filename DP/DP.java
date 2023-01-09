@@ -580,4 +580,31 @@ public class DP {
     }
     return Math.min(dp[cost.length - 1], dp[cost.length - 2]);
   }
+
+  /**
+   * Leetcode 790 : Domino and Tromino Tiling.
+   * @Difficulty: Medium
+   * @OptimalComplexity: On(n) & O(1)
+   * @param n int
+   * @return int
+   */
+  public int numTilings(int n) {
+    if (n == 1) {
+      return 1;
+    }
+    if (n == 2) {
+      return 2;
+    }
+    if (n == 3) {
+      return 5;
+    }
+    long[] dp = new long[n + 1];
+    dp[1] = 1;
+    dp[2] = 2;
+    dp[3] = 5;
+    for (int i = 4; i <= n; i++) {
+      dp[i] = (2 * dp[i - 1] + dp[i - 3]) % 1000000007;
+    }
+    return (int)dp[n];
+  }
 }

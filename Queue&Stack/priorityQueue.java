@@ -133,4 +133,29 @@ public class priorityQueue {
       }
     }
   }
+
+  /**
+   * Leetcode 786 : K-th Smallest Prime Fraction.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(mlogn) & O(n)
+   * @param arr int[]
+   * @param k int
+   * @return int[]
+   */
+  public int[] kthSmallestPrimeFraction(int[] arr, int k) {
+    PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> arr[a[0]] * arr[b[1]] - arr[a[1]] * arr[b[0]]);
+    for (int i = 1; i < arr.length; i++) {
+      queue.offer(new int[]{0, i});
+    }
+    while (k-- > 1) {
+      int[] curr = queue.poll();
+      int x = curr[0];
+      int y = curr[1];
+      if (x + 1 < arr.length && x + 1 < y) {
+        queue.offer(new int[]{x + 1, y});
+      }
+    }
+    int[] poll = queue.poll();
+    return new int[]{arr[poll[0]], arr[poll[1]]};
+  }
 }

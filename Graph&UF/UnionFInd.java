@@ -192,6 +192,28 @@ public class UnionFInd {
   }
 
   /**
+   * Leetcode 785 : Is Graph Bipartite?.
+   * @OptimalComplexity: O(n x m) & O(n)
+   * @Difficulty: Medium
+   * @param graph int[][]
+   * @return boolean
+   */
+  public boolean isBipartite(int[][] graph) {
+    UnionFind uf = new UnionFind(graph.length);
+    for (int i = 0; i < graph.length; i++) {
+      int[] temp = graph[i];
+      for (int w : temp) {
+        if (uf.isConnected(w, i)) {
+          return false;
+        } else {
+          uf.union(w, temp[0]);
+        }
+      }
+    }
+    return true;
+  }
+
+  /**
    * union find class.
    */
   static class UnionFind {
@@ -213,6 +235,10 @@ public class UnionFInd {
         parent[index] = find(parent[index]);
       }
       return parent[index];
+    }
+
+    public boolean isConnected(int x, int v) {
+      return find(x) == find(v);
     }
   }
 }

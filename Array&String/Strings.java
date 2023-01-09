@@ -809,4 +809,38 @@ public class Strings {
     }
     return true;
   }
+
+  /**
+   * Leetcode 791 : Custom Sort String.
+   * @Difficulty: Medium.
+   * @OptimalComplexity: O(n) & O(n)
+   * @param order String
+   * @param s String
+   * @return String
+   */
+  public String customSortString(String order, String s) {
+    int[] store = new int[26];
+    for (int i = 0; i < s.length(); i++) {
+      store[s.charAt(i) - 'a']++;
+    }
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < order.length(); i++) {
+      int temp = store[order.charAt(i) - 'a'];
+      if (temp == 0) {
+        continue;
+      }
+      while (temp != 0) {
+        sb.append(order.charAt(i));
+        temp--;
+      }
+    }
+    for (int i = 0; i < store.length; i++) {
+      while (store[i] != 0) {
+        char toAdd = (char)('a' + i);
+        sb.append(toAdd);
+        store[i]--;
+      }
+    }
+    return sb.toString();
+  }
 }

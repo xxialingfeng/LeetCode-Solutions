@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**.
  * A collection of leetcode problems related to math
@@ -199,5 +201,63 @@ math {
       }
     }
     return num;
+  }
+
+  /**
+   * Leetcode 788 : otated Digits.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(n * m)
+   * @param n int
+   * @return int
+   */
+  public int rotatedDigits(int n) {
+    int cnt = 0;
+    for (int i = 1; i <= n; i++) {
+      if (isGood(i)) {
+        cnt++;
+      }
+    }
+    return cnt;
+  }
+
+  /**
+   * helper for leetcode 788.
+   * @param n int
+   * @return boolean
+   */
+  public boolean isGood(int n) {
+    Set<Integer> set = new HashSet<>();
+    while (n > 0) {
+      int last = n % 10;
+      set.add(last);
+      n /= 10;
+    }
+    if (set.contains(3) || set.contains(4) || set.contains(7)) {
+      return false;
+    }
+    return set.contains(2) || set.contains(5) || set.contains(6) || set.contains(9);
+  }
+
+  /**
+   * Leetcode 789 : Escape The Ghosts.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param ghosts int[][]
+   * @param target int[]
+   * @return boolean
+   */
+  public boolean escapeGhosts(int[][] ghosts, int[] target) {
+    int x = target[0];
+    int y = target[1];
+    int sum = Math.abs(x) + Math.abs(y);
+    for (int[] ghost : ghosts) {
+      int gx = ghost[0];
+      int gy = ghost[1];
+      int gsum = Math.abs(gx - x) + Math.abs(gy - y);
+      if (gsum <= sum) {
+        return false;
+      }
+    }
+    return true;
   }
 }

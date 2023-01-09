@@ -969,4 +969,49 @@ public class DFS {
       }
     }
   }
+
+  int[] col;
+
+  /**
+   * Leetcode 785 : Is Graph Bipartite?.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m * n) & O(n)
+   * @param graph int[][]
+   * @return boolean
+   */
+  public boolean isBipartite(int[][] graph) {
+    boolean[] visited = new boolean[graph.length];
+    col = new int[graph.length];
+    for (int i = 0; i < graph.length; i++) {
+      if (!visited[i]) {
+        if (!dfs(graph, 0, i, visited)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  /**
+   * dfs method for leetcode 785.
+   * @param graph int[][]
+   * @param color int[]
+   * @param idx int[]
+   * @param visited boolean[]
+   * @return boolean
+   */
+  public boolean dfs(int[][] graph, int color, int idx, boolean[] visited) {
+    visited[idx] = true;
+    col[idx] = color;
+    for (int w : graph[idx]) {
+      if (!visited[w]) {
+        if (!dfs(graph, 1 - color, w, visited)) {
+          return false;
+        }
+      } else if (col[w] == col[idx]) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
