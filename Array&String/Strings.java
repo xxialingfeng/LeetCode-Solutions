@@ -843,4 +843,47 @@ public class Strings {
     }
     return sb.toString();
   }
+
+  /**
+   * Leetcode 792 : Number of Matching Subsequences.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m * n) & O(n)
+   * @param s String
+   * @param words String[]
+   * @return int
+   */
+  public int numMatchingSubseq(String s, String[] words) {
+    int ans = 0;
+    Map<String, Integer> map = new HashMap<>();
+    for (String str : words) {
+      map.put(str, map.getOrDefault(str, 0) + 1);
+    }
+    for (String str : map.keySet()) {
+      if (isSub792(s, str)) {
+        ans += map.get(str);
+      }
+    }
+    return ans;
+  }
+
+  /**
+   * tell if the string is subsequence of another string.
+   * @param s string
+   * @param tar string
+   * @return boolean
+   */
+  public boolean isSub792(String s, String tar) {
+    int idx = 0;
+    int ans = 0;
+    for (int i = 0; i < s.length(); i++) {
+      if (s.charAt(i) == tar.charAt(idx)) {
+        ans++;
+        idx++;
+        if (ans == tar.length()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }

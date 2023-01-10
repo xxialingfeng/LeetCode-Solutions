@@ -260,4 +260,43 @@ math {
     }
     return true;
   }
+
+  /**
+   * Leetcode 793 : Preimage Size of Factorial Zeroes Function.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(log2n) & O(1)
+   * @param k int
+   * @return int
+   */
+  public int preimageSizeFZF(int k) {
+    long left = 0L;
+    long right = 5L * k;
+    while (left <= right) {
+      long mid = left + (right - left) / 2;
+      if (countZero(mid) > k) {
+        right = mid - 1;
+      } else if (countZero(mid) < k) {
+        left = mid + 1;
+      } else {
+        return 5;
+      }
+    }
+    return 0;
+  }
+
+  /**
+   * Leetcode 172 : Factorial Trailing Zeroes.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(logn) & O(1)
+   * @param n long
+   * @return int
+   */
+  public int countZero(long n) {
+    int ans = 0;
+    while (n >= 5) {
+      ans += n / 5;
+      n /= 5;
+    }
+    return ans;
+  }
 }
