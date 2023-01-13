@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -138,5 +139,98 @@ public class PrefixSum {
       }
     }
     return -1;
+  }
+
+  /**
+   * Leetcode 1109: Corporate Flight Bookings.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param bookings int[][]
+   * @param n int
+   * @return int[]
+   */
+  public int[] corpFlightBookings(int[][] bookings, int n) {
+    int[] ans = new int[n];
+    int[] diff = new int[n + 2];
+    for (int[] booking : bookings) {
+      int first = booking[0];
+      int last = booking[1];
+      int seats = booking[2];
+      diff[first] += seats;
+      diff[last + 1] -= seats;
+    }
+    int sum = diff[1];
+    for (int i = 0; i < ans.length; i++) {
+      ans[i] = sum;
+      sum += diff[i + 2];
+    }
+    return ans;
+  }
+
+  /**
+   * Leetcode 1094 : Car Pooling.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param trips int[][]
+   * @param capacity int
+   * @return boolean
+   */
+  public boolean carPooling(int[][] trips, int capacity) {
+    int[] diff = new int[1001];
+    for (int[] trip : trips) {
+      int numPassengers = trip[0];
+      int from = trip[1];
+      int to = trip[2];
+      diff[from] += numPassengers;
+      diff[to] -= numPassengers;
+    }
+    int cnt = 0;
+    for (int num : diff) {
+      cnt += num;
+      if (cnt > capacity) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  static int N = 100010;
+  static int[] c = new int[N];
+
+  /**
+   * difference array update.
+   * @param l int
+   * @param r int
+   */
+  void add(int l, int r) {
+    c[l] += 1;
+    c[r + 1] -= 1;
+  }
+
+  /**
+   * Leetcode 798 : Smallest Rotation with Highest Score.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int
+   * @return int
+   */
+  public int bestRotation(int[] nums) {
+    Arrays.fill(c, 0);
+    int n = nums.length;
+    for (int i = 0; i < n; i++) {
+      int a = (i - (n - 1) + n) % n, b = (i - nums[i] + n) % n;
+      if (a <= b) {
+        add(a, b);
+      } else {
+        add(0, b);
+        add(a, n - 1);
+      }
+    }
+    for (int i = 1; i <= n; i++) c[i] += c[i - 1];
+    int ans = 0;
+    for (int i = 1; i <= n; i++) {
+      if (c[i] > c[ans]) ans = i;
+    }
+    return ans;
   }
 }

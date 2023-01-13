@@ -1014,4 +1014,37 @@ public class DFS {
     }
     return true;
   }
+
+  List<List<Integer>> ans797 = new ArrayList<>();
+  List<Integer> path797 = new ArrayList<>();
+
+  /**
+   * Leetcode 797 : All Paths From Source to Target.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * 2n) & O(n)
+   * @param graph int[][]
+   * @return list of list of integer
+   */
+  public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+    path797.add(0);
+    dfs(graph, 0);
+    return ans797;
+  }
+
+  /**
+   * dfs method  for leetcode 797.
+   * @param graph int[][]
+   * @param idx int
+   */
+  public void dfs(int[][] graph, int idx) {
+    if (idx == graph.length - 1) {
+      ans797.add(new ArrayList<>(path797));
+      return;
+    }
+    for (int i = 0; i < graph[idx].length; i++) {
+      path797.add(graph[idx][i]);
+      dfs(graph, graph[idx][i]);
+      path797.remove(path797.size() - 1);
+    }
+  }
 }

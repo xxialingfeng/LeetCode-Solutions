@@ -607,4 +607,30 @@ public class DP {
     }
     return (int)dp[n];
   }
+
+  /**
+   * Leetcode 799 : Champagne Tower.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(1)
+   * @param poured int
+   * @param query_row int
+   * @param query_glass int
+   * @return double
+   */
+  public double champagneTower(int poured, int query_row, int query_glass) {
+    double[][] dp = new double[query_row + 2][query_row + 2];
+    dp[0][0] = poured;
+    for (int i = 0; i <= query_row; i++) {
+      for (int j = 0; j <= i; j++) {
+        if (dp[i][j] >= 1) {
+          double remain = dp[i][j] - 1;
+          dp[i][j] = 1;
+
+          dp[i + 1][j] += remain / 2;
+          dp[i + 1][j + 1] += remain / 2;
+        }
+      }
+    }
+    return dp[query_row][query_glass];
+  }
 }

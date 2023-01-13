@@ -886,4 +886,23 @@ public class Strings {
     }
     return false;
   }
+
+  /**
+   * Leetcode 796 : Rotate String.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param s String
+   * @param goal String
+   * @return boolean
+   */
+  public boolean rotateString(String s, String goal) {
+    for (int i = 0; i < s.length(); i++) {
+      String str = "";
+      str = s.substring(i, s.length()) + s.substring(0, i);
+      if (str.equals(goal)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

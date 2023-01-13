@@ -827,4 +827,114 @@ public class Array {
     }
     return ans;
   }
+
+  /**
+   * leetcode 794 : Valid Tic-Tac-Toe State.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(9) & O(9)
+   * @param board array of string
+   * @return boolean
+   */
+  public boolean validTicTacToe(String[] board) {
+    Map<String, Integer> map = new HashMap<>();
+    map.put("X", 0);
+    map.put("O", 0);
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        if (board[i].charAt(j) == 'X') {
+          map.put("X", map.getOrDefault("X", 0) + 1);
+        } else if (board[i].charAt(j) == 'O') {
+          map.put("O", map.getOrDefault("O", 0) + 1);
+        }
+      }
+    }
+    if (map.get("X") < map.get("O") || map.get("X") > map.get("O") + 1) {
+      return false;
+    }
+    if (win(board, 'X') && win(board, 'O')) {
+      return false;
+    }
+    if (win(board, 'X')) {
+      return map.get("X") == map.get("O") + 1;
+    }
+    if (win(board, 'O')) {
+      return map.get("X") == map.get("O");
+    }
+    return true;
+  }
+
+  /**
+   * Check if someone wins.
+   * @param board array of string
+   * @param p char
+   * @return boolean
+   */
+  public boolean win(String[] board, char p) {
+    for (int i = 0; i < 3; ++i) {
+      if ((p == board[0].charAt(i) && p == board[1].charAt(i) && p == board[2].charAt(i)) ||
+          (p == board[i].charAt(0) && p == board[i].charAt(1) && p == board[i].charAt(2))) {
+        return true;
+      }
+    }
+    return ((p == board[0].charAt(0) && p == board[1].charAt(1) && p == board[2].charAt(2)) ||
+        (p == board[0].charAt(2) && p == board[1].charAt(1) && p == board[2].charAt(0)));
+  }
+
+  /**
+   * Leetcode 795 : Number of Subarrays with Bounded Maximum.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(b) & O(1)
+   * @param nums int[]
+   * @param left int
+   * @param right int
+   * @return int
+   */
+  public int numSubarrayBoundedMax(int[] nums, int left, int right) {
+    return numSub(nums, right) - numSub(nums, left - 1);
+  }
+
+  /**
+   * Leetcode 795 : Number of Subarrays with Bounded Maximum.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(b) & O(1)
+   * @param nums int[]
+   * @param left int
+   * @param right int
+   * @return int
+   */
+  public int numSubarrayBoundedMax2(int[] nums, int left, int right) {
+    int j = -1;
+    int ans = 0;
+    int temp = 0;
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] > right) {
+        j = i;
+      }
+      if (nums[i] >= left) {
+        temp = i - j;
+      }
+      ans += temp;
+    }
+    return ans;
+  }
+
+  /**
+   * number of subarrays.
+   * @param arr int[]
+   * @param max int
+   * @return int
+   */
+  public int numSub(int[] arr, int max) {
+    int res = 0;
+    int numSubArray = 0;
+    for (int num : arr) {
+      if (num <= max) {
+        numSubArray++;
+        res += numSubArray;
+      } else {
+        numSubArray = 0;
+      }
+    }
+    return res;
+  }
 }
