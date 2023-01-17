@@ -633,4 +633,62 @@ public class DP {
     }
     return dp[query_row][query_glass];
   }
+
+  /**
+   * leetcode 801 : Minimum Swaps To Make Sequences Increasing.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n2) & O(1)
+   * @param nums1 int[]
+   * @param nums2 int[]
+   * @return int
+   */
+  public int minSwap(int[] nums1, int[] nums2) {
+    int[][] dp = new int[nums1.length][2];
+    for (int[] arr : dp) {
+      Arrays.fill(arr, Integer.MAX_VALUE);
+    }
+    dp[0][0] = 0;
+    dp[0][1] = 1;
+    for (int i = 1; i < nums1.length; i++) {
+      boolean flag1 = nums1[i] > nums1[i - 1] && nums2[i] > nums2[i - 1];
+      boolean flag2 = nums1[i] > nums2[i - 1] && nums2[i] > nums1[i - 1];
+      if (flag1) {
+        dp[i][0] = dp[i - 1][0];
+        dp[i][1] = dp[i - 1][1] + 1;
+      }
+      if (flag2) {
+        dp[i][0] = Math.min(dp[i][0], dp[i - 1][1]);
+        dp[i][1] = Math.min(dp[i][1], dp[i - 1][0] + 1);
+      }
+    }
+    return Math.min(dp[nums1.length - 1][0], dp[nums1.length - 1][1]);
+  }
+
+  /**
+   * leetcode 801 : Minimum Swaps To Make Sequences Increasing.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(1)
+   * @param nums1 int[]
+   * @param nums2 int[]
+   * @return int
+   */
+  public int minSwapBS(int[] nums1, int[] nums2) {
+    int n = nums1.length;
+    int a = 0;
+    int b = 1;
+    for (int i = 1; i < n; i++) {
+      int at = a; //current
+      int bt = b; //current
+      a = b = n; //next val
+      if (nums1[i] > nums1[i - 1] && nums2[i] > nums2[i - 1])  {
+        a = Math.min(a, at);
+        b = Math.min(b, bt + 1);
+      }
+      if (nums1[i] > nums2[i - 1] && nums2[i] > nums1[i - 1]) {
+        a = Math.min(a, bt);
+        b = Math.min(b, at + 1);
+      }
+    }
+    return Math.min(a, b);
+  }
 }

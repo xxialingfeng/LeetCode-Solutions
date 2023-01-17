@@ -2,9 +2,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class Graph {
 
@@ -91,4 +93,47 @@ public class Graph {
     }
     ans.add(start);
   }
+
+  /**
+   * Leetcode 802 : Find Eventual Safe States.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m + n) & O(n + m)
+   * @param graph int[][]
+   * @return list of integer
+   */
+  public List<Integer> eventualSafeNodes(int[][] graph) {
+    List<List<Integer>> reverseG = new ArrayList<>();
+    for (int i = 0; i < graph.length; i++) {
+      reverseG.add(new ArrayList<>());
+    }
+    int[] inDeg = new int[graph.length];
+    for (int x = 0; x < graph.length; x++) {
+      for (int y : graph[x]) {
+        reverseG.get(y).add(x);
+      }
+      inDeg[x] = graph[x].length;
+    }
+    Queue<Integer> queue = new LinkedList<>();
+    for (int i = 0; i < inDeg.length; i++) {
+      if (inDeg[i] == 0) {
+        queue.offer(i);
+      }
+    }
+    while (!queue.isEmpty()) {
+      int idx = queue.poll();
+      for (int i : reverseG.get(idx)) {
+        if (--inDeg[i] == 0) {
+          queue.offer(i);
+        }
+      }
+    }
+    List<Integer> ans = new ArrayList<>();
+    for (int i = 0; i < inDeg.length; i++) {
+      if (inDeg[i] == 0) {
+        ans.add(i);
+      }
+    }
+    return ans;
+  }
+
 }

@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -1046,5 +1047,106 @@ public class DFS {
       dfs(graph, graph[idx][i]);
       path797.remove(path797.size() - 1);
     }
+  }
+
+  int min = 100001;
+
+  /**
+   * leetcode 801 : Minimum Swaps To Make Sequences Increasing.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(2n) & O(1) (time limit elapsed)
+   * @param nums1 int[]
+   * @param nums2 int[]
+   * @return int
+   */
+  public int minSwap(int[] nums1, int[] nums2) {
+    dfs(nums1, nums2, 0, 0);
+    return min;
+  }
+
+  /**
+   * swap func
+   * @param array1 int[]
+   * @param array2 int[]
+   * @param i int
+   */
+  public void swap(int[] array1, int[] array2, int i) {
+    int temp = array1[i];
+    array1[i] = array2[i];
+    array2[i] = temp;
+  }
+
+  /**
+   * dfs method for leetcode 801.
+   * @param nums1 int[]
+   * @param nums2 int[]
+   * @param idx int
+   * @param count int
+   */
+  public void dfs(int[] nums1, int[] nums2, int idx, int count) {
+    if (idx >= nums1.length) {
+      min = Math.min(min, count);
+      return;
+    }
+    if (count >= min) {
+      return;
+    }
+    if (idx > 1 && (nums1[idx - 2] >= nums1[idx - 1] || nums2[idx - 2] >= nums2[idx - 1])) {
+      return;
+    }
+    if (idx >= 1 && (nums1[idx - 1] >= nums1[idx] || nums2[idx - 1] >= nums2[idx])) {
+      //must swap
+      swap(nums1, nums2, idx);
+      dfs(nums1, nums2, idx + 1, count + 1);
+      swap(nums1, nums2, idx);
+    } else {
+      //no swap
+      dfs(nums1, nums2, idx + 1, count);
+      //swap
+      swap(nums1, nums2, idx);
+      dfs(nums1, nums2, idx + 1, count + 1);
+      //trace back
+      swap(nums1, nums2, idx);
+    }
+  }
+
+  /**
+   * Leetcode 802 : Find Eventual Safe States.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n + m) & O(n)
+   * @param graph int[][]
+   * @return list of integer
+   */
+  public List<Integer> eventualSafeNodes(int[][] graph) {
+    List<Integer> list = new ArrayList<>();
+    int[] color = new int[graph.length];
+    for (int i = 0; i < graph.length; i++) {
+      if (safe(graph, color, i)) {
+        list.add(i);
+      }
+    }
+    Collections.sort(list);
+    return list;
+  }
+
+  /**
+   * Marker, see if there exists a circle.
+   * @param graph int[][]
+   * @param color int[]
+   * @param idx int
+   * @return boolean
+   */
+  public boolean safe(int[][] graph, int[] color, int idx) {
+    if (color[idx] > 0) {
+      return color[idx] == 2;
+    }
+    color[idx] = 1;
+    for (int i : graph[idx]) {
+      if (!safe(graph, color, i)) {
+        return false;
+      }
+    }
+    color[idx] = 2;
+    return true;
   }
 }
