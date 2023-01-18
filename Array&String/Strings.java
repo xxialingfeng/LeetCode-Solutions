@@ -905,4 +905,24 @@ public class Strings {
     }
     return false;
   }
+
+  /**
+   * Leetcode 804 : Unique Morse Code Words.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n * m) & O(m)
+   * @param words array of string
+   * @return int
+   */
+  public int uniqueMorseRepresentations(String[] words) {
+    String[] code = new String[]{".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+    Set<String> set = new HashSet<>();
+    for (String curr : words) {
+      StringBuilder now = new StringBuilder();
+      for (int j = 0; j < curr.length(); j++) {
+        now.append(code[curr.charAt(j) - 'a']);
+      }
+      set.add(now.toString());
+    }
+    return set.size();
+  }
 }

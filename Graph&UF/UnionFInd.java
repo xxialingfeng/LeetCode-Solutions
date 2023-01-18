@@ -241,4 +241,142 @@ public class UnionFInd {
       return find(x) == find(v);
     }
   }
+
+  int[][] directions = new int[][]{{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+  int cols;
+  int rows;
+
+  /**
+   * Leetcode 803 : Bricks Falling When Hit.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n2) & O(n2)
+   * @param grid int[][]
+   * @param hits int[][]
+   * @return int[]
+   */
+  public int[] hitBricks(int[][] grid, int[][] hits) {
+    this.rows = grid.length;
+    this.cols = grid[0].length;
+    int[][] copy = new int[rows][cols];
+    for (int i = 0; i < rows; i++) {
+      if (cols >= 0)
+        System.arraycopy(grid[i], 0, copy[i], 0, cols);
+    }
+    for (int[] hit : hits) {
+      copy[hit[0]][hit[1]] = 0;
+    }
+    int size = rows * cols;
+    UF uf = new UF(size + 1);
+    for (int i = 0; i < grid[0].length; i++) {
+      if (copy[0][i] == 1) {
+        uf.union(size, i);
+      }
+    }
+
+    for (int i = 1; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        if (copy[i][j] == 1) {
+          if (copy[i - 1][j] == 1) {
+            uf.union(getIndex(i - 1, j), getIndex(i, j));
+          }
+          if (j > 0 && copy[i][j - 1] == 1) {
+            uf.union(getIndex(i, j - 1), getIndex(i, j));
+          }
+        }
+      }
+    }
+
+    // 第 3 步：按照 hits 的逆序，在 copy 中补回砖块，把每一次因为补回砖块而与屋顶相连的砖块的增量记录到 res 数组中
+    int hitsLen = hits.length;
+    int[] res = new int[hitsLen];
+    for (int i = hitsLen - 1; i >= 0; i--) {
+      int x = hits[i][0];
+      int y = hits[i][1];
+
+      // 注意：这里不能用 copy，语义上表示，如果原来在 grid 中，这一块是空白，这一步不会产生任何砖块掉落
+      // 逆向补回的时候，与屋顶相连的砖块数量也肯定不会增加
+      if (grid[x][y] == 0) {
+        continue;
+      }
+
+      // 补回之前与屋顶相连的砖块数
+      int origin = uf.getSize(rows * cols);
+
+      // 注意：如果补回的这个结点在第 1 行，要告诉并查集它与屋顶相连（逻辑同第 2 步）
+      if (x == 0) {
+        uf.union(y, rows * cols);
+      }
+
+      // 在 4 个方向上看一下，如果相邻的 4 个方向有砖块，合并它们
+      for (int[] direction : directions) {
+        int newX = x + direction[0];
+        int newY = y + direction[1];
+
+        if (newX >= 0 && newY >= 0 && newX < grid.length && newY < grid[0].length && copy[newX][newY] == 1) {
+          uf.union(getIndex(x, y), getIndex(newX, newY));
+        }
+      }
+
+      // 补回之后与屋顶相连的砖块数
+      int current = uf.getSize(rows * cols);
+      // 减去的 1 是逆向补回的砖块（正向移除的砖块），与 0 比较大小，是因为存在一种情况，添加当前砖块，不会使得与屋顶连接的砖块数更多
+      res[i] = Math.max(0, current - origin - 1);
+
+      // 真正补上这个砖块
+      copy[x][y] = 1;
+    }
+    return res;
+  }
+
+  /**
+   * 2D -> 1D.
+   * @param x int
+   * @param y int
+   * @return int
+   */
+  public int getIndex(int x, int y) {
+    return x * cols + y;
+  }
+
+  /**
+   * uf.
+   */
+  public static class UF {
+    int[] parents;
+    int[] size;
+
+    /**
+     * constructor.
+     * @param n int
+     */
+    public UF(int n) {
+      parents = new int[n];
+      size = new int[n];
+      for (int i = 0; i < n; i++) {
+        parents[i] = i;
+        size[i] = 1;
+      }
+    }
+
+    public int find(int x) {
+      if (x != parents[x]) {
+        parents[x] = find(parents[x]);
+      }
+      return parents[x];
+    }
+
+    public void union(int x, int y) {
+      int rootx = find(x);
+      int rooty = find(y);
+      if (rootx == rooty) {
+        return;
+      }
+      parents[rootx] =  rooty;
+      size[rooty] += size[rootx];
+    }
+
+    public int getSize(int x) {
+      return size[find(x)];
+    }
+  }
 }
