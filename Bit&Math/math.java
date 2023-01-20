@@ -299,4 +299,23 @@ math {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 810 : Chalkboard XOR Game.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(1)
+   * @param nums int[]
+   * @return boolean
+   */
+  public boolean xorGame(int[] nums) {
+    int flag = 0;
+    int size = nums.length;
+    if (size % 2== 0) {
+      return true;
+    }
+    for (int num : nums) {
+      flag ^= num;
+    }
+    return flag == 0;
+  }
 }

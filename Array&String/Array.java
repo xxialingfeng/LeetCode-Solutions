@@ -937,4 +937,87 @@ public class Array {
     }
     return res;
   }
+
+  /**
+   * Leetcode 806 : Number of Lines To Write String.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(m)
+   * @param widths int[]
+   * @param s String
+   * @return int[]
+   */
+  public int[] numberOfLines(int[] widths, String s) {
+    int[] ans = new int[2];
+    int sum = 0;
+    int cnt = 0;
+    List<Integer> list = new ArrayList<>();
+    for (int i = 0; i < s.length(); i++) {
+      int idx = s.charAt(i) - 'a';
+      if (sum + widths[idx] > 100) {
+        list.add(sum);
+        sum = 0;
+      }
+      sum += widths[idx];
+      if (i == s.length() - 1) {
+        cnt = sum;
+        list.add(sum);
+      }
+    }
+    ans[0] = list.size();
+    ans[1] = cnt;
+    return ans;
+  }
+
+  /**
+   * Leetcode 807 : Max Increase to Keep City Skyline.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(n2)
+   * @param grid int[][]
+   * @return int
+   */
+  public int maxIncreaseKeepingSkyline(int[][] grid) {
+    int[][] copy = new int[grid.length][grid.length];
+    for (int i = 0; i < grid.length; i++) {
+      System.arraycopy(grid[i], 0, copy[i], 0, grid[i].length);
+    }
+    int sum = 0;
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        copy[i][j] = Math.min(rowMax(grid[i]), colMax(grid, j));
+        sum += copy[i][j] - grid[i][j];
+      }
+    }
+    return sum;
+  }
+
+  /**
+   * max val of row.
+   * @param arr int[]
+   * @return int
+   */
+  public int rowMax(int[] arr) {
+    int max = 0;
+    for (int i : arr) {
+      max = Math.max(max, i);
+    }
+    return max;
+  }
+
+  /**
+   * max val of cal.
+   * @param copy int[][]
+   * @param idx int
+   * @return int
+   */
+  public int colMax(int[][] copy, int idx) {
+    List<Integer> list = new ArrayList<>();
+    for (int[] ints : copy) {
+      list.add(ints[idx]);
+    }
+    int max = 0;
+    for (int i : list) {
+      max = Math.max(i, max);
+    }
+    return max;
+  }
 }

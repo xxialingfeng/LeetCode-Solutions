@@ -925,4 +925,77 @@ public class Strings {
     }
     return set.size();
   }
+
+  /**
+   * leetcode 809 : Expressive Words.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(1)
+   * @param s string
+   * @param words list of string
+   * @return int
+   */
+  public int expressiveWords(String s, String[] words) {
+    int cnt = 0;
+    for (String word : words) {
+      int left = 0;
+      int right = 0;
+      boolean flag = true;
+      while (left < s.length() && right < word.length()) {
+        if (s.charAt(left) != word.charAt(right)) {
+          flag = false;
+        }
+
+        char c = s.charAt(left);
+        int cnts = 0;
+        while (left < s.length() && s.charAt(left) == c) {
+          left++;
+          cnts++;
+        }
+        int cntc = 0;
+        while (right < word.length() && word.charAt(right) == c) {
+          right++;
+          cntc++;
+        }
+        if (cntc > cnts || (cntc < cnts && cnts < 3)) {
+          flag = false;
+        }
+      }
+      if (flag && (left == s.length() && right == word.length())) {
+        cnt++;
+      }
+    }
+    return cnt;
+  }
+
+  /**
+   * Leetcode 811 : Subdomain Visit Count.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(n * m)
+   * @param cpdomains list of string
+   * @return list of string
+   */
+  public List<String> subdomainVisits(String[] cpdomains) {
+    Map<String, Integer> map = new HashMap<>();
+    List<String> list = new ArrayList<>();
+    for (String str : cpdomains) {
+      String[] curr = str.split(" ");
+      int count = Integer.parseInt(curr[0]);
+      String site = curr[1];
+      String[] sub = site.split("\\.");
+      String sb = "";
+      for (int i = sub.length - 1; i >= 0; i--) {
+        if (i == sub.length - 1) {
+          sb = sub[i] + sb;
+        } else {
+          sb = sub[i] + "." + sb;
+        }
+        map.put(sb, map.getOrDefault(sb, 0) + count);
+      }
+    }
+    for (Map.Entry<String, Integer> entry : map.entrySet()) {
+      String toAdd = entry.getValue() + " " + entry.getKey();
+      list.add(toAdd);
+    }
+    return list;
+  }
 }

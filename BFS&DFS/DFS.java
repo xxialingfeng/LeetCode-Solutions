@@ -1149,4 +1149,56 @@ public class DFS {
     color[idx] = 2;
     return true;
   }
+
+  double p = 0;
+  double co = 1.0;
+  Map<String, Double> memo808 = new HashMap<>();
+
+  /**
+   * leetcode 808 : Soup Servings.
+   * @param n int n
+   * @return double
+   */
+  public double soupServings(int n) {
+    if (n > 5000) {
+      return 1;
+    }
+    return dfs(n, n);
+  }
+
+  /**
+   * leetcode 808 : Soup Servings.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(4^m) & O(m)
+   * @param currA int
+   * @param currB int
+   * @return double
+   */
+  public double dfs(int currA, int currB) {
+
+    if (currA > 0 && currB <= 0) {
+      return 0;
+    }
+    if (currA <= 0 && currB > 0) {
+      return 1;
+    }
+    if (currA <= 0 && currB <= 0) {
+      return 0.5;
+    }
+    String encode = String.valueOf(currA) + " " + String.valueOf(currB);
+    if (memo808.containsKey(encode)) {
+      return memo808.get(encode);
+    }
+    double p = 0;
+
+    p += dfs(currA - 100, currB);
+    p += dfs(currA - 75, currB - 25);
+    p += dfs(currA - 50, currB - 50);
+    p += dfs(currA - 25, currB - 75);
+
+    p *= 0.25;
+
+    memo808.put(encode, p);
+    return p;
+  }
 }
