@@ -739,4 +739,30 @@ public class DP {
     }
     return false;
   }
+
+  /**
+   * Leetcode 813 : Largest Sum of Averages.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2 * k) & O(n2)
+   * @param nums int[]
+   * @param k int
+   * @return double
+   */
+  public double largestSumOfAverages(int[] nums, int k) {
+    int n = nums.length;
+    double[][] dp = new double[n + 1][k + 1];
+    double[] prefix = new double[nums.length + 1];
+    for (int i = 1; i <= nums.length; i++) {
+      prefix[i] = nums[i - 1] + prefix[i - 1];
+      dp[i][1] = prefix[i] / i;
+    }
+    for (int i = 1; i <= nums.length; i++) {
+      for (int K = 2; K <= k; K++) {
+        for (int j = 0; j < i; j++) {
+          dp[i][K] = Math.max(dp[i][K], dp[j][K - 1] + (prefix[i] - prefix[j]) / (i - j));
+        }
+      }
+    }
+    return dp[nums.length][k];
+  }
 }

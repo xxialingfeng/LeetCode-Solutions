@@ -318,4 +318,29 @@ math {
     }
     return flag == 0;
   }
+
+  /**
+   * Leetcode 812 : Largest Triangle Area.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n3) & O(1)
+   * @param points int[][]
+   * @return double
+   */
+  public double largestTriangleArea(int[][] points) {
+    double res = 0;
+    for (int i = 0; i < points.length - 2; i++) {
+      double x1 = points[i][0];
+      double y1 = points[i][1];
+      for (int j = i + 1; j < points.length - 1; j++) {
+        double x2 = points[j][0];
+        double y2 = points[j][1];
+        for (int k = j + 1; k < points.length; k++) {
+          double x3 = points[k][0];
+          double y3 = points[k][1];
+          res = Math.max(res, Math.abs((x1 * y2 + x2 * y3 + x3 * y1 - x1 * y3 - x2 * y1 - x3 * y2) / 2));
+        }
+      }
+    }
+    return res;
+  }
 }

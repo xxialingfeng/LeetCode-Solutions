@@ -1201,4 +1201,50 @@ public class DFS {
     memo808.put(encode, p);
     return p;
   }
+
+  /**
+   * Leetcode 813 : Largest Sum of Averages.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2 * m) & O(n2)
+   * @param nums int[]
+   * @param k int
+   * @return double
+   */
+  public double largestSumOfAverages(int[] nums, int k) {
+    int n = nums.length;
+    double[][] dp = new double[n + 1][k + 1];
+    int[] prefix = new int[nums.length + 1];
+    for (int i = 1; i <= nums.length; i++) {
+      prefix[i] = nums[i - 1] + prefix[i - 1];
+    }
+    return dfs(nums, 0, k, dp, prefix);
+  }
+
+  /**
+   * dfs for leetcode 813.
+   * @param nums int[]
+   * @param idx int
+   * @param k int
+   * @param dp double
+   * @param prefix int
+   * @return double
+   */
+  public double dfs(int[] nums, int idx, int k, double[][] dp, int[] prefix) {
+    if (idx == nums.length) {
+      return 0;
+    }
+    if (k == 1) {
+      return (prefix[nums.length] - prefix[idx]) * 1.0 / (nums.length - idx);
+    }
+    //memoization
+    if (dp[idx][k] != 0) {
+      return dp[idx][k];
+    }
+    double sum = 0;
+    for (int j = idx; j < nums.length; j++) {
+      sum = Math.max(sum, (prefix[j + 1] - prefix[idx]) * 1.0 / (j - idx + 1) + dfs(nums, j + 1, k - 1, dp, prefix));
+    }
+    dp[idx][k] = sum;
+    return sum;
+  }
 }
