@@ -2,9 +2,11 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -468,5 +470,57 @@ public class BFS {
     char temp = array[x];
     array[x] = array[y];
     array[y] = temp;
+  }
+
+  /**
+   * Leetcode 815 : Bus Routes.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n2 + n*m) & O(n2 + n*m)
+   * @param routes int[][]
+   * @param source int
+   * @param target int
+   * @return int
+   */
+  public int numBusesToDestination(int[][] routes, int source, int target) {
+    if (source == target) {
+      return 0;
+    }
+    Map<Integer, List<Integer>> map = new HashMap<>();
+    Queue<Integer> queue = new LinkedList<>();
+    boolean[] visited = new boolean[505];
+    for (int i = 0; i < routes.length; i++) {
+      for (int j = 0; j < routes[i].length; j++) {
+        if (!map.containsKey(routes[i][j])) {
+          map.put(routes[i][j], new ArrayList<>());
+        }
+        map.get(routes[i][j]).add(i);
+      }
+    }
+    List<Integer> set = map.get(source);
+    for (int node : set) {
+      queue.add(node);
+      visited[node] = true;
+    }
+    int ans = 0;
+    while (!queue.isEmpty()) {
+      ans++;
+      int size = queue.size();
+      while (size-- > 0) {
+        int curr = queue.poll();
+        for (int i = 0; i < routes[curr].length; i++) {
+          if (routes[curr][i] == target) {
+            return ans;
+          }
+          List<Integer> nextNode = map.get(routes[curr][i]);
+          for (int node : nextNode) {
+            if (!visited[node]) {
+              queue.offer(node);
+              visited[node] = true;
+            }
+          }
+        }
+      }
+    }
+    return -1;
   }
 }

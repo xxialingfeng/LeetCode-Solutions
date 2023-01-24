@@ -537,4 +537,46 @@ public class Tree {
       }
     }
   }
+
+  /**
+   * Leetcode 814 : Binary Tree Pruning.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root tree node
+   * @return tree node
+   */
+  public TreeNode pruneTree(TreeNode root) {
+    if (!containsOne(root)) {
+      return null;
+    }
+    if (root == null) {
+      return root;
+    }
+    if (!containsOne(root.left)) {
+      root.left = null;
+    } else {
+      root.left = pruneTree(root.left);
+    }
+    if (!containsOne(root.right)) {
+      root.right = null;
+    } else {
+      root.right = pruneTree(root.right);
+    }
+    return root;
+  }
+
+  /**
+   * if the tree contains one.
+   * @param root tree node
+   * @return boolean
+   */
+  public boolean containsOne(TreeNode root) {
+    if (root == null) {
+      return false;
+    }
+    if (root.val == 1) {
+      return true;
+    }
+    return containsOne(root.left) || containsOne(root.right);
+  }
 }
