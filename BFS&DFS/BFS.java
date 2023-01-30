@@ -523,4 +523,41 @@ public class BFS {
     }
     return -1;
   }
+
+  /**
+   * Leetcode 818 : Race Car.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(nlogn) & O(n)
+   * @param target int
+   * @return int
+   */
+  public int racecar(int target) {
+    if (target == 0) {
+      return 0;
+    }
+    Queue<int[]> queue = new LinkedList<>();
+    queue.add(new int[]{0, 1, 0});
+    Set<String> set = new HashSet<>();
+    set.add("0@1");
+    while(!queue.isEmpty()) {
+      int[] curr = queue.poll();
+      int[] opt1 = new int[]{curr[0] + curr[1], curr[1] * 2, curr[2] + 1};
+      if (opt1[0] == target) {
+        return opt1[2];
+      }
+      if (set.add(opt1[0] + "@" + opt1[1]) && opt1[0] > 0) {
+        queue.offer(opt1);
+      }
+      int[] opt2 = new int[]{curr[0], curr[1], curr[2] + 1};
+      if (opt2[1] > 0) {
+        opt2[1] = -1;
+      } else {
+        opt2[1] = 1;
+      }
+      if (set.add(opt2[0] + "@" + opt2[1]) && opt2[0] > 0) {
+        queue.offer(opt2);
+      }
+    }
+    return -1;
+  }
 }

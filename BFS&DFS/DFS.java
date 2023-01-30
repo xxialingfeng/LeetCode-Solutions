@@ -3,10 +3,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Set;
 import java.util.TreeSet;
 
 class Node {
@@ -1247,4 +1249,179 @@ public class DFS {
     dp[idx][k] = sum;
     return sum;
   }
+
+  /**
+   * Leetcode 818 : Race Car.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(nlogn) & O(n)
+   * @param target int
+   * @return int
+   */
+  public int racecar(int target) {
+    return dfs(target, new HashMap<>());
+  }
+
+  /**
+   * dfs method for leetcode 818.
+   * @param target int
+   * @param map map
+   * @return int
+   */
+  public int dfs(int target, Map<Integer, Integer> map) {
+    if (0 == target) {
+      return 0;
+    }
+    if (map.containsKey(target)) {
+      return map.get(target);
+    }
+    int speed = 1;
+    int cnt  = 0;
+    int currPos = 0;
+    while (currPos + speed < target) {
+      currPos += speed;
+      speed *= 2;
+      cnt++;
+    }
+    if (target == currPos + speed) {
+      map.put(target, cnt + 1);
+      return cnt + 1;
+    }
+    int min = dfs(currPos + speed - target, map) + 2;
+    int back = 0;
+    for (int i = cnt; i > 0; i--) {
+      min = Math.min(min, dfs(target - (currPos - back), map) + 2 + cnt - i);
+      back += 1 << (cnt - i);
+    }
+
+    cnt += min;
+    map.put(target, cnt);
+
+    return cnt;
+
+  }
+
+  Map<Integer, Integer> map823;
+  Map<Integer, Long> memo823 = new HashMap<>();
+
+  /**
+   * Leetcode 823 : Binary Trees With Factors。
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlongn) & O(n)
+   * @param arr int[]
+   * @return int
+   */
+  public int numFactoredBinaryTrees(int[] arr) {
+    map = new HashMap<>();
+    Arrays.sort(arr);
+    for (int i = 0; i < arr.length; i++) {
+      map823.put(arr[i], i);
+    }
+    long res = 0;
+    for (int i = arr.length - 1; i >= 0; i--) {
+      res = res + dfs(arr, i);
+    }
+    return (int)(res % 1000000007);
+  }
+
+  /**
+   * dfs method for leetcode 823.
+   * @param arr int[]
+   * @param idx int
+   * @return long
+   */
+  public long dfs(int[] arr, int idx) {
+    if (memo823.containsKey(idx)) {
+      return memo823.get(idx);
+    }
+    long ans = 1;
+    for (int i = idx; i >= 0; i--) {
+      if (arr[idx] % arr[i] == 0 && map823.containsKey(arr[idx] / arr[i])) {
+        ans = (ans + dfs(arr, i) * dfs(arr, map823.get(arr[idx] / arr[i])));
+      }
+    }
+
+    memo823.put(idx, ans);
+
+    return ans;
+  }
+
+  int count;
+
+  /**
+   * Leetcode 827 : Making A Large Island.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n2) & O(n2)
+   * @param grid int[][]
+   * @return int
+   */
+  public int largestIsland(int[][] grid) {
+    int mark = 2;
+    boolean isGrid = true;
+    boolean[][] visited = new boolean[grid.length][grid.length];
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[i].length; j++) {
+        if (grid[i][j] == 0) {
+          isGrid = false;
+          continue;
+        }
+        if (!visited[i][j] && grid[i][j] == 1) {
+          count = 0;
+          dfs(grid, visited, i, j, mark);
+          map.put(mark, count);
+          mark++;
+        }
+      }
+    }
+    if (isGrid) {
+      return grid.length * grid.length;
+    }
+
+    int ans = 0;
+    Set<Integer> set;
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid.length; j++) {
+        int cnt = 1;
+        set = new HashSet<>();
+        if (grid[i][j] == 0) {
+          for (int[] direction : directions) {
+            int nx = i + direction[0];
+            int ny = j + direction[1];
+            if (nx < 0 || ny < 0 || nx >= grid.length || ny >= grid.length || set.contains(grid[nx][ny])) {
+              continue;
+            }
+            cnt += map.getOrDefault(grid[nx][ny], 0);
+            set.add(grid[nx][ny]);
+          }
+        }
+        ans = Math.max(ans, cnt);
+      }
+    }
+    return ans;
+  }
+
+  /**
+   * dfs method for leetcode 827.
+   * @param grid int[][]
+   * @param visited boolean[][]
+   * @param i int
+   * @param j int
+   * @param mark int
+   */
+  public void dfs(int[][] grid, boolean[][] visited, int i, int j, int mark) {
+    if (visited[i][j] || grid[i][j] == 0) {
+      return;
+    }
+    count++;
+    grid[i][j] = mark;
+    visited[i][j] = true;
+    for (int[] direction : directions) {
+      int x = i + direction[0];
+      int y = j + direction[1];
+      if (x >= 0 && y >= 0 && x < grid.length && y < grid[0].length) {
+        dfs(grid, visited, x, y, mark);
+      }
+    }
+  }
+
 }

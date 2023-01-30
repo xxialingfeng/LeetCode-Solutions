@@ -15,12 +15,13 @@ import java.util.stream.Collectors;
  */
 public class Strings {
 
-  /**.
-   * Leetcode 520 : Detect Capital
-   * @Difficulty: Easy
-   * @OptimalComplexity: O(n) & O(1)
+  /**
+   * . Leetcode 520 : Detect Capital
+   *
    * @param word String
    * @return boolean
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
    */
   public boolean detectCapitalUse(String word) {
     if (word.toUpperCase().equals(word) || word.toLowerCase().equals(word)) {
@@ -34,8 +35,9 @@ public class Strings {
     return true;
   }
 
-  /**.
-   * Leecode 521: longest uncommon subsequence I
+  /**
+   * . Leecode 521: longest uncommon subsequence I
+   *
    * @Difficulty: Easy
    * @OptimalComplexity: O(1) & O(1)
    */
@@ -46,12 +48,13 @@ public class Strings {
     return Math.max(a.length(), b.length());
   }
 
-  /**.
-   * Leetcode 522: longest uncommon subsequence II
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(n2) & O(1)
+  /**
+   * . Leetcode 522: longest uncommon subsequence II
+   *
    * @param strs String[]
    * @return int
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(1)
    */
   public int findLUSlength(String[] strs) {
     int res = -1;
@@ -72,6 +75,7 @@ public class Strings {
 
   /**
    * Find out if string a is a subsequence of string b.
+   *
    * @param a String
    * @param b String
    * @return boolean
@@ -91,20 +95,21 @@ public class Strings {
   Map<String, String> map535 = new HashMap<>();
   static final String INDEX = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   static final String PREFIX = "http://tinyurl.com/";
+
   /**
-   * Encodes a URL to a shortened URL.
-   * Leetcode 535: Encode and Decode TinyURL.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(n) & O(1)
+   * Encodes a URL to a shortened URL. Leetcode 535: Encode and Decode TinyURL.
+   *
    * @param longUrl String
    * @return String
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
    */
 
   public String encode(String longUrl) {
     char[] chr = new char[6];
     while (true) {
       for (int i = 0; i < 6; i++) {
-        chr[i] = INDEX.charAt((int)(Math.random() * 62));
+        chr[i] = INDEX.charAt((int) (Math.random() * 62));
         String shortUrl = PREFIX + new String(chr);
         if (!map535.containsKey(shortUrl)) {
           map535.put(shortUrl, longUrl);
@@ -114,7 +119,9 @@ public class Strings {
     }
   }
 
-  /**Decodes a shortened URL to its original URL.
+  /**
+   * Decodes a shortened URL to its original URL.
+   *
    * @param shortUrl String
    * @return String
    */
@@ -124,11 +131,12 @@ public class Strings {
 
   /**
    * Leetcode 537: Complex Number Multiplication.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(n) & O(n)
+   *
    * @param num1 String
    * @param num2 String
    * @return String
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
    */
   public String complexNumberMultiply(String num1, String num2) {
     List<Character> list1 = new ArrayList<>();
@@ -167,12 +175,13 @@ public class Strings {
     }
     String ans = "";
     ans += (getNum(list1) * getNum(list3) - getNum(list2) * getNum(list4))
-        +  "+" + (getNum(list1) * getNum(list4) + getNum(list2) * getNum(list3)) + "i";
+        + "+" + (getNum(list1) * getNum(list4) + getNum(list2) * getNum(list3)) + "i";
     return ans;
   }
 
   /**
    * get int value. (Integer.parseInt)
+   *
    * @param list a list of characters
    * @return int
    */
@@ -195,23 +204,24 @@ public class Strings {
    * Optimal Solution for leetcode 537.
    */
   public String complexNumberMultiplyOptimal(String num1, String num2) {
-    int a1 = Integer.parseInt(num1.substring(0,num1.indexOf('+')));
-    int a2 = Integer.parseInt(num1.substring(num1.indexOf('+') + 1,num1.length() - 1));
-    int b1 = Integer.parseInt(num2.substring(0,num2.indexOf('+')));
-    int b2 = Integer.parseInt(num2.substring(num2.indexOf('+') + 1,num2.length() - 1));
+    int a1 = Integer.parseInt(num1.substring(0, num1.indexOf('+')));
+    int a2 = Integer.parseInt(num1.substring(num1.indexOf('+') + 1, num1.length() - 1));
+    int b1 = Integer.parseInt(num2.substring(0, num2.indexOf('+')));
+    int b2 = Integer.parseInt(num2.substring(num2.indexOf('+') + 1, num2.length() - 1));
 
     int aa = a1 * b1 - a2 * b2;
     int bb = a2 * b1 + a1 * b2;
 
-    return aa + "+" + bb + "i" ;
+    return aa + "+" + bb + "i";
   }
 
   /**
    * Leetcode 539 : Minimum Time Difference.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(nlogn) & O(n)
+   *
    * @param timePoints a list of string
    * @return int
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlogn) & O(n)
    */
   public int findMinDifference(List<String> timePoints) {
     if (timePoints.size() > 1440) {
@@ -237,6 +247,7 @@ public class Strings {
 
   /**
    * Get the time in minute format.
+   *
    * @param str String
    * @return int
    */
@@ -251,11 +262,12 @@ public class Strings {
 
   /**
    * Leetcode 541: Reverse String II.
-   * @Difficulty: Easy
-   * @OptimalComplexity: O(n) & O(n)
+   *
    * @param s String
    * @param k k
    * @return String
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
    */
   public String reverseStr(String s, int k) {
     StringBuilder sb = new StringBuilder();
@@ -263,14 +275,15 @@ public class Strings {
       return new StringBuffer(s).reverse().toString();
     }
     if (s.length() < 2 * k && s.length() >= k) {
-      return new StringBuffer(s.substring(0,k)).reverse().toString() + s.substring(k, s.length());
+      return new StringBuffer(s.substring(0, k)).reverse().toString() + s.substring(k, s.length());
     }
-    sb.append(s.substring(0,k));
+    sb.append(s.substring(0, k));
     return sb.reverse().toString() + s.substring(k, 2 * k) + reverseStr(s.substring(2 * k), k);
   }
 
   /**
    * Leetcode 551: Student Attendance Record I.
+   *
    * @param s String
    * @return boolean
    */
@@ -301,10 +314,11 @@ public class Strings {
 
   /**
    * Leetcode 553: Optimal Division.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(n) & O(n)
+   *
    * @param nums int[]
    * @return String
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
    */
   public String optimalDivision(int[] nums) {
     StringBuilder arr = new StringBuilder();
@@ -328,10 +342,11 @@ public class Strings {
 
   /**
    * Leetcode 557: Reverse Words in a String III.
-   * @Difficulty: Easy
-   * @OptimalComplexity: O(n) & O(n)
+   *
    * @param s String
    * @return String
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
    */
   public String reverseWords(String s) {
     String[] col = s.split(" ");
@@ -344,6 +359,7 @@ public class Strings {
 
   /**
    * Reverse string.
+   *
    * @param s string
    * @return String
    */
@@ -353,17 +369,18 @@ public class Strings {
 
   /**
    * Leetcode 564:Find the Closest Palindrome.
-   * @Difficulty: Hard
-   * @OptimalComplexity:
+   *
    * @param n O(n) & O(n)
    * @return String
+   * @Difficulty: Hard
+   * @OptimalComplexity:
    */
   public String nearestPalindromic(String n) {
     if (n.length() == 1) {
       return (Integer.parseInt(n) - 1) + "";
     }
     long org = Long.parseLong(n);
-    long thousand = (long)(Math.pow(10, n.length() - 1));
+    long thousand = (long) (Math.pow(10, n.length() - 1));
     if (org == thousand || org == thousand + 1) {
       return String.valueOf(thousand - 1);
     }
@@ -371,12 +388,13 @@ public class Strings {
     if (org == thousand) {
       return String.valueOf(thousand + 2L);
     }
-    int left = Integer.parseInt(n.substring(0, (n.length() + 1)/2));
+    int left = Integer.parseInt(n.substring(0, (n.length() + 1) / 2));
     long ans = Long.MAX_VALUE;
     long diff = Long.MAX_VALUE;
     for (int a : new int[]{-1, 0, 1}) {
       String lf = (left + a) + "";
-      String full = new StringBuilder(n.length() % 2 == 0 ? lf : lf.substring(0, lf.length()-1)).reverse().insert(0, lf).toString();
+      String full = new StringBuilder(n.length() % 2 == 0 ? lf : lf.substring(0, lf.length() - 1))
+          .reverse().insert(0, lf).toString();
       if (n.equals(full)) {
         continue;
       }
@@ -391,10 +409,11 @@ public class Strings {
 
   /**
    * Leetcode 591 : Tag Validator.
-   * @Difficulty: Hard
-   * @OptimalComplexity: O(n) & O(n)
+   *
    * @param code String
    * @return boolean
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
    */
   public boolean isValid(String code) {
     int n = code.length();
@@ -437,7 +456,7 @@ public class Strings {
           }
           i = j + 3;
         } else {
-          int j = code.indexOf('>' , i);
+          int j = code.indexOf('>', i);
           if (j < 0) {
             return false;
           }
@@ -466,10 +485,11 @@ public class Strings {
 
   /**
    * Leetcode 592: Fraction addition and subtraction.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(n) & O(1)
+   *
    * @param expression string
    * @return string
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
    */
   public String fractionAddition(String expression) {
     long x = 0;
@@ -505,6 +525,7 @@ public class Strings {
 
   /**
    * Greatest common divisor.
+   *
    * @param a long
    * @param b long
    * @return long
@@ -521,10 +542,11 @@ public class Strings {
 
   /**
    * Leetcode 609 : Find Duplicate File in System.
+   *
    * @param paths list of string
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(n*l) & O(n*l)
    * @return list of list of string
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * l) & O(n*l)
    */
   public List<List<String>> findDuplicate(String[] paths) {
     Map<String, List<String>> map = new HashMap<>();
@@ -545,10 +567,11 @@ public class Strings {
 
   /**
    * LeetCode 640 : Solve the Equation.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(n) & O(n)
+   *
    * @param equation String
    * @return String
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
    */
   public String solveEquation(String equation) {
     // 把x移到左边，把其他移到右边
@@ -592,17 +615,18 @@ public class Strings {
         return "No solution";
       }
     } else {
-      return "x=" + right/left;
+      return "x=" + right / left;
     }
   }
 
   /**
    * Leetcode 686 : Repeated String Match.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(n) & O(n)
+   *
    * @param a String
    * @param b String
    * @return int
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
    */
   public int repeatedStringMatch(String a, String b) {
     int count = 1;
@@ -621,10 +645,11 @@ public class Strings {
 
   /**
    * Leetcode 720 : Longest Word in Dictionary.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(n x m) & O(n)
+   *
    * @param words
    * @return
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n x m) & O(n)
    */
   public String longestWord(String[] words) {
     Set<String> set = new HashSet<String>();
@@ -654,27 +679,29 @@ public class Strings {
 
   /**
    * Leetcode 722 : Remove Comments.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(m x n) & O(n)
+   *
    * @param source list of string
    * @return list of string
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m x n) & O(n)
    */
   public List<String> removeComments(String[] source) {
     boolean inBlock = false;
     StringBuilder newline = new StringBuilder();
     List<String> ans = new ArrayList<>();
-    for (String line: source) {
+    for (String line : source) {
       int i = 0;
       char[] chars = line.toCharArray();
-      if (!inBlock) newline = new StringBuilder();
+      if (!inBlock)
+        newline = new StringBuilder();
       while (i < line.length()) {
-        if (!inBlock && i + 1 < line.length() && chars[i] == '/' && chars[i+1] == '*') {
+        if (!inBlock && i + 1 < line.length() && chars[i] == '/' && chars[i + 1] == '*') {
           inBlock = true;
           i++;
-        } else if (inBlock && i + 1 < line.length() && chars[i] == '*' && chars[i+1] == '/') {
+        } else if (inBlock && i + 1 < line.length() && chars[i] == '*' && chars[i + 1] == '/') {
           inBlock = false;
           i++;
-        } else if (!inBlock && i + 1 < line.length() && chars[i] == '/' && chars[i+1] == '/') {
+        } else if (!inBlock && i + 1 < line.length() && chars[i] == '/' && chars[i + 1] == '/') {
           break;
         } else if (!inBlock) {
           newline.append(chars[i]);
@@ -690,11 +717,12 @@ public class Strings {
 
   /**
    * Leetcode 748 : Shortest Completing Word.
+   *
+   * @param licensePlate String
+   * @param words        list of string
+   * @return string
    * @Difficulty: Easy
    * @OptimalComplexity: O(m * n) & O(26)
-   * @param licensePlate String
-   * @param words list of string
-   * @return string
    */
   public String shortestCompletingWord(String licensePlate, String[] words) {
     char[] tar = new char[26];
@@ -721,6 +749,7 @@ public class Strings {
 
   /**
    * char[] b has more elements than any element in char[] a
+   *
    * @param a char[]
    * @param b char[]
    * @return boolean
@@ -736,10 +765,11 @@ public class Strings {
 
   /**
    * Leetcode 761 : Special Binary String.
-   * @Difficulty: Hard
-   * @OptimalComplexity: O(n) & O(n)
+   *
    * @param s String
    * @return String
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
    */
   public String makeLargestSpecial(String s) {
     int last = 0;
@@ -766,11 +796,12 @@ public class Strings {
 
   /**
    * Leetcode 777 : Swap Adjacent in LR String.
+   *
+   * @param start String
+   * @param end   String
+   * @return boolean
    * @Difficulty: Medium
    * @OptimalComplexity: O(n) & O(1)
-   * @param start String
-   * @param end String
-   * @return boolean
    */
   public boolean canTransform(String start, String end) {
     int i = 0;
@@ -812,11 +843,12 @@ public class Strings {
 
   /**
    * Leetcode 791 : Custom Sort String.
+   *
+   * @param order String
+   * @param s     String
+   * @return String
    * @Difficulty: Medium.
    * @OptimalComplexity: O(n) & O(n)
-   * @param order String
-   * @param s String
-   * @return String
    */
   public String customSortString(String order, String s) {
     int[] store = new int[26];
@@ -836,7 +868,7 @@ public class Strings {
     }
     for (int i = 0; i < store.length; i++) {
       while (store[i] != 0) {
-        char toAdd = (char)('a' + i);
+        char toAdd = (char) ('a' + i);
         sb.append(toAdd);
         store[i]--;
       }
@@ -846,11 +878,12 @@ public class Strings {
 
   /**
    * Leetcode 792 : Number of Matching Subsequences.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(m * n) & O(n)
-   * @param s String
+   *
+   * @param s     String
    * @param words String[]
    * @return int
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m * n) & O(n)
    */
   public int numMatchingSubseq(String s, String[] words) {
     int ans = 0;
@@ -868,7 +901,8 @@ public class Strings {
 
   /**
    * tell if the string is subsequence of another string.
-   * @param s string
+   *
+   * @param s   string
    * @param tar string
    * @return boolean
    */
@@ -889,11 +923,12 @@ public class Strings {
 
   /**
    * Leetcode 796 : Rotate String.
-   * @Difficulty: Easy
-   * @OptimalComplexity: O(n) & O(1)
-   * @param s String
+   *
+   * @param s    String
    * @param goal String
    * @return boolean
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
    */
   public boolean rotateString(String s, String goal) {
     for (int i = 0; i < s.length(); i++) {
@@ -908,13 +943,16 @@ public class Strings {
 
   /**
    * Leetcode 804 : Unique Morse Code Words.
-   * @Difficulty: Easy
-   * @OptimalComplexity: O(n * m) & O(m)
+   *
    * @param words array of string
    * @return int
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n * m) & O(m)
    */
   public int uniqueMorseRepresentations(String[] words) {
-    String[] code = new String[]{".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+    String[] code = new String[]{".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..",
+        ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-",
+        ".--", "-..-", "-.--", "--.."};
     Set<String> set = new HashSet<>();
     for (String curr : words) {
       StringBuilder now = new StringBuilder();
@@ -928,11 +966,12 @@ public class Strings {
 
   /**
    * leetcode 809 : Expressive Words.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(n * m) & O(1)
-   * @param s string
+   *
+   * @param s     string
    * @param words list of string
    * @return int
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(1)
    */
   public int expressiveWords(String s, String[] words) {
     int cnt = 0;
@@ -969,10 +1008,11 @@ public class Strings {
 
   /**
    * Leetcode 811 : Subdomain Visit Count.
-   * @Difficulty: Medium
-   * @OptimalComplexity: O(n * m) & O(n * m)
+   *
    * @param cpdomains list of string
    * @return list of string
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(n * m)
    */
   public List<String> subdomainVisits(String[] cpdomains) {
     Map<String, Integer> map = new HashMap<>();
@@ -998,4 +1038,185 @@ public class Strings {
     }
     return list;
   }
+
+  /**
+   * Leetcode 816  : Ambiguous Coordinates.
+   *
+   * @param s string
+   * @return list of string
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m * n) * O(m * n)
+   */
+  public List<String> ambiguousCoordinates(String s) {
+    String middle = s.substring(1, s.length() - 1);
+    return addComa(middle);
+
+  }
+
+  public List<String> addDot(String s) {
+    List<String> list = new ArrayList<>();
+    if (s.charAt(0) != '0' || "0".equals(s)) {
+      list.add(s);
+    }
+    for (int i = 1; i < s.length(); i++) {
+      String left = s.substring(0, i);
+      String right = s.substring(i, s.length());
+      if ((i != 1 && s.charAt(0) == '0') || s.charAt(s.length() - 1) == '0') {
+        continue;
+      }
+      String toAdd = left + "." + right;
+      list.add(toAdd);
+    }
+    return list;
+  }
+
+  public List<String> addComa(String s) {
+    List<String> list = new ArrayList<>();
+    for (int i = 1; i < s.length(); i++) {
+      String left = s.substring(0, i);
+      String right = s.substring(i, s.length());
+      List<String> l = addDot(left);
+      List<String> r = addDot(right);
+      for (String ls : l) {
+        for (String rs : r) {
+          list.add("(" + ls + ", " + rs + ")");
+        }
+      }
+    }
+    return list;
+  }
+
+  /**
+   * Leetcode 819 : Most Common Word.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(m)
+   * @param paragraph string
+   * @param banned list of string
+   * @return string
+   */
+  public String mostCommonWord(String paragraph, String[] banned) {
+    paragraph = paragraph.toLowerCase();
+    String[] sp = paragraph.split(" |\\!|\\?|'|\\;|\\.|,");
+    Set<String> ban = new HashSet<>();
+    Collections.addAll(ban, banned);
+    Map<String, Integer> map = new HashMap<>();
+    String ans = "";
+    int max = 0;
+    for (String str : sp) {
+      if (str.length() == 0) {
+        continue;
+      }
+      map.put(str, map.getOrDefault(str, 0) + 1);
+      if (map.get(str) > max && !ban.contains(str)) {
+        ans = str;
+        max = map.get(str);
+      }
+    }
+    return ans;
+  }
+
+  /**
+   * Leetcode 820 : Short Encoding of Words.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(1)
+   * @param words list of string
+   * @return int
+   */
+  public int minimumLengthEncoding(String[] words) {
+    for (int i = 0; i < words.length; i++) {
+      for (int j = 0; j < words.length; j++) {
+        if (i != j && words[i].contains(words[j]) && words[i].substring(words[i].length() - words[j].length()).equals(words[j])) {
+          words[j] = "";
+        }
+        if (i != j && words[j].contains(words[i]) && words[j].substring(words[j].length() - words[i].length()).equals(words[i])) {
+          words[i] = "";
+        }
+      }
+    }
+    int cnt = 0;
+    for (String str : words) {
+      if (str.length() != 0) {
+        cnt += str.length() + 1;
+      }
+    }
+    return cnt;
+  }
+
+  /**
+   * Leetcode 821 : Shortest Distance to a Character.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s string
+   * @param c char
+   * @return int
+   */
+  public int[] shortestToChar(String s, char c) {
+    int[] ans = new int[s.length()];
+    Arrays.fill(ans, Integer.MAX_VALUE);
+    int firstidx = -1;
+    for (int i = 0; i < s.length(); i++) {
+      if (s.charAt(i) == c) {
+        firstidx = i;
+        break;
+      }
+    }
+    for (int i = 0; i < s.length(); i++) {
+      if (s.charAt(i) == c) {
+        ans[i] = 0;
+      }
+    }
+    int cnt = 1;
+    for (int i = firstidx - 1; i >= 0; i--) {
+      ans[i] = cnt;
+      cnt++;
+    }
+    int i = firstidx +  1;
+    int curr = firstidx;
+    int next = s.indexOf(c, curr + 1);
+    while (i < s.length() && next != -1) {
+      while (i < next) {
+        ans[i] = Math.min(i - curr, next - i);
+        i++;
+      }
+      curr = next;
+      next = s.indexOf(c, curr + 1);
+    }
+    cnt = 1;
+    for (int j = curr + 1; j < s.length(); j++) {
+      ans[j] = cnt;
+      cnt++;
+    }
+    return ans;
+  }
+
+  /**
+   * Leetcode 824 : Goat Latin.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param sentence string
+   * @return string
+   */
+  public String toGoatLatin(String sentence) {
+    String[] s = sentence.split(" ");
+    StringBuilder toAdd = new StringBuilder("a");
+    for (int i = 0; i < s.length; i++) {
+      String curr = s[i];
+      char first = Character.toLowerCase(curr.charAt(0));
+      if (first == 'a' || first == 'e' || first == 'i' || first == 'o' || first == 'u') {
+        curr = curr + "ma" + toAdd;
+        s[i] = curr;
+      } else {
+        String next = curr.substring(1);
+        String modify = next + curr.charAt(0) + "ma" + toAdd;
+        s[i] = modify;
+      }
+      toAdd.append("a");
+    }
+    StringBuilder res = new StringBuilder();
+    for (String str : s) {
+      res.append(str).append(" ");
+    }
+    return res.substring(0, res.length() - 1);
+  }
 }
+

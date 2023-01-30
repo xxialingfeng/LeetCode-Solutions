@@ -1020,4 +1020,39 @@ public class Array {
     }
     return max;
   }
+
+  /**
+   * Leetcode 822 : Card Flipping Game.
+   * @Difficulty: Meidum
+   * @OptimalComplexity: O(n) & O(n)
+   * @param fronts int[]
+   * @param backs int[]
+   * @return int
+   */
+  public int flipgame(int[] fronts, int[] backs) {
+    Set<Integer> set = new HashSet<>();
+    Set<Integer> optout = new HashSet<>();
+    for (int i = 0; i < backs.length; i++) {
+      if (backs[i] == fronts[i]) {
+        optout.add(backs[i]);
+      }
+    }
+    for (int i = 0; i < backs.length; i++) {
+      if (backs[i] != fronts[i] && !optout.contains(backs[i])) {
+        set.add(backs[i]);
+      } else {
+        optout.add(backs[i]);
+      }
+    }
+    for (int front : fronts) {
+      if (!optout.contains(front)) {
+        set.add(front);
+      }
+    }
+    int min = 10000;
+    for (int i : set) {
+      min = Math.min(min, i);
+    }
+    return min == 10000 ? 0 : min;
+  }
 }

@@ -2,8 +2,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This is a collection for leetcode problems related to union find.
@@ -378,5 +380,60 @@ public class UnionFInd {
     public int getSize(int x) {
       return size[find(x)];
     }
+  }
+
+  int count;
+
+  /**
+   * Leetcode 827 : Making A Large Island.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n2 * m) & O(n2)
+   * @param grid int[][]
+   * @return int
+   */
+  public int largestIsland(int[][] grid) {
+    UF uf = new UF(grid.length * grid.length);
+    int ans = 1;
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid.length; j++) {
+        if (grid[i][j] == 1) {
+          for (int[] dir : directions) {
+            int x = i + dir[0];
+            int y = j + dir[1];
+            if (x >= 0 && y >= 0 && x < grid.length && y < grid.length && grid[x][y] == 1) {
+              int pa = uf.find(x * grid.length + y);
+              int pb = uf.find(i * grid.length + j);
+              if (pa == pb) {
+                continue;
+              }
+              uf.union(x * grid.length + y, i * grid.length + j );
+              ans = Math.max(ans, uf.size[pb]);
+            }
+          }
+        }
+      }
+    }
+
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid.length; j++) {
+        if (grid[i][j] == 0) {
+          int cnt = 1;
+          Set<Integer> set = new HashSet<>();
+          for (int[] dir : directions) {
+            int nx = i + dir[0];
+            int ny = j + dir[1];
+            if (nx >= 0 && ny < grid.length && ny >= 0 && nx < grid.length && grid[nx][ny] == 1) {
+              int root = uf.find(nx * grid.length + ny);
+              if (!set.contains(root)) {
+                cnt += uf.size[root];
+                set.add(root);
+              }
+            }
+          }
+          ans = Math.max(ans, cnt);
+        }
+      }
+    }
+    return ans;
   }
 }
