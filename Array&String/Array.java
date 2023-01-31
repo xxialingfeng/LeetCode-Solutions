@@ -1055,4 +1055,55 @@ public class Array {
     }
     return min == 10000 ? 0 : min;
   }
+
+  /**
+   * Leetcode 828 : Count Unique Characters of All Substrings of a Given String.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s string
+   * @return int
+   */
+  public int uniqueLetterString(String s) {
+    Map<Character, List<Integer>> map = new HashMap<>();
+    for (int i = 0; i < s.length(); i++) {
+      if (!map.containsKey(s.charAt(i))) {
+        map.put(s.charAt(i), new ArrayList<>());
+        map.get(s.charAt(i)).add(-1);
+      }
+      map.get(s.charAt(i)).add(i);
+    }
+    int res = 0;
+    for (Map.Entry<Character, List<Integer>> entry : map.entrySet()) {
+      List<Integer> list = entry.getValue();
+      list.add(s.length());
+      for (int i = 1; i < list.size() - 1; i++) {
+        res += (list.get(i) - list.get(i - 1)) * (list.get(i + 1) - list.get(i));
+      }
+    }
+    return res;
+  }
+
+  /**
+   * Leetcode 907 : Sum of Subarray Minimums.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m)
+   * @param arr int[]
+   * @return int
+   */
+  public int sumSubarrayMins(int[] arr) {
+    long res = 0;
+    for (int i = 0; i < arr.length; i++) {
+      int l = i - 1;
+      while (l >= 0 && arr[i] < arr[l]) {
+        l--;
+      }
+      int r = i + 1;
+      while (r < arr.length && arr[i] <= arr[r]) {
+        r++;
+      }
+      res += (long) arr[i] * (i - l) * (r - i);
+      res %= 1000000007;
+    }
+    return (int)(res);
+  }
 }
