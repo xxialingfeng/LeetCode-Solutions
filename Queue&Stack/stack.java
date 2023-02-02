@@ -276,4 +276,77 @@ public class stack {
     }
     return stack.size();
   }
+
+  /**
+   * Leetcode 1856 : Maximum Subarray Min-Product.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @return int
+   */
+  public int maxSumMinProduct(int[] nums) {
+    long res = 0;
+    long[] prefix = new long[nums.length + 1];
+    for (int i = 1; i <= nums.length; i++) {
+      prefix[i] = nums[i - 1] + prefix[i - 1];
+    }
+    int[] left = new int[nums.length];
+    int[] right = new int[nums.length];
+    Stack<Integer> stack = new Stack<>();
+    for (int i = 0; i < nums.length; i++) {
+      while (!stack.isEmpty() && nums[stack.peek()] >= nums[i]) {
+        stack.pop();
+      }
+      left[i] = stack.isEmpty() ? -1 : stack.peek();
+      stack.push(i);
+    }
+    stack.clear();
+    for (int i = nums.length - 1; i >= 0; i--) {
+      while (!stack.isEmpty() && nums[stack.peek()] >= nums[i]) {
+        stack.pop();
+      }
+      right[i] = stack.isEmpty() ? nums.length : stack.peek();
+      stack.push(i);
+    }
+
+    for (int i = 0; i < nums.length; i++) {
+      res = Math.max(res, (prefix[right[i]] - prefix[left[i] + 1]) * nums[i]);
+    }
+
+    return (int) (res % 1000000007);
+  }
+
+  /**
+   * Leetcode 84 : Largest Rectangle in Histogram.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param heights int[]
+   * @return int
+   */
+  public int largestRectangleArea(int[] heights) {
+    Stack<Integer> stack = new Stack<>();
+    int[] l = new int[heights.length];
+    int[] r = new int[heights.length];
+    for (int i = 0; i < heights.length; i++) {
+      while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+        stack.pop();
+      }
+      l[i] = stack.isEmpty() ? -1 : stack.peek();
+      stack.push(i);
+    }
+    stack.clear();
+    for (int i = heights.length - 1; i >= 0; i--) {
+      while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+        stack.pop();
+      }
+      r[i] = stack.isEmpty() ? heights.length: stack.peek();
+      stack.push(i);
+    }
+    int res = 0;
+    for (int i = 0; i < heights.length; i++) {
+      res = Math.max(res, heights[i] * (r[i] - l[i] - 1));
+    }
+
+    return res;
+  }
 }

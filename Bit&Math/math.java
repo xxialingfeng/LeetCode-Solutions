@@ -343,4 +343,21 @@ math {
     }
     return res;
   }
+
+  /**
+   * Leetcode 829 : Consecutive Numbers Sum.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(1)
+   * @param n int
+   * @return int
+   */
+  public int consecutiveNumbersSum(int n) {
+    int res = 0;
+    for (int i = 1; n > 0; n -= i++) {
+      if (n % i == 0) {
+        res++;
+      }
+    }
+    return res;
+  }
 }
