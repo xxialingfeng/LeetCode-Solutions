@@ -1424,4 +1424,59 @@ public class DFS {
     }
   }
 
+
+  private List<List<Integer>> graph = new ArrayList<>();
+  int[] distSum;
+  int[] nodeNum;
+
+  /**
+   * Leetcode 834 : Sum of Distances in Tree.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param N int
+   * @param edges int[][]
+   * @return int[]
+   */
+  public int[] sumOfDistancesInTree(int N, int[][] edges) {
+    for (int i = 0; i < N; i++) {
+      graph.add(new ArrayList<>());
+    }
+    for (int[] edge : edges) {
+      int src = edge[0];
+      int tar = edge[1];
+      graph.get(src).add(tar);
+      graph.get(tar).add(src);
+    }
+    distSum = new int[N];
+    nodeNum = new int[N];
+    Arrays.fill(nodeNum, 1);
+    postOrder(0, -1);
+    preOrder(0, -1);
+    return distSum;
+  }
+
+  //distSum within the child tree
+  private void postOrder(int root, int parent) {
+    List<Integer> neighbors = graph.get(root);
+    for (int neighbor : neighbors) {
+      if (neighbor == parent) {
+        continue;
+      }
+      postOrder(neighbor, root);
+      nodeNum[root] += nodeNum[neighbor];
+      distSum[root] += nodeNum[neighbor] + distSum[neighbor];
+    }
+  }
+
+  //distSum outside of the child tree
+  private void preOrder(int root, int parent) {
+    List<Integer> neighbors = graph.get(root);
+    for (int neighbor : neighbors) {
+      if (neighbor == parent) {
+        continue;
+      }
+      distSum[neighbor] = distSum[root] - nodeNum[neighbor] + (graph.size() - nodeNum[neighbor]);
+      preOrder(neighbor, root);
+    }
+  }
 }

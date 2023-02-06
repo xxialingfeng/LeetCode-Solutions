@@ -1106,4 +1106,44 @@ public class Array {
     }
     return (int)(res);
   }
+
+  /**
+   * Leetcode 832 : Flipping an Image.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n2) & O(1)
+   * @param image int[][]
+   * @return int[][]
+   */
+  public int[][] flipAndInvertImage(int[][] image) {
+    int n = image.length;
+    for (int i = 0; i < image.length; i++) {
+      int[] curr = image[i];
+      for (int j = 0; j < image[i].length / 2; j++) {
+        if (curr[j] == curr[n - j - 1]) {
+          if (curr[j] == 1) {
+            curr[j] = 0;
+          } else {
+            curr[j] = 1;
+          }
+          if (curr[n - j - 1] == 1) {
+            curr[n - j - 1] = 0;
+          } else {
+            curr[n - j - 1] = 1;
+          }
+
+        }
+      }
+      image[i] = curr;
+    }
+    if (n % 2 != 0) {
+      for (int i = 0; i < image.length; i++) {
+        if (image[i][n / 2] == 1 ) {
+          image[i][n / 2] = 0;
+        } else {
+          image[i][n / 2] = 1;
+        }
+      }
+    }
+    return image;
+  }
 }

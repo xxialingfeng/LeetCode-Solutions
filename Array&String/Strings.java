@@ -1218,5 +1218,83 @@ public class Strings {
     }
     return res.substring(0, res.length() - 1);
   }
+
+  /**
+   * Leetcode 831 : Masking Personal Information.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s string
+   * @return string
+   */
+  public String maskPII(String s) {
+    if (s.contains("@")) {
+      String lower = s.toLowerCase();
+      String[] par1 = lower.split("@|\\.");
+      String name = par1[0];
+      par1[0] = name.charAt(0) + "*****" + name.charAt(name.length() - 1);
+      return par1[0] + "@" + par1[1] + "." + par1[2];
+    } else {
+      String[] par2 = s.split("\\+|\\-|\\,| |\\(|\\)");
+      int cnt = 0;
+      StringBuilder join = new StringBuilder();
+      for (String str : par2) {
+        cnt += str.length();
+        join.append(str);
+      }
+
+      if (cnt == 10) {
+        return "***-***-" + join.substring(join.length() - 4, join.length());
+      } else if (cnt == 11) {
+        return "+*-***-***-" + join.substring(join.length() - 4, join.length());
+      } else if (cnt == 12) {
+        return "+**-***-***-" + join.substring(join.length() - 4, join.length());
+      } else if (cnt == 13) {
+        return "+***-***-***-" + join.substring(join.length() - 4, join.length());
+      }
+    }
+    return "";
+  }
+
+  /**
+   * Leetcode 833 ： Find And Replace in String.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s string
+   * @param indices int[]
+   * @param sources string[]
+   * @param targets string[]
+   * @return string
+   */
+  public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < indices.length; i++) {
+      map.put(indices[i], i);
+    }
+    Arrays.sort(indices);
+    String ans = s.substring(0, indices[0]);
+    for (int i = 0; i < indices.length; i++) {
+      int idx = indices[i];
+      String str = sources[map.get(idx)];
+      if (!s.substring(idx, idx + str.length()).equals(str)) {
+        if (i + 1 < indices.length) {
+          int next = indices[i + 1];
+          ans += s.substring(idx, next);
+          continue;
+        } else {
+          ans += s.substring(idx);
+          break;
+        }
+      }
+      ans += targets[map.get(idx)];
+      if (i + 1 < indices.length) {
+        int idxNext = indices[i + 1];
+        ans += s.substring(idx + str.length(), idxNext);
+      }
+      if (i == indices.length - 1 && idx + str.length() < s.length()) {
+        ans += s.substring(idx + str.length());
+      }
+    }
+    return ans;
+  }
 }
 
