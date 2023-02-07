@@ -360,4 +360,58 @@ math {
     }
     return res;
   }
+
+  /**
+   * Leetcode 835 : Image Overlap.
+   * @Difficulty: medium
+   * @OptimalComplexity: O(n2) & O(n)
+   * @param img1 int[][]
+   * @param img2 int[][]
+   * @return int
+   */
+  public int largestOverlap(int[][] img1, int[][] img2) {
+    Set<Integer> set2 = new HashSet<>();
+    Set<Integer> set1 = new HashSet<>();
+    int n = img2.length;
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        if (img2[i][j] == 1) {
+          set2.add(i * 100 + j);
+        }
+        if (img1[i][j] == 1) {
+          set1.add(i * 100 + j);
+        }
+      }
+    }
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int a : set1) {
+      for (int b : set2) {
+        map.put(a - b, map.getOrDefault(a - b, 0) + 1);
+      }
+    }
+    int max = 0;
+    for (int i : map.keySet()) {
+      max = Math.max(max, map.get(i));
+    }
+    return max;
+
+  }
+
+  /**
+   * Leetcode 836 : Rectangle Overlap.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(1) & O(1)
+   * @param rec1 int[]
+   * @param rec2 int[]
+   * @return boolean
+   */
+  public boolean isRectangleOverlap(int[] rec1, int[] rec2) {
+    if(rec2[1] >= rec1[3] || rec1[1] >= rec2[3]){
+      return false;
+    }
+    if(rec1[0] >= rec2[2] || rec1[2] <= rec2[0]){
+      return false;
+    }
+    return true;
+  }
 }

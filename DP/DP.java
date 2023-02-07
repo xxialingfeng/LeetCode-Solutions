@@ -765,4 +765,29 @@ public class DP {
     }
     return dp[nums.length][k];
   }
+
+  /**
+   * Leetcode 837 : New 21 Game.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(1)
+   * @param n int
+   * @param k int
+   * @param maxPts int
+   * @return double
+   */
+  public double new21Game(int n, int k, int maxPts) {
+    double[] dp = new double[k + maxPts];
+    if (k == 0) {
+      return 1.0;
+    }
+    for (int i = k; i <= n && i < dp.length; i++) {
+      dp[i] = 1.0;
+    }
+    for (int i = k - 1; i >= 0; i--) {
+      for (int j = 1; j <= maxPts; j++) {
+        dp[i] += dp[i + j] / maxPts;
+      }
+    }
+    return dp[0];
+  }
 }
