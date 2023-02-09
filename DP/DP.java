@@ -790,4 +790,29 @@ public class DP {
     }
     return dp[0];
   }
+
+  /**
+   * Leetcode 152 : Maximum Product Subarray.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @return int
+   */
+  public int maxProduct(int[] nums) {
+    int[] dpMax = new int[nums.length + 1];
+    int[] dpMin = new int[nums.length + 1];
+    Arrays.fill(dpMin, Integer.MAX_VALUE);
+    Arrays.fill(dpMax, Integer.MIN_VALUE);
+    dpMax[0] = 1;
+    dpMin[0] = 1;
+    for (int i = 1; i <= nums.length; i++) {
+      dpMax[i] = Math.max(dpMax[i - 1] * nums[i - 1], Math.max(dpMin[i - 1] * nums[i - 1], nums[i - 1]));
+      dpMin[i] = Math.min(dpMin[i - 1] * nums[i - 1], Math.min(dpMax[i - 1] * nums[i - 1], nums[i - 1]));
+    }
+    int ans = nums[0];
+    for (int i = 1; i <= nums.length; i++) {
+      ans = Math.max(ans, dpMax[i]);
+    }
+    return ans == Integer.MIN_VALUE ? 0 : ans;
+  }
 }

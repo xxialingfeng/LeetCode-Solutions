@@ -560,4 +560,35 @@ public class BFS {
     }
     return -1;
   }
+
+  /**
+   * Leetcode 841 : Keys and Rooms.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m + n) * O(n)
+   * @param rooms list of list of integers
+   * @return boolean
+   */
+  public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+    boolean[] visited = new boolean[rooms.size()];
+    Queue<Integer> queue = new LinkedList<>();
+    for (int key : rooms.get(0)) {
+      queue.offer(key);
+    }
+    visited[0] = true;
+    while (!queue.isEmpty()) {
+      int key = queue.poll();
+      visited[key] = true;
+      for (int nextRoom : rooms.get(key)) {
+        if (!visited[nextRoom]) {
+          queue.offer(nextRoom);
+        }
+      }
+    }
+    for (boolean isVisited : visited) {
+      if (!isVisited) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

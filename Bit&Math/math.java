@@ -406,12 +406,40 @@ math {
    * @return boolean
    */
   public boolean isRectangleOverlap(int[] rec1, int[] rec2) {
-    if(rec2[1] >= rec1[3] || rec1[1] >= rec2[3]){
+    if (rec2[1] >= rec1[3] || rec1[1] >= rec2[3]) {
       return false;
     }
-    if(rec1[0] >= rec2[2] || rec1[2] <= rec2[0]){
+    if (rec1[0] >= rec2[2] || rec1[2] <= rec2[0]) {
       return false;
     }
     return true;
+  }
+
+  /**
+   * Leetcode 840 : Magic Squares In Grid.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(n2)
+   * @param grid int[][]
+   * @return int
+   */
+  public int numMagicSquaresInside(int[][] grid) {
+    int count = 0;
+    for (int i = 1; i < grid.length - 1; i++) {
+      for (int j = 1; j < grid[i].length - 1; j++) {
+        if (grid[i][j] == 5) {
+          count += grid[i - 1][j - 1] * grid[i - 1][j] * grid[i - 1][j + 1] * grid[i][j - 1] * grid[i][j]
+              * grid[i][j + 1] * grid[i + 1][j - 1] * grid[i + 1][j] * grid[i + 1][j + 1] == 362880
+              && grid[i - 1][j - 1] + grid[i - 1][j] + grid[i - 1][j + 1] == 15
+              && grid[i][j - 1] + grid[i][j] + grid[i][j + 1] == 15
+              && grid[i + 1][j - 1] + grid[i + 1][j] + grid[i + 1][j + 1] == 15
+              && grid[i - 1][j - 1] + grid[i][j - 1] + grid[i + 1][j - 1] == 15
+              && grid[i - 1][j] + grid[i][j] + grid[i + 1][j] == 15
+              && grid[i - 1][j + 1] + grid[i][j + 1] + grid[i + 1][j + 1] == 15
+              && grid[i - 1][j - 1] + grid[i][j] + grid[i + 1][j + 1] == 15
+              && grid[i - 1][j + 1] + grid[i][j] + grid[i + 1][j - 1] == 15 ? 1 : 0;
+        }
+      }
+    }
+    return count;
   }
 }

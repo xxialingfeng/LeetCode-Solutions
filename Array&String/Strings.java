@@ -1296,5 +1296,79 @@ public class Strings {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 838 : Push Dominoes.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param dominoes string
+   * @return string
+   */
+  public String pushDominoes(String dominoes) {
+    boolean[] flag1 = new boolean[dominoes.length()];
+    boolean[] flag2 = new boolean[dominoes.length()];
+    int idx = 0;
+    char[] arr = dominoes.toCharArray();
+    while (idx < dominoes.length()) {
+      if (dominoes.charAt(idx) == 'R') {
+        idx++;
+        while (idx < dominoes.length() && dominoes.charAt(idx) != 'L') {
+          flag1[idx] = true;
+          idx++;
+        }
+      }
+      idx++;
+    }
+    idx = dominoes.length() - 1;
+    while (idx >= 0) {
+      if (dominoes.charAt(idx) == 'L') {
+        idx--;
+        while (idx >= 0 && dominoes.charAt(idx) != 'R') {
+          flag2[idx] = true;
+          idx--;
+        }
+      }
+      idx--;
+    }
+    int i = 0;
+    while (i < arr.length) {
+      if (!flag1[i] && !flag2[i]) {
+        i++;
+        continue;
+      }
+      if (flag1[i] && !flag2[i]) {
+        arr[i] = 'R';
+        i++;
+      }
+      if (i < arr.length && !flag1[i] && flag2[i]) {
+        arr[i] = 'L';
+        i++;
+      }
+      if (i < arr.length && flag1[i] && flag2[i]) {
+        int cnt = 0;
+        int prev = i;
+        while (i < arr.length && flag1[i] && flag2[i]) {
+          i++;
+          cnt++;
+        }
+        if (cnt % 2 != 0) {
+          for (int j = prev; j < prev + (cnt - 1) / 2; j++) {
+            arr[j] = 'R';
+          }
+          for (int k = prev + (cnt - 1) / 2 + 1; k < cnt + prev; k++) {
+            arr[k] = 'L';
+          }
+        } else {
+          for (int j = prev; j < prev + cnt / 2; j++) {
+            arr[j] = 'R';
+          }
+          for (int k = prev + cnt / 2; k < cnt + prev; k++) {
+            arr[k] = 'L';
+          }
+        }
+      }
+    }
+    return new String(arr);
+  }
 }
 

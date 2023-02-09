@@ -436,4 +436,62 @@ public class UnionFInd {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 839 : Similar String Groups.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n2 * m + nlog(n)) & O(n)
+   * @param strs
+   * @return
+   */
+  public int numSimilarGroups(String[] strs) {
+    int[] parents = new int[strs.length];
+    for (int i = 0; i < parents.length; i++) {
+      parents[i] = i;
+    }
+    int count = parents.length;
+    for (int i = 0; i < strs.length - 1; i++) {
+      for (int j = i + 1; j < strs.length; j++) {
+        if (isSim(strs[i], strs[j])) {
+          count = union(i, j, parents, count);
+        }
+      }
+    }
+    return count;
+  }
+
+  public int union(int x, int v, int[] parents, int count) {
+    int rootx = find(x, parents);
+    int rootv = find(v, parents);
+    if (rootx == rootv) {
+      return count;
+    }
+    parents[rootx] = parents[rootv];
+    return --count;
+  }
+
+  public int find(int x, int[] parents) {
+    if (x != parents[x]) {
+      parents[x] = find(parents[x], parents);
+    }
+    return parents[x];
+  }
+
+  public boolean isSim(String str1, String str2) {
+    if (str1.equals(str2)) {
+      return true;
+    }
+    int cnt = 0;
+    int index = 0;
+    while (index < str1.length()) {
+      if (str1.charAt(index) != str2.charAt(index)) {
+        cnt++;
+      }
+      if (cnt > 2) {
+        return false;
+      }
+      index++;
+    }
+    return true;
+  }
 }
