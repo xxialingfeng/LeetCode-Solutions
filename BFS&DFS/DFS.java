@@ -1479,4 +1479,43 @@ public class DFS {
       preOrder(neighbor, root);
     }
   }
+
+  /**
+   * Leetcode 841 : Split Array into Fibonacci Sequence
+   * @param num String
+   * @return list of integer.
+   */
+  public List<Integer> splitIntoFibonacci(String num) {
+    List<Integer> ans = new ArrayList<>();
+    dfs(num, ans, 0);
+    return ans;
+  }
+
+  /**
+   * dfs method for leetcode 841/
+   * @param str string
+   * @param ans list of integer
+   * @param idx int
+   * @return boolean
+   */
+  public boolean dfs(String str, List<Integer> ans, int idx) {
+    if (idx == str.length()) {
+      return ans.size() >= 3;
+    }
+    for (int i = idx + 1; i <= str.length(); i++) {
+      String curr = str.substring(idx, i);
+      if (str.charAt(idx) == '0' && i > idx + 1 || curr.length() > 10 || Long.valueOf(curr) > Integer.MAX_VALUE) {
+        break;
+      }
+      int val = Integer.valueOf(curr);
+      int prevOne = ans.size() >= 2 ? ans.get(ans.size() - 1) : -1;
+      int prevTwo = ans.size() >= 2 ? ans.get(ans.size() - 2) : -1;
+      ans.add(val);
+      if ((prevOne == -1 || prevTwo == -1 || prevOne + prevTwo == val) && dfs(str, ans, i)) {
+        return true;
+      }
+      ans.remove(ans.size() - 1);
+    }
+    return false;
+  }
 }
