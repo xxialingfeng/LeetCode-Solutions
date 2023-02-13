@@ -64,4 +64,33 @@ public class TwoPointers {
     return ans;
   }
 
+  /**
+   * Leetcode 845 : Longest Mountain in Array.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(1)
+   * @param arr int[]
+   * @return int
+   */
+  public int longestMountain(int[] arr) {
+    int i = 0;
+    int ans = 0;
+    while (i < arr.length) {
+      int left = i - 1;
+      int right = i + 1;
+      while (left >= 0 && arr[left] < arr[left + 1]) {
+        left--;
+      }
+      while (right < arr.length && arr[right] < arr[right - 1]) {
+        right++;
+      }
+      if (left == i - 1 || right == i + 1) {
+        i++;
+        continue;
+      }
+      ans = Math.max(ans, right - left - 1);
+      i++;
+    }
+    return ans >= 3 ? ans : 0;
+  }
+
 }

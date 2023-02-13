@@ -1370,5 +1370,45 @@ public class Strings {
     }
     return new String(arr);
   }
+
+  /**
+   * Leetcode 844 : Backspace String Compare.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s string
+   * @param t string
+   * @return boolean
+   */
+  public boolean backspaceCompare(String s, String t) {
+    List<Character> sc = new ArrayList<>();
+    List<Character> tc = new ArrayList<>();
+    for (int i = 0; i < s.length(); i++) {
+      if (s.charAt(i) == '#') {
+        if (sc.size() > 0) {
+          sc.remove(sc.size() - 1);
+        }
+      } else {
+        sc.add(s.charAt(i));
+      }
+    }
+    for (int i = 0; i < t.length(); i++) {
+      if (t.charAt(i) == '#') {
+        if (tc.size() > 0) {
+          tc.remove(tc.size() - 1);
+        }
+      } else {
+        tc.add(t.charAt(i));
+      }
+    }
+    String sb1 = "";
+    String sb2 = "";
+    for (char c : sc) {
+      sb1 += c;
+    }
+    for (char c : tc) {
+      sb2 += c;
+    }
+    return sb1.equals(sb2);
+  }
 }
 

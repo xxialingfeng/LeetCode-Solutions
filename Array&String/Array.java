@@ -1146,4 +1146,39 @@ public class Array {
     }
     return image;
   }
+
+  /**
+   * Leetcode 846 : Hand of Straights.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param hand int[]
+   * @param groupSize int
+   * @return boolean
+   */
+  public boolean isNStraightHand(int[] hand, int groupSize) {
+    int n = hand.length;
+    TreeMap<Integer, Integer> map = new TreeMap<>();
+    for (int i : hand) {
+      map.put(i, map.getOrDefault(i, 0) + 1);
+    }
+    while (!map.isEmpty()) {
+      int key = map.firstKey();
+      map.put(key, map.get(key) - 1);
+      if (map.get(key) <= 0) {
+        map.remove(key);
+      }
+      int curr = key + 1;
+      for (int i = 1; i < groupSize; i++) {
+        if (!map.containsKey(curr)) {
+          return false;
+        }
+        map.put(curr, map.get(curr) - 1);
+        if (map.get(curr) <= 0) {
+          map.remove(curr);
+        }
+        curr++;
+      }
+    }
+    return true;
+  }
 }
