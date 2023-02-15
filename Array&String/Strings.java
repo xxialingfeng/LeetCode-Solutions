@@ -1410,5 +1410,25 @@ public class Strings {
     }
     return sb1.equals(sb2);
   }
+
+  /**
+   * Leetcode 848 : Shifting Letters.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(26)
+   * @param s string
+   * @param shifts int[]
+   * @return string
+   */
+  public String shiftingLetters(String s, int[] shifts) {
+    char[] letter = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    int n = shifts.length;
+    long sum = 0;
+    char[] crr = s.toCharArray();
+    for (int i = crr.length - 1; i >= 0; i--) {
+      sum += shifts[i];
+      crr[i] = letter[(int)((crr[i] - 'a' + sum) % 26)];
+    }
+    return new String(crr);
+  }
 }
 

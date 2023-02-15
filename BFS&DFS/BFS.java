@@ -591,4 +591,42 @@ public class BFS {
     }
     return true;
   }
+
+  /**
+   * Leetcode 847 : Shortest Path Visiting All Nodes.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n * 2^n) & O(n * 2^n)
+   * @param graph int[][]
+   * @return int
+   */
+  public int shortestPathLength(int[][] graph) {
+    int n = graph.length;
+    int ans = 0;
+    Queue<int[]> queue = new LinkedList<>();
+    boolean[][] seen = new boolean[n][1 << n];
+    for (int i = 0; i < n; i++) {
+      queue.offer(new int[]{i, 1 << i, 0});
+      seen[i][1 << i] = true;
+    }
+
+    while (!queue.isEmpty()) {
+      int[] curr = queue.poll();
+      int val = curr[0];
+      int mask = curr[1];
+      int dst = curr[2];
+      if (mask == (1 << n) - 1) {
+        ans = dst;
+        break;
+      }
+
+      for (int next : graph[val]) {
+        int maskNext = mask | (1 << next);
+        if (!seen[next][maskNext]) {
+          queue.offer(new int[]{next, maskNext, dst + 1});
+          seen[next][maskNext] = true;
+        }
+      }
+    }
+    return ans;
+  }
 }

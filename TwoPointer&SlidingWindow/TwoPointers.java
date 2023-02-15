@@ -93,4 +93,45 @@ public class TwoPointers {
     return ans >= 3 ? ans : 0;
   }
 
+  /**
+   * Leetcode 849 : Maximize Distance to Closest Person.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(1)
+   * @param seats int[]
+   * @return int
+   */
+  public int maxDistToClosest(int[] seats) {
+    int ans = 1;
+    for (int i = 0; i < seats.length; i++) {
+      if (seats[i] == 1) {
+        continue;
+      }
+      if (i == 0) {
+        int right = 1;
+        while (right < seats.length && seats[right] == 0) {
+          right++;
+        }
+        ans = Math.max(ans, right - i);
+      } else if (i == seats.length - 1) {
+        int left = seats.length - 2;
+        while (left >= 0 && seats[left] == 0) {
+          left--;
+        }
+        ans = Math.max(ans, i - left);
+      } else {
+        int left = i - 1;
+        int right = i + 1;
+        while (left >= 0 && seats[left] == 0) {
+          left--;
+        }
+        while (right < seats.length && seats[right] == 0) {
+          right++;
+        }
+        int temp = Math.min(i - left, right - i);
+        ans = Math.max(ans, temp);
+      }
+    }
+    return ans;
+  }
+
 }

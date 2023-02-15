@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Arrays;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * A collection of Leetcode problems related to Arrays.
@@ -1180,5 +1181,41 @@ public class Array {
       }
     }
     return true;
+  }
+
+  /**
+   * Leetcode 850 : Rectangle Area II.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n * m log(n)) & O(m)
+   * @param rectangles int[][]
+   * @return int
+   */
+  public int rectangleArea(int[][] rectangles) {
+    int n = rectangles.length;
+    long ans = 0;
+    Arrays.sort(rectangles, (a, b) -> a[1] - b[1]);
+    TreeSet<Integer> set = new TreeSet<>();
+    for (int[] rectangle : rectangles) {
+      set.add(rectangle[0]);
+      set.add(rectangle[2]);
+    }
+    List<Integer> list = new ArrayList<>(set);
+    for (int i = 0, len = list.size(); i < len - 1; i++) {
+      long left = list.get(i);
+      long right = list.get(i + 1);
+      int top = 0;
+      for (int[] rectangle : rectangles) {
+        if (rectangle[0] <= left && rectangle[2] >= right) {
+          ans += (rectangle[3] - rectangle[1]) * (right - left);
+          if (rectangle[1] <= top) {
+            ans -= (Math.min(rectangle[3], top) - rectangle[1]) * (right - left);
+            top = Math.max(top, rectangle[3]);
+          } else {
+            top = rectangle[3];
+          }
+        }
+      }
+    }
+    return (int)(ans % 1000000007);
   }
 }
