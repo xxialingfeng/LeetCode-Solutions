@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 /**
  * A collection of leetcode problems related to Sorting.
  */
@@ -103,6 +108,51 @@ public class Sorting {
     reverse(nums, i + 1);
     long ans = Long.parseLong(new String(nums));
     return ans > Integer.MAX_VALUE ? -1 : (int) ans;
+  }
+
+  /**
+   * Leetcode 851 : Loud and Rich.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m * n) & O(m * n)
+   * @param richer int[][]
+   * @param quiet int[]
+   * @return int[]
+   */
+  public int[] loudAndRich(int[][] richer, int[] quiet) {
+    List<Integer>[] g = new List[quiet.length];
+    for (int i = 0; i < quiet.length; i++) {
+      g[i] = new ArrayList<>();
+    }
+    int[] inDeg = new int[quiet.length];
+    for (int[] rich : richer) {
+      int more = rich[0];
+      int less = rich[1];
+      g[more].add(less);
+      inDeg[less]++;
+    }
+    int[] ans = new int[quiet.length];
+    for (int i = 0; i < quiet.length; ++i) {
+      ans[i] = i;
+    }
+    Queue<Integer> queue = new LinkedList<>();
+    for (int i = 0; i < inDeg.length; i++) {
+      if (inDeg[i] == 0) {
+        queue.offer(i);
+      }
+    }
+    while (!queue.isEmpty()) {
+      int x = queue.poll();
+      for (int y : g[x]) {
+        if (quiet[ans[y]] > quiet[ans[x]]) {
+          ans[y] = ans[x];
+        }
+        inDeg[y]--;
+        if (inDeg[y] == 0) {
+          queue.offer(y);
+        }
+      }
+    }
+    return ans;
   }
 
 

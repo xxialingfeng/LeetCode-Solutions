@@ -1218,4 +1218,44 @@ public class Array {
     }
     return (int)(ans % 1000000007);
   }
+
+  /**
+   * Leetcode 853 : Car Fleet.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param target int
+   * @param position int[]
+   * @param speed int[]
+   * @return int
+   */
+  public int carFleet(int target, int[] position, int[] speed) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < position.length; i++) {
+      map.put(position[i], speed[i]);
+    }
+    Arrays.sort(position);
+    for (int i = 0; i < speed.length; i++) {
+      speed[i] = map.get(position[i]);
+    }
+    int ans = 1;
+    int idx = position.length - 1;
+    while (idx >= 1) {
+      if (speed[idx - 1] == speed[idx]) {
+        ans++;
+        idx--;
+        continue;
+      }
+      double t = (double)( position[idx] - position[idx - 1]) / (speed[idx - 1] - speed[idx]);
+      double dis = position[idx] + speed[idx] * t;
+      if (t > 0 && dis <= target) {
+        position[idx - 1] = position[idx];
+        speed[idx - 1] = speed[idx];
+        idx--;
+      } else {
+        ans++;
+        idx--;
+      }
+    }
+    return ans;
+  }
 }
