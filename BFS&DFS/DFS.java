@@ -1518,4 +1518,47 @@ public class DFS {
     }
     return false;
   }
+
+  int min854 = Integer.MAX_VALUE;
+
+  /**
+   * Leetcode 854 : K-Similar Strings.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n2) & O(1)
+   * @param s1 string
+   * @param s2 string
+   * @return
+   */
+  public int kSimilarity(String s1, String s2) {
+    dfs(s1.toCharArray(), s2.toCharArray(), 0, 0);
+    return min854;
+
+  }
+
+  public void dfs(char[] crr1, char[] crr2, int curr, int k) {
+    if (curr == crr1.length) {
+      min854 = Math.min(min854, k);
+      return;
+    }
+    if (k >= min) {
+      return;
+    }
+    if (crr1[curr] != crr2[curr]) {
+      for (int i = curr + 1; i < crr1.length; i++) {
+        if (crr1[curr] == crr2[i]) {
+          swap(crr2, curr, i);
+          dfs(crr1, crr2, curr + 1, k + 1);
+          swap(crr2, curr, i);
+        }
+      }
+    } else {
+      dfs(crr1, crr2, curr + 1, k);
+    }
+  }
+
+  public void swap(char[] crr, int a, int b) {
+    char temp = crr[a];
+    crr[a] = crr[b];
+    crr[b] = temp;
+  }
 }

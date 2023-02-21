@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * This is a collection of leetcode problems related to hash.
@@ -215,5 +216,108 @@ class hash {
       }
     }
     return ans;
+  }
+
+  /**
+   * Leetcode 855 : Exam Room.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(logn) & O(n)
+   */
+  class ExamRoom {
+    TreeSet<Integer> set;
+    int n;
+    public ExamRoom(int n) {
+      set = new TreeSet<>();
+      this.n = n;
+    }
+
+    public int seat() {
+      if (set.isEmpty()) {
+        set.add(0);
+        return 0;
+      }
+      int max = 0;
+      int pre = -1;
+      int l = -1;
+      int r = 0;
+      for (int idx : set) {
+        if (pre == -1) {
+          r = idx;
+          max = r - l;
+        } else if ((idx - pre) / 2 > max / 2) {
+          r = idx;
+          l = pre;
+          max = r - l;
+        }
+        pre = idx;
+      }
+      if (n - set.last() > max) {
+        set.add(n - 1);
+        return n - 1;
+      }
+      if (l == -1) {
+        set.add(0);
+        return 0;
+      }
+      set.add((l + r) / 2);
+      return (l + r) / 2;
+    }
+
+    public void leave(int p) {
+      set.remove(p);
+
+    }
+  }
+
+  /**
+   * Leetcode 860 : Lemonade Change.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param bills int[]
+   * @return boolean
+   */
+  public boolean lemonadeChange(int[] bills) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int bill : bills) {
+      if (bill == 5) {
+        map.put(5, map.getOrDefault(5, 0) + 1);
+      }
+      if (bill == 10) {
+        if (!map.containsKey(5)) {
+          return false;
+        }
+        map.put(10, map.getOrDefault(10, 0) + 1);
+        map.put(5, map.get(5) - 1);
+        if (map.get(5) == 0) {
+          map.remove(5);
+        }
+      }
+      if (bill == 20) {
+        map.put(20, map.getOrDefault(20, 0) + 1);
+        if (!map.containsKey(5)) {
+          return false;
+        }
+        if (!map.containsKey(10)) {
+          if (map.get(5) >= 3) {
+            map.put(5, map.get(5) - 3);
+            if (map.get(5) == 0) {
+              map.remove(5);
+            }
+            continue;
+          } else {
+            return false;
+          }
+        }
+        map.put(5, map.get(5) - 1);
+        map.put(10, map.get(10) - 1);
+        if (map.get(5) == 0) {
+          map.remove(5);
+        }
+        if (map.get(10) == 0) {
+          map.remove(10);
+        }
+      }
+    }
+    return true;
   }
 }

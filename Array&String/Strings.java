@@ -1430,5 +1430,42 @@ public class Strings {
     }
     return new String(crr);
   }
+
+  /**
+   * Leetcode 859 : Buddy Strings.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(m)
+   * @param s string
+   * @param goal string
+   * @return boolean
+   */
+  public boolean buddyStrings(String s, String goal) {
+    if (s.length() != goal.length()) {
+      return false;
+    }
+    if (s.equals(goal)) {
+      Set<Integer> set = new HashSet<>();
+      for (int i = 0; i < s.length(); i++) {
+        set.add(s.charAt(i) - 'a');
+      }
+      if (set.size() < s.length()) {
+        return true;
+      }
+    }
+    int[] temps = new int[10000];
+    int[] tempg = new int[10000];
+    int cnt = 0;
+    for (int i = 0; i < s.length(); i++) {
+      if (s.charAt(i) != goal.charAt(i)) {
+        temps[cnt] = s.charAt(i);
+        tempg[cnt] = goal.charAt(i);
+        cnt++;
+        if (cnt > 2) {
+          return false;
+        }
+      }
+    }
+    return cnt == 2 && temps[0] == tempg[1] && tempg[0] == temps[1];
+  }
 }
 

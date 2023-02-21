@@ -349,4 +349,40 @@ public class stack {
 
     return res;
   }
+
+  /**
+   * Leetcode 856 : Score of Parentheses.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s string
+   * @return int
+   */
+  public int scoreOfParentheses(String s) {
+    Stack<Integer> stack = new Stack<>();
+    int curr = 0;
+    int ans = 0;
+    for (int i = 0; i < s.length(); i++) {
+      if (s.charAt(i) == '(') {
+        stack.push(0);
+      } else {
+        if (stack.peek() == 0) {
+          stack.pop();
+          stack.push(1);
+        } else {
+          while (!stack.isEmpty() && stack.peek() != 0) {
+            curr += stack.pop();
+          }
+          stack.pop();
+          stack.push(curr * 2);
+          curr = 0;
+        }
+      }
+    }
+
+    while (!stack.isEmpty() && stack.peek() != -1) {
+      ans += stack.pop();
+    }
+
+    return ans;
+  }
 }

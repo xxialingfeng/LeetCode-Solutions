@@ -1258,4 +1258,41 @@ public class Array {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 861 : Score After Flipping Matrix.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m * n) & O(1)
+   * @param grid int[][]
+   * @return int
+   */
+  public int matrixScore(int[][] grid) {
+    int n = grid.length;
+    int m = grid[0].length;
+    for (int i = 0; i < grid.length; i++) {
+      if (grid[i][0] == 0) {
+        for (int j = 0; j < m; j++) {
+          grid[i][j] = grid[i][j] ^ 1;
+        }
+      }
+    }
+    for (int i = 0; i < m; i++) {
+      int temp = 0;
+      for (int[] ints : grid) {
+        temp += ints[i];
+      }
+      if (temp <= n / 2) {
+        for (int k = 0; k < n; k++) {
+          grid[k][i] = grid[k][i] ^ 1;
+        }
+      }
+    }
+    int ans = 0;
+    for (int[] ints : grid) {
+      for (int j = 0; j < m; j++) {
+        ans += (ints[j] * (1 << m - j - 1));
+      }
+    }
+    return ans;
+  }
 }

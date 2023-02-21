@@ -47,4 +47,31 @@ public class DivideAndConquer {
     max = Math.max(max,mult / curr);
     return max;
   }
+
+  /**
+   * Leetcode 856 : Score of Parentheses.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s string
+   * @return int
+   */
+  public int scoreOfParentheses(String s) {
+    if (s.length() == 2) {
+      return 1;
+    }
+    int score = 0;
+    int len = 0;
+    for (int i = 0; i < s.length(); i++) {
+      score += s.charAt(i) == '(' ? 1 : -1;
+      if (score == 0) {
+        len = i + 1;
+        break;
+      }
+    }
+    if (len == s.length()) {
+      return 2 * scoreOfParentheses(s.substring(1, s.length() - 1));
+    } else {
+      return scoreOfParentheses(s.substring(0, len)) + scoreOfParentheses(s.substring(len));
+    }
+  }
 }
