@@ -1,5 +1,6 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -628,5 +629,86 @@ public class BFS {
       }
     }
     return ans;
+  }
+  int[][] directions = new int[][]{{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+
+  /**
+   * Leetcode 864 : Shortest Path to Get All Keys.
+   * @Difficulty: hard
+   * @OptimalComplexity: O(mn * 2 ^ k) & O(mn * 2 ^ k)
+   * @param grid list of string
+   * @return int
+   */
+  public int shortestPathAllKeys(String[] grid) {
+    int m = grid.length;
+    int n = grid[0].length();
+    int startX = -1;
+    int startY = -1;
+    int count = 0;
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        char c = grid[i].charAt(j);
+        if (c == '@') {
+          startX = i;
+          startY = j;
+        } else if (c >= 'a' && c < 'g') {
+          count = Math.max(count, c - 'a' + 1);
+        }
+      }
+    }
+    int max = 1 << count;
+    int[][][] step = new int[m][n][max];
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        Arrays.fill(step[i][j], (int)1e9);
+      }
+    }
+    step[startX][startY][0] = 0;
+    Queue<int[]> queue = new LinkedList<>();
+    queue.add(new int[]{startX, startY, 0, 0});
+    while (!queue.isEmpty()) {
+      int[] curr = queue.poll();
+      for (int[] dir : directions) {
+        int x = curr[0] + dir[0];
+        int y = curr[1] + dir[1];
+        if (x < 0 || x == m || y < 0 || y == n) {
+          continue;
+        }
+        char c = grid[x].charAt(y);
+        if (c == '#') {
+          continue;
+        }
+        if (c == '.' || c == '@') {
+          //empty spaces or start point
+          if (step[x][y][curr[2]] > curr[3] + 1) {
+            step[x][y][curr[2]] = curr[3] + 1;
+            queue.offer(new int[]{x, y, curr[2], curr[3] + 1});
+          }
+        }
+        else if (Character.isUpperCase(c)) {
+          //no keys or less distance from start to here
+          if ((curr[2] & (1 << (c - 'A'))) == 0 || step[x][y][curr[2]] <= curr[3] + 1) {
+            continue;
+          }
+          //update
+          step[x][y][curr[2]] = curr[3] + 1;
+          queue.offer(new int[]{x, y, curr[2], curr[3] + 1});
+        } else {
+          // lower case
+          // already has better path, continue
+          if (step[x][y][curr[2] | (1 << (c - 'a'))] <= curr[3] + 1) {
+            continue;
+          }
+          // find all keys
+          if (max - 1 == (curr[2] | (1 << (c - 'a')))) {
+            return curr[3] + 1;
+          }
+          // else , update
+          step[x][y][curr[2] | (1 << (c - 'a'))] = curr[3] + 1;
+          queue.offer(new int[]{x, y, curr[2] | (1 << (c - 'a')), curr[3] + 1});
+        }
+      }
+    }
+    return -1;
   }
 }

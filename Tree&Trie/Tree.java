@@ -579,4 +579,34 @@ public class Tree {
     }
     return containsOne(root.left) || containsOne(root.right);
   }
+
+  /**
+   * Leetcode 865 : Smallest Subtree with all the Deepest Nodes.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param root treenode
+   * @return treenode
+   */
+  public TreeNode subtreeWithAllDeepest(TreeNode root) {
+    if (root == null) {
+      return null;
+    } else {
+      int ldep = maxD(root.left);
+      int rdep = maxD(root.right);
+      if (ldep == rdep) {
+        return root;
+      } else if (ldep > rdep) {
+        return subtreeWithAllDeepest(root.left);
+      } else {
+        return subtreeWithAllDeepest(root.right);
+      }
+    }
+  }
+
+  public int maxD(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    return Math.max(maxD(root.left), maxD(root.right)) + 1;
+  }
 }
