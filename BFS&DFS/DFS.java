@@ -1561,4 +1561,50 @@ public class DFS {
     crr[a] = crr[b];
     crr[b] = temp;
   }
+
+  Map<TreeNode, TreeNode> map863 = new HashMap<>();
+  List<Integer> ans863 = new ArrayList<>();
+
+  /**
+   * Leetcode 863 : All Nodes Distance K in Binary Tree.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root treenode
+   * @param target treenode
+   * @param k int
+   * @return list of integer
+   */
+  public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+    findParent(root, null);
+    findAns(target, null, 0, k);
+    return ans863;
+  }
+
+  public void findParent(TreeNode root, TreeNode parent) {
+    if (root == null) {
+      return;
+    }
+    map863.put(root, parent);
+    findParent(root.left, root);
+    findParent(root.right, root);
+  }
+
+  public void findAns(TreeNode root, TreeNode from, int distance, int k) {
+    if (root == null) {
+      return;
+    }
+    if (distance == k) {
+      ans863.add(root.val);
+      return;
+    }
+    if (root.left != from) {
+      findAns(root.left, root, distance + 1, k);
+    }
+    if (root.right != from) {
+      findAns(root.right, root, distance + 1, k);
+    }
+    if (map863.get(root) != from) {
+      findAns(map863.get(root), root, distance + 1, k);
+    }
+  }
 }
