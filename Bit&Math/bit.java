@@ -47,4 +47,36 @@ public class bit {
     }
     return true;
   }
+
+  /**
+   * Leetcode 868 : Binary Gap.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param n int
+   * @return int
+   */
+  public int binaryGap(int n) {
+    int ans = 0;
+    int count = 0;
+    int pre = -1;
+    int curr = -1;
+    while (n != 0) {
+      int bit = n % 2;
+      if (bit == 1) {
+        if (pre == -1) {
+          pre = count;
+        } else {
+          curr = count;
+          int dis = curr - pre;
+          if (dis > ans) {
+            ans = dis;
+          }
+          pre = curr;
+        }
+      }
+      count++;
+      n /= 2;
+    }
+    return ans;
+  }
 }

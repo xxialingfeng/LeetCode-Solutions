@@ -1607,4 +1607,40 @@ public class DFS {
       findAns(map863.get(root), root, distance + 1, k);
     }
   }
+
+  boolean[] visited869;
+
+  /**
+   * Leetcode 869 : Reordered Power of 2.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m!) & O(m)
+   * @param n int
+   * @return boolean
+   */
+  public boolean reorderedPowerOf2(int n) {
+    String str = String.valueOf(n);
+    char[] crr = str.toCharArray();
+    Arrays.sort(crr);
+    visited869 = new boolean[crr.length];
+    return dfs(crr, 0, 0);
+  }
+
+
+
+  public boolean dfs(char[] crr, int idx, int num) {
+    if (idx == crr.length) {
+      return (num & (num - 1)) == 0;
+    }
+    for (int i = 0; i < crr.length; i++) {
+      if ((num == 0 && crr[i] == '0') || visited869[i] || (i > 0 && !visited869[i - 1] && crr[i] == crr[i - 1])) {
+        continue;
+      }
+      visited869[i] = true;
+      if (dfs(crr, idx + 1, num * 10 + crr[i] - '0')) {
+        return true;
+      }
+      visited869[i] = false;
+    }
+    return false;
+  }
 }

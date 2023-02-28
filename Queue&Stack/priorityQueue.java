@@ -190,4 +190,36 @@ public class priorityQueue {
 
     return res;
   }
+
+  /**
+   * Leetcode 871 : Minimum Number of Refueling Stops.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(nlogn) & O(n)
+   * @param target int
+   * @param startFuel int
+   * @param stations int[][]
+   * @return int
+   */
+  public int minRefuelStops(int target, int startFuel, int[][] stations) {
+    PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> b - a);
+    int prev = 0;
+    int ans = 0;
+    int fuel = startFuel;
+    for (int i = 0; i <= stations.length; i++) {
+      int curr = i < stations.length ? stations[i][0] : target;
+      fuel -= (curr - prev);
+      while (fuel < 0 && !queue.isEmpty()) {
+        fuel += queue.poll();
+        ans++;
+      }
+      if (fuel < 0) {
+        return -1;
+      }
+      if (i < stations.length) {
+        queue.offer(stations[i][1]);
+        prev = curr;
+      }
+    }
+    return ans;
+  }
 }

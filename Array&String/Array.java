@@ -1295,4 +1295,48 @@ public class Array {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 867 : Transpose Matrix.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(m * n) & O(m * n)
+   * @param matrix int[][]
+   * @return int[][]
+   */
+  public int[][] transpose(int[][] matrix) {
+    int[][] ans = new int[matrix[0].length][matrix.length];
+    for (int i = 0; i < matrix.length; i++) {
+      for (int j = 0; j < matrix[0].length; j++) {
+        ans[j][i] = matrix[i][j];
+      }
+    }
+    return ans;
+  }
+
+  /**
+   * Leetcode 870 : Advantage Shuffle.
+   * @Difficulty: O(nlogn) & O(n)
+   * @param nums1 int[]
+   * @param nums2 int[]
+   * @return int[]
+   */
+  public int[] advantageCount(int[] nums1, int[] nums2) {
+    int[] ans = new int[nums1.length];
+    Arrays.sort(nums1);
+    Integer[] idx = new Integer[nums2.length];
+    for (int i = 0; i < nums2.length; i++) {
+      idx[i] = i;
+    }
+    Arrays.sort(idx, (i, j) -> nums2[i] - nums2[j]);
+    int l = 0;
+    int r = nums1.length - 1;
+    for (int i = 0; i < idx.length; i++) {
+      if (nums1[i] > nums2[idx[l]]) {
+        nums2[idx[l++]] = nums1[i];
+      } else {
+        nums2[idx[r--]] = nums1[i];
+      }
+    }
+    return nums2;
+  }
 }

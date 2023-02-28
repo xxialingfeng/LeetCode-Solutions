@@ -466,4 +466,61 @@ math {
     if (a == 0) return b;
     return gcd(b % a, a);
   }
+
+  /**
+   * Leetcode 866 : Prime Palindrome.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m) & O(1)
+   * @param n int
+   * @return int
+   */
+  public int primePalindrome(int n) {
+    if (n == 1 || n == 2) {
+      return 2;
+    }
+    for (int i = n; i < Integer.MAX_VALUE;) {
+      if (isPrime(i) && isPalin(i)) {
+        return i;
+      }
+      if (i > 11 && (i + "").length() % 2 == 0) {
+        i = (int)(Math.pow(10, (i + "").length()) + 1);
+      } else {
+        i++;
+      }
+    }
+    return 0;
+  }
+
+  /**
+   * if a number is a prime
+   * @param n int
+   * @return boolean
+   */
+  public boolean isPrime(int n) {
+    for (int i = 2; i <= Math.sqrt(n); i++) {
+      if (n % i == 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * if the number is a palindrome.
+   * @param n int
+   * @return boolean
+   */
+  public boolean isPalin(int n) {
+    String str = String.valueOf(n);
+    int left = 0;
+    int right = str.length() - 1;
+    while (left < right) {
+      if (str.charAt(left) != str.charAt(right)) {
+        return false;
+      }
+      left++;
+      right--;
+    }
+    return true;
+  }
 }
