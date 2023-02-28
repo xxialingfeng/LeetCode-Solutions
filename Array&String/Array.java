@@ -1339,4 +1339,81 @@ public class Array {
     }
     return nums2;
   }
+
+  /**
+   * Leetcode 874 : Walking Robot Simulation.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) * O(n)
+   * @param commands int[]
+   * @param obstacles int[][]
+   * @return int
+   */
+  public int robotSim(int[] commands, int[][] obstacles) {
+    Set<String> set = new HashSet<>();
+    for (int[] obstacle : obstacles) {
+      set.add(obstacle[0] + "," + obstacle[1]);
+    }
+    int[] dx = {0, 1, 0, -1};
+    int[] dy = {1, 0, -1, 0};
+    int count = 0;
+    int x = 0;
+    int y = 0;
+    int ans = 0;
+    int tx;
+    int ty;
+    for (int command : commands) {
+      if (command >= 0) {
+        for (int i = 0; i < command; i++) {
+          tx = x + dx[count];
+          ty = y + dy[count];
+          if (set.contains(tx + "," + ty)) {
+            break;
+          }
+          x = tx;
+          y = ty;
+          ans = Math.max(ans, x * x + y * y);
+        }
+      } else {
+        count = command == -1 ? (count + 1) % 4 : (count + 3) % 4;
+      }
+    }
+    return ans;
+  }
+
+  /**
+   * Leetcode 875 : Koko Eating Bananas.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlogn) & O(1)
+   * @param piles int[]
+   * @param h int
+   * @return int
+   */
+  public int minEatingSpeed(int[] piles, int h) {
+    int left = 1;
+    int right = Integer.MAX_VALUE;
+    while (left < right) {
+      int mid = left + (right - left) / 2;
+      if (possible(piles, h, mid)) {
+        right = mid;
+      } else {
+        left = mid + 1;
+      }
+    }
+    return left;
+  }
+
+  /**
+   * if possible to aet all the bananas in given time.
+   * @param piles int[]
+   * @param h int
+   * @param mid int
+   * @return boolean
+   */
+  public boolean possible(int[] piles, int h, int mid) {
+    int sum = 0;
+    for (int pile : piles) {
+      sum += ((pile - 1)/ mid) + 1;
+    }
+    return sum <= h;
+  }
 }

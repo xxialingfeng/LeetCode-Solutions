@@ -1643,4 +1643,45 @@ public class DFS {
     }
     return false;
   }
+
+  List<Integer> list1 = new ArrayList<>();
+  List<Integer> list2 = new ArrayList<>();
+
+  /**
+   * Leetcode 872 : Leaf-Similar Trees.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root1 treenode
+   * @param root2 treenode
+   * @return boolean
+   */
+  public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+    dfs(root1, list1);
+    dfs(root2, list2);
+    if (list1.size() != list2.size()) {
+      return false;
+    }
+    for (int i = 0; i < list1.size(); i++) {
+      if (!list1.get(i).equals(list2.get(i))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * dfs method for leetcode 872.
+   * @param node treenode
+   * @param list list of integer
+   */
+  public void dfs(TreeNode node, List<Integer> list) {
+    if (node == null) {
+      return;
+    }
+    if (node.left == null && node.right == null) {
+      list.add(node.val);
+    }
+    dfs(node.left, list);
+    dfs(node.right, list);
+  }
 }
