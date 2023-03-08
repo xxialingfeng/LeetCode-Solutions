@@ -873,4 +873,66 @@ public class DP {
     }
     return ans;
   }
+
+  /**
+   * leetcode 879 : Profitable Schemes.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(len * n * minProfit) & O(len * n * minProfit)
+   * @param n int
+   * @param minProfit int
+   * @param group int[]
+   * @param profit int[]
+   * @return int
+   */
+  public int profitableSchemes(int n, int minProfit, int[] group, int[] profit) {
+    int[][][] dp = new int[group.length + 1][n + 1][minProfit + 1];
+    dp[0][0][0] = 1;
+    for (int i = 1; i <= group.length; i++) {
+      int member = group[i - 1];
+      int earn = profit[i - 1];
+      for (int j = 0; j <= n; j++) {
+        for (int k = 0; k <= minProfit; k++) {
+          if (j < member) {
+            dp[i][j][k] = dp[i - 1][j][k];
+          } else {
+            dp[i][j][k] = (dp[i - 1][j][k] + dp[i - 1][j - member][Math.max(0, k - earn)] ) % 1000000007;
+          }
+        }
+      }
+    }
+    int sum = 0;
+    for (int j = 0; j <= n; j++) {
+      sum = (sum + dp[group.length][j][minProfit]) % 1000000007;
+    }
+    return sum;
+  }
+
+  /**
+   * Leetcode 887 : Super Egg Drop.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n * k) & O(n * k);
+   * @param k int
+   * @param n int
+   * @return int
+   */
+  public int superEggDrop(int k, int n) {
+    if (n == 1) {
+      return 1;
+    }
+    int[][] dp = new int[n + 1][k + 1];
+    for (int i = 1; i <= k; ++i) {
+      dp[1][i] = 1;
+    }
+    int count = -1;
+    for (int i = 2; i <= n; ++i) {
+      for (int j = 1; j <= k; ++j) {
+        dp[i][j] = 1 + dp[i - 1][j - 1] + dp[i - 1][j];
+      }
+      if (dp[i][k] >= n) {
+        count = i;
+        break;
+      }
+    }
+    return count;
+  }
 }

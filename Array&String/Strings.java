@@ -1467,5 +1467,90 @@ public class Strings {
     }
     return cnt == 2 && temps[0] == tempg[1] && tempg[0] == temps[1];
   }
+
+  /**
+   * Leetcode 880 : Decoded String at Index.
+   * @param s string
+   * @param k int
+   * @return string
+   */
+  public String decodeAtIndex(String s, int k) {
+    long size = 0;
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.charAt(i);
+      if (Character.isDigit(c)) {
+        size *= c - '0';
+      } else {
+        size++;
+      }
+    }
+    for (int i = s.length() - 1; i >= 0; i--) {
+      char c = s.charAt(i);
+      k %= size;
+      if (k == 0 && !Character.isDigit(c)) {
+        return String.valueOf(c);
+      }
+
+      if (Character.isDigit(c)) {
+        size /= c - '0';
+      } else {
+        size--;
+      }
+    }
+    return "";
+  }
+
+  /**
+   * Leetcode 890 : Find and Replace Pattern.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(N3) & O(N2)
+   * @param words list of string
+   * @param pattern string
+   * @return list of string
+   */
+  public List<String> findAndReplacePattern(String[] words, String pattern) {
+    int[] pat = convert(pattern);
+    List<String> ans = new ArrayList<>();
+    for (String str : words) {
+      if (str.length() != pattern.length()) {
+        continue;
+      }
+      if (same(convert(str), pat)) {
+        ans.add(str);
+      }
+    }
+    return ans;
+  }
+
+  public int[] convert(String str) {
+    int count = 0;
+    boolean[] vis = new boolean[str.length()];
+    StringBuilder sb = new StringBuilder();
+    int[] ans = new int[str.length()];
+    Arrays.fill(ans, -1);
+    for (int i = 0; i < str.length(); i++) {
+      if (!vis[i]) {
+        ans[i] = count;
+      }
+      vis[i] = true;
+      for (int j = i + 1; j < str.length(); j++) {
+        if (str.charAt(j) == str.charAt(i) && !vis[j]) {
+          ans[j] = count;
+          vis[j] = true;
+        }
+      }
+      count++;
+    }
+    return ans;
+  }
+
+  public boolean same(int[] a, int[] b) {
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 

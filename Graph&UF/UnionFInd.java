@@ -494,4 +494,45 @@ public class UnionFInd {
     }
     return true;
   }
+
+  /**
+   * Leetcode 886 : Possible Bipartition.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n * m) & O(n)
+   * @param n int
+   * @param dislikes int[][]
+   * @return boolean
+   */
+  public boolean possibleBipartition(int n, int[][] dislikes) {
+    Arrays.sort(dislikes, (a, b) -> a[0] - b[0]);
+    UnionFind uf = new UnionFind(n + 1);
+    Map<Integer, List<Integer>> map = new HashMap<>();
+    for (int i = 0; i < dislikes.length; i++) {
+      if (!map.containsKey(dislikes[i][0])) {
+        map.put(dislikes[i][0], new ArrayList<>());
+      }
+      if (!map.containsKey(dislikes[i][1])) {
+        map.put(dislikes[i][1], new ArrayList<>());
+      }
+      map.get(dislikes[i][0]).add(dislikes[i][1]);
+      map.get(dislikes[i][1]).add(dislikes[i][0]);
+    }
+    for (int i = 1; i <= n; i++) {
+      List<Integer> list = map.get(i);
+      if (list == null || list.size() == 1) {
+        continue;
+      }
+      for (int j = 1; j < list.size(); j++) {
+        uf.union(list.get(j), list.get(j - 1));
+      }
+    }
+
+    for (int i = 0; i < dislikes.length; i++) {
+      if (uf.isConnected(dislikes[i][0], dislikes[i][1])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }

@@ -523,4 +523,42 @@ math {
     }
     return true;
   }
+
+  /**
+   * Leetcode 878 : Nth Magical Number.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(logn) & O(1)
+   * @param n int
+   * @param a int
+   * @param b int
+   * @return int
+   */
+  public int nthMagicalNumber(int n, int a, int b) {
+    if (a % b == 0) {
+      return nthMagicalNumber(n, b);
+    }
+    if (b % a == 0) {
+      return nthMagicalNumber(n, a);
+    }
+    int p = a * b / gcd878(a, b);
+    long l = 1;
+    long r = (long) n * Math.min(a, b);
+    while (l <= r) {
+      long mid = l + (r - l) / 2;
+      if (mid / a + mid / b - mid / p >= n) { //num1 + num2 - num(1 + 2)
+        r = mid - 1;
+      } else {
+        l = mid + 1;
+      }
+    }
+    return (int)(l % 1000000007);
+  }
+
+  public int nthMagicalNumber(int n, int a) {
+    return (int)((long) n * a % 1000000007);
+  }
+
+  public int gcd878(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+  }
 }

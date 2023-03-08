@@ -136,4 +136,60 @@ public class Graph {
     return ans;
   }
 
+  static int INF = 0x3f3f3f3f;
+
+  /**
+   * Leetcode 882 : Reachable Nodes In Subdivided Graph.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n2) & O(n2)
+   * @param edges int[][]
+   * @param maxMoves int
+   * @param n int
+   * @return int
+   */
+  public int reachableNodes(int[][] edges, int maxMoves, int n) {
+    int[][] graph = new int[n][n];
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        graph[i][j] = INF;
+      }
+    }
+    for (int[] edge : edges) {
+      graph[edge[0]][edge[1]] = edge[2] + 1;
+      graph[edge[1]][edge[0]] = edge[2] + 1;
+    }
+    boolean[] isvisited = new boolean[n];
+    int[] dist = new int[n];
+    Arrays.fill(dist, INF);
+    dist[0] = 0;
+    for (int i = 0; i < n; i++) {
+      int t = -1;
+      for (int j = 0; j < n; j++) {
+        if (!isvisited[j] && (t == -1 || dist[j] < dist[t])) {
+          t = j;
+        }
+      }
+      isvisited[t] = true;
+      for (int j = 0; j < n; j++) {
+        dist[j] = Math.min(dist[j], dist[t] + graph[t][j]);
+      }
+    }
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+      if (dist[i] <= maxMoves) {
+        ans++;
+      }
+    }
+    for (int[] edge : edges) {
+      int a = edge[0];
+      int b = edge[1];
+      int c = edge[2];
+      int c1 = Math.max(0, maxMoves - dist[a]);
+      int c2 = Math.max(0, maxMoves - dist[b]);
+      ans += Math.min(c, c1 + c2);
+    }
+    return ans;
+
+  }
+
 }

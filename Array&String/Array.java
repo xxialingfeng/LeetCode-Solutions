@@ -1416,4 +1416,148 @@ public class Array {
     }
     return sum <= h;
   }
+
+  /**
+   * Keetcode 881 : Boats to Save People.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlogn) & O(1)
+   * @param people int[]
+   * @param limit int
+   * @return int
+   */
+  public int numRescueBoats(int[] people, int limit) {
+    Arrays.sort(people);
+    int count = 0;
+    int left = 0;
+    int right = people.length - 1;
+    while (left <= right) {
+      if (left == right) {
+        count++;
+        break;
+      }
+      int curr = people[right];
+      if (left <= right && curr + people[left] <= limit) {
+        left++;
+      }
+      right--;
+      count++;
+    }
+    return count;
+  }
+
+  /**
+   * Leetcode 883 : Projection Area of 3D Shapes.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n2) & O(1)
+   * @param grid int[][]
+   * @return int
+   */
+  public int projectionArea(int[][] grid) {
+    int xyarea = 0;
+    int yzarea = 0;
+    int zxarea = 0;
+
+    for (int i = 0; i < grid.length; i++) {
+      int maxyz = 0;
+      int maxzx = 0;
+      for (int j = 0; j < grid.length; j++) {
+        if (grid[i][j] != 0) {
+          xyarea++;
+        }
+        maxyz = Math.max(maxyz, grid[i][j]);
+        maxzx = Math.max(maxzx, grid[j][i]);
+      }
+      yzarea += maxyz;
+      zxarea += maxzx;
+    }
+
+    return xyarea + yzarea + zxarea;
+  }
+
+  /**
+   * Leetcode 884 : Uncommon Words from Two Sentences.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s1 string
+   * @param s2 string
+   * @return list of string
+   */
+  public String[] uncommonFromSentences(String s1, String s2) {
+    String[] split1 = s1.split(" ");
+    String[] split2 = s2.split(" ");
+    List<String> list = new ArrayList<>();
+    Map<String, Integer> store1 = new HashMap<>();
+    Map<String, Integer> store2 = new HashMap<>();
+    for (String str : split1) {
+      store1.put(str, store1.getOrDefault(str, 0) + 1);
+    }
+    for (String str : split2) {
+      store2.put(str, store2.getOrDefault(str, 0) + 1);
+    }
+    for (String str : store1.keySet()) {
+      if (store1.get(str) == 1 && !store2.containsKey(str)) {
+        list.add(str);
+      }
+    }
+    for (String str : store2.keySet()) {
+      if (store2.get(str) == 1 && !store1.containsKey(str)) {
+        list.add(str);
+      }
+    }
+    String[] ans = new String[list.size()];
+    for (int i = 0; i < ans.length; i++) {
+      ans[i] = list.get(i);
+    }
+    return ans;
+  }
+
+  /**
+   * Leetcode 885 : Spiral Matrix III.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(n * m)
+   * @param rows int
+   * @param cols int
+   * @param rStart int
+   * @param cStart int
+   * @return int[][]
+   */
+  public int[][] spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
+    int[][] ans = new int[rows * cols][2];
+    int left = cStart;
+    int right = cStart;
+    int up = rStart;
+    int down = rStart;
+    int cnt = 0;
+    while (cnt < rows * cols) {
+      for (int i = left; i <= right; i++) {
+        if (i >= 0 && i < cols && up >= 0 && up < rows) {
+          ans[cnt] = new int[]{up, i};
+          cnt++;
+        }
+      }
+      right++;
+      for (int i = up; i <= down; i++) {
+        if (i >= 0 && i < rows && right >= 0 && right < cols) {
+          ans[cnt] = new int[]{i, right};
+          cnt++;
+        }
+      }
+      down++;
+      for (int i = right; i >= left; i--) {
+        if (i >= 0 && i < cols && down >= 0 && down < rows) {
+          ans[cnt] = new int[]{down, i};
+          cnt++;
+        }
+      }
+      left--;
+      for (int i = down; i >= up; i--) {
+        if (i >= 0 && i < rows && left >= 0 && left < cols) {
+          ans[cnt] = new int[]{i, left};
+          cnt++;
+        }
+      }
+      up--;
+    }
+    return ans;
+  }
 }
