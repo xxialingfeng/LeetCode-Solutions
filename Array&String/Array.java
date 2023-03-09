@@ -1560,4 +1560,30 @@ public class Array {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 892 : Surface Area of 3D Shapes.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n2) & O(1)
+   * @param grid int[][]
+   * @return int
+   */
+  public int surfaceArea(int[][] grid) {
+    int ans = 0;
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid.length; j++) {
+        if (grid[i][j] != 0) {
+          ans += grid[i][j] * 4 + 2;
+        }
+        if (i > 0) {
+          ans -= Math.min(grid[i - 1][j], grid[i][j]) * 2;
+        }
+
+        if (j > 0) {
+          ans -= Math.min(grid[i][j - 1], grid[i][j]) * 2;
+        }
+      }
+    }
+    return ans;
+  }
 }

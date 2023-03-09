@@ -1552,5 +1552,68 @@ public class Strings {
     }
     return true;
   }
+
+  /**
+   * Leetcode 893 : Groups of Special-Equivalent Strings.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n^2 * m) & O(m * n)
+   * @param words list of string
+   * @return int
+   */
+  public int numSpecialEquivGroups(String[] words) {
+    int ans = words.length;
+    boolean[] vis = new boolean[words.length];
+    for (int i = 0; i < words.length; i++) {
+      vis[i] = true;
+      for (int j = i + 1; j < words.length; j++) {
+        if (!vis[j] && isSame(words[i], words[j])) {
+          vis[j] = true;
+          ans--;
+        }
+      }
+    }
+    return ans;
+  }
+
+  /**
+   * If the two strings can be euqal after several swaps.
+   * @param a string
+   * @param b string
+   * @return boolean
+   */
+  public boolean isSame(String a, String b) {
+    if (a.equals(b)) {
+      return true;
+    }
+    Map<Character, Integer> odd = new HashMap<>();
+    Map<Character, Integer> even = new HashMap<>();
+    for (int i = 0; i < b.length(); i++) {
+      if (i % 2 == 0) {
+        even.put(b.charAt(i), even.getOrDefault(b.charAt(i), 0) + 1);
+      } else {
+        odd.put(b.charAt(i), odd.getOrDefault(b.charAt(i), 0) + 1);
+      }
+    }
+    for (int i = 0; i < a.length(); i++) {
+      if (i % 2 == 0) {
+        if (!even.containsKey(a.charAt(i))) {
+          return false;
+        }
+        even.put(a.charAt(i), even.get(a.charAt(i)) - 1);
+        if (even.get(a.charAt(i)) == 0) {
+          even.remove(a.charAt(i));
+        }
+      } else {
+        if (!odd.containsKey(a.charAt(i))) {
+          return false;
+        }
+        odd.put(a.charAt(i), odd.get(a.charAt(i)) - 1);
+        if (odd.get(a.charAt(i)) == 0) {
+          odd.remove(a.charAt(i));
+        }
+      }
+    }
+    return true;
+  }
 }
 

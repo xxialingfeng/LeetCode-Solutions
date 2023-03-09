@@ -1,11 +1,14 @@
 import java.util.Arrays;
 
+/**
+ * A collection of leetcode problems related to subsequence problems.
+ */
 public class subsequence {
 
   /**
    * Leetcode 891 : Sum of Subsequence Widths.
    * @Difficulty: Hard
-   * @OptimalComplexity: O(nlogn) & O(1)
+   * @OptimalComplexity: O(nlogn) & O(logn) -> stack space
    * @param nums int[]
    * @return int
    */

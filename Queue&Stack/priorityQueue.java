@@ -1,7 +1,9 @@
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -222,4 +224,38 @@ public class priorityQueue {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 895 : Maximum Frequency Stack.
+   */
+  class FreqStack {
+    int idx;
+    Map<Integer, Integer> map;
+    PriorityQueue<int[]> queue;
+    public FreqStack() {
+      queue = new PriorityQueue<>(new Comparator<int[]>(){
+        @Override
+        public int compare(int[] o1, int[] o2) {
+          if (o1[1] == o2[1]) {
+            return o2[2] - o1[2];
+          }
+          return o2[1] - o1[1];
+        }
+      });
+      map = new HashMap<>();
+      idx = 0;
+    }
+
+    public void push(int val) {
+      map.put(val, map.getOrDefault(val, 0) + 1);
+      queue.add(new int[]{val, map.get(val), idx++});
+    }
+
+    public int pop() {
+      int[] poll = queue.poll();
+      map.put(poll[0], poll[1] - 1);
+      return poll[0];
+    }
+  }
+
 }
