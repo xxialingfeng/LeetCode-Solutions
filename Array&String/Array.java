@@ -1586,4 +1586,32 @@ public class Array {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 896 : Monotonic Array.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param nums int[]
+   * @return boolean
+   */
+  public boolean isMonotonic(int[] nums) {
+    boolean increase = false;
+    boolean decrease = false;
+    for (int i = 1; i < nums.length; i++) {
+      if (nums[i] > nums[i - 1]) {
+        if (decrease) {
+          return false;
+        }
+        increase = true;
+      } else if (nums[i] < nums[i - 1]){
+        if (increase) {
+          return false;
+        }
+        decrease = true;
+      } else {
+        continue;
+      }
+    }
+    return true;
+  }
 }

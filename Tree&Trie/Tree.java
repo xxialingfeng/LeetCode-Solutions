@@ -609,4 +609,33 @@ public class Tree {
     }
     return Math.max(maxD(root.left), maxD(root.right)) + 1;
   }
+
+  List<Integer> list = new ArrayList<>();
+
+  /**
+   * Leetcode 897 : Increasing Order Search Tree.
+   * @Difficulty: O(n) & O(n)
+   * @param root treenode
+   * @return treenode
+   */
+  public TreeNode increasingBST(TreeNode root) {
+    TreeNode head = new TreeNode(-1);
+    TreeNode curr = head;
+    dfs897(root);
+    for (int i : list) {
+      curr.left = null;
+      curr.right = new TreeNode(i);
+      curr = curr.right;
+    }
+    return head.right;
+  }
+
+  public void dfs897(TreeNode node) {
+    if (node == null) {
+      return;
+    }
+    dfs897(node.left);
+    list.add(node.val);
+    dfs897(node.right);
+  }
 }
