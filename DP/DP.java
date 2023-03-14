@@ -935,4 +935,92 @@ public class DP {
     }
     return count;
   }
+
+  int ans;
+
+  /**
+   * Leetcode 902 : Numbers At Most N Given Digit Set.
+   * @Difficulty: hard
+   * @OptimalComplexity: O(n * 10) & O(n)
+   * @param digits list of string
+   * @param n int
+   * @return int
+   */
+  public int atMostNGivenDigitSet(String[] digits, int n) {
+    String t = String.valueOf(n);
+    int len = t.length();
+    int arrlen = digits.length;
+    ans = 0;
+    for (int i = 1; i < len; i++) {
+      ans += Math.pow(arrlen, i);
+    }
+    int[] dp = new int[len + 1];
+    dp[0] = 1;
+    for (int i = 1; i <= len; i++) {
+      for (String str : digits) {
+        if (Integer.valueOf(str) < Integer.valueOf(t.substring(t.length() - i, t.length() - i + 1))) {
+          dp[i] += Math.pow(digits.length, i - 1);
+        } else if (str.equals(t.substring(t.length() - i, t.length() - i + 1))) {
+          dp[i] += dp[i - 1];
+        }
+      }
+    }
+    //dfs(digits, n, 0, 0, len);
+    return ans + dp[t.length()];
+  }
+
+  /**
+   * dfs method for leetcode 902(TLE).
+   * @param digits list of string
+   * @param n int
+   * @param currsum long
+   * @param idx int
+   * @param len int
+   */
+  public void dfs(String[] digits, int n, long currsum, int idx, int len) {
+    if (idx == len) {
+      ans++;
+      return;
+    }
+    for (int i = 0; i < digits.length; i++) {
+      long newsum = currsum * 10 + Integer.parseInt(digits[i]);
+      if (newsum > n) {
+        break;
+      }
+      dfs(digits, n, newsum, idx + 1, len);
+    }
+  }
+
+  int mod = 1000000007;
+
+  /**
+   * Leetcode 903 : Valid Permutations for DI Sequence.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n3) & O(n3)
+   * @param s string
+   * @return int
+   */
+  public int numPermsDISequence(String s) {
+    int len = s.length();
+    int[][] dp = new int[len + 1][len + 1];
+    dp[0][0] = 1;
+    for (int i = 1; i <= len; i++) {
+      for (int j = 0; j <= i; j++) {
+        if (s.charAt(i - 1) == 'D') {
+          for (int k = j; k < i; k++) {
+            dp[i][j] = (dp[i][j] + dp[i - 1][k]) % mod;
+          }
+        } else {
+          for (int k = 0; k < j; k++) {
+            dp[i][j] = (dp[i][j] + dp[i - 1][k]) % mod;
+          }
+        }
+      }
+    }
+    int res = 0;
+    for (int i = 0; i <= len; i++) {
+      res = (res + dp[len][i]) % mod;
+    }
+    return res;
+  }
 }

@@ -1614,4 +1614,61 @@ public class Array {
     }
     return true;
   }
+
+  /**
+   * Leetcode 899 : Orderly Queue.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s string
+   * @param k k
+   * @return string
+   */
+  public String orderlyQueue(String s, int k) {
+    if (k == 1) {
+      String toCompare = s;
+      for (int i = 0; i < s.length() - 1; i++) {
+        s = s.substring(1) + s.charAt(0);
+        if (s.compareTo(toCompare) < 0) {
+          toCompare = s;
+        }
+      }
+      return toCompare;
+    } else {
+      char[] chs = s.toCharArray();
+      Arrays.sort(chs);
+      return new String(chs);
+    }
+  }
+
+  /**
+   * Leetcode 905 : Sort Array By Parity.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param nums int[]
+   * @return int[]
+   */
+  public int[] sortArrayByParity(int[] nums) {
+    int left = 0;
+    int right = nums.length - 1;
+    while (left < right) {
+      while (left < nums.length && nums[left] % 2 == 0) {
+        left++;
+      }
+      while (right >= 0 && nums[right] % 2 != 0) {
+        right--;
+      }
+      if (left < right && left < nums.length && right >= 0) {
+        swap(nums, left, right);
+        left++;
+        right--;
+      }
+    }
+    return nums;
+  }
+
+  public void swap(int[] nums, int i, int j) {
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+  }
 }

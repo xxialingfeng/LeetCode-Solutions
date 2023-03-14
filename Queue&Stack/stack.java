@@ -1,5 +1,7 @@
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -384,5 +386,26 @@ public class stack {
     }
 
     return ans;
+  }
+
+  class StockSpanner {
+    Deque<int[]> stack = new LinkedList<>();
+
+    /**
+     * Leetcode 901 Online Stock Span.
+     * @Difficulty: O(n) & O(n)
+     */
+    public StockSpanner() {
+
+    }
+
+    public int next(int price) {
+      int[] res = new int[]{price, 1};
+      while (!stack.isEmpty() && price >= stack.peek()[0]) {
+        res[1] += stack.pop()[1];
+      }
+      stack.push(res);
+      return res[1];
+    }
   }
 }

@@ -33,4 +33,43 @@ public class deque {
     }
     return min == Long.MAX_VALUE ? -1 : (int)min;
   }
+
+  class RLEIterator {
+    Deque<int[]> queue = new ArrayDeque<>();
+
+    /**
+     * Leetcode 900 : RLE Iterator.
+     * @Difficulty: Medium
+     * @OptimalComplexity: O(n) & O(n)
+     * @param encoding int[]
+     */
+    public RLEIterator(int[] encoding) {
+      for (int i = 1; i < encoding.length; i += 2) {
+        if (encoding[i - 1] == 0) {
+          continue;
+        }
+        queue.offer(new int[]{encoding[i], encoding[i - 1]});
+      }
+    }
+
+    public int next(int n) {
+      while (!queue.isEmpty()) {
+        int[] curr = queue.poll();
+        int currNum = curr[0];
+        int currCount = curr[1];
+        if (currCount > n) {
+          currCount -= n;
+          queue.offerFirst(new int[]{currNum, currCount});
+          return currNum;
+        } else if (currCount == n) {
+          return currNum;
+        } else {
+          int offset = n - currCount;
+          return next(offset);
+        }
+      }
+      return -1;
+    }
+  }
+
 }
