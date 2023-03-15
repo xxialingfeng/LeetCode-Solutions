@@ -1,3 +1,4 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -6,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -1614,6 +1616,54 @@ public class Strings {
       }
     }
     return true;
+  }
+
+  /**
+   * Leetcode 906 : Super Palindromes.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(9 ^ 9) & O(9 ^ 9)
+   * @param left string
+   * @param right string
+   * @return int
+   */
+  public int superpalindromesInRange(String left, String right) {
+    if ("0".equals(right)) {
+      return 1;
+    }
+    int res = 0;
+    long l = Long.parseLong(left);
+    long r = Long.parseLong(right);
+    Queue<String> queue = new ArrayDeque<>();
+    String[] turn  = {"0","1", "2","3","4","5","6","7","8","9"};
+    for (int i = 1; i < 10; i++) {
+      queue.offer(turn[i]);
+      queue.offer(turn[i] + turn[i]);
+    }
+    while (!queue.isEmpty()) {
+      String temp = queue.poll();
+      if (temp.length() > 10) {
+        continue;
+      }
+      long numtemp = Long.parseLong(temp);
+      if (numtemp * numtemp < 0) {
+        continue;
+      }
+      if (numtemp * numtemp <= r) {
+        StringBuilder buf = new StringBuilder();
+        buf.append(numtemp * numtemp);
+        if (numtemp * numtemp >= l && buf.toString().equals(buf.reverse().toString())) {
+          res++;
+        }
+        if (temp.length() % 2 == 0) {
+          for (String s : turn) {
+            queue.offer(temp.substring(0, temp.length() / 2) + s + temp.substring(temp.length() / 2));
+            queue.offer(temp.substring(0 , temp.length() / 2) + s + s + temp.substring(temp.length() / 2));
+
+          }
+        }
+      }
+    }
+    return res;
   }
 }
 

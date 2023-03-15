@@ -1671,4 +1671,49 @@ public class Array {
     nums[i] = nums[j];
     nums[j] = temp;
   }
+
+  /**
+   * Leetcode 908 : Smallest Range I.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(nlogn) & O(1)
+   * @param nums int[]
+   * @param k int
+   * @return int
+   */
+  public int smallestRangeI(int[] nums, int k) {
+    if (nums.length == 1) {
+      return 0;
+    }
+    Arrays.sort(nums);
+    if (nums[nums.length - 1] - nums[0] <= k * 2) {
+      return 0;
+    }
+    nums[0] += k;
+    nums[nums.length - 1] -= k;
+    return nums[nums.length - 1] - nums[0];
+  }
+
+  /**
+   * Leetcode 910 : Smallest Range II.
+   * @param nums int[]
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param k int
+   * @return int
+   */
+  public int smallestRangeII(int[] nums, int k) {
+    if (nums.length == 1) {
+      return 0;
+    }
+    Arrays.sort(nums);
+    int max = nums[nums.length - 1];
+    int min = nums[0];
+    int res = max - min;
+    for (int i = 1; i < nums.length; i++) {
+      min = Math.min(nums[0] + k, nums[i] - k);
+      max = Math.max(nums[nums.length - 1] - k, nums[i - 1] + k);
+      res = Math.min(max - min, res);
+    }
+    return res;
+  }
 }
