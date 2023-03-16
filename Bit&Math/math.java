@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**.
  * A collection of leetcode problems related to math
@@ -560,5 +561,31 @@ math {
 
   public int gcd878(int a, int b) {
     return b == 0 ? a : gcd(b, a % b);
+  }
+
+  /**
+   * Leetcode 914 :  X of a Kind in a Deck of Cards.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param deck int[]
+   * @return boolean
+   */
+  public boolean hasGroupsSizeX(int[] deck) {
+    if (deck.length == 1) {
+      return false;
+    }
+    TreeMap<Integer, Integer> map = new TreeMap<>();
+    for (int card : deck) {
+      map.put(card, map.getOrDefault(card, 0) + 1);
+    }
+    if (map.size() == 1) {
+      return true;
+    }
+    int t = 0;
+    for (int a : map.values()) {
+      t = gcd(t, a);
+    }
+    return t >= 2;
+
   }
 }

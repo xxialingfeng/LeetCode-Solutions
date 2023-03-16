@@ -711,4 +711,118 @@ public class BFS {
     }
     return -1;
   }
+
+  /**
+   * Leetcode 909 : Snakes and Ladders.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) * O(n2)
+   * @param board int[][]
+   * @return int
+   */
+  public int snakesAndLadders(int[][] board) {
+    Map<Integer,Integer> transfer = new HashMap<>();
+    int n = board.length;
+    for (int i=0;i<n;++i) {
+      for (int j=0;j<n;++j) {
+        if (board[i][j] != -1) {
+          transfer.put(posToNum(i,j,n), board[i][j]);
+        }
+      }
+    }
+    Queue<Integer> queue = new LinkedList<>();
+    boolean[] vis = new boolean[n * n + 1];
+    queue.offer(1);
+    vis[1] = true;
+    int ans = 0;
+    while (!queue.isEmpty()) {
+      int size = queue.size();
+      while (size-- > 0) {
+        int idx = queue.poll();
+        if (idx == n * n) {
+          return ans;
+        }
+        for (int i = 1; i <= 6; i++) {
+          int next = idx + i;
+          if (next <= n * n && !vis[next]) {
+            vis[next] = true;
+            if (transfer.containsKey(next)) {
+              queue.offer(transfer.get(next));
+            } else {
+              queue.offer(next);
+            }
+          }
+        }
+      }
+      ans++;
+    }
+    return -1;
+  }
+
+  /**
+   * reduce dimension of the array to one dimension.
+   * @param x int
+   * @param y int
+   * @param n int
+   * @return int
+   */
+  public int posToNum(int x, int y, int n) {
+    int group = n - 1 - x;
+    int res = 0;
+    if ((group & 1) == 0) {
+      res = n * group + y + 1;
+    } else {
+      res = n * group + n - y;
+    }
+    return res;
+  }
+
+  /**
+   * Leetcode 909 : Snakes and Ladders.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(n2)
+   * @param board int[][]
+   * @return int
+   */
+  public int snakesAndLaddersTwo(int[][] board) {
+    Queue<int[]> queue = new LinkedList<>();
+    int n = board.length;
+    queue.offer(new int[]{1, 0});
+    boolean[] vis = new boolean[n * n + 1];
+    while (!queue.isEmpty()) {
+      int[] curr = queue.poll();
+      for (int i = 1; i <= 6; i++) {
+        int nextIdx = curr[0] + i;
+        if (nextIdx > n * n) {
+          break;
+        }
+        int[] next = id2rc(nextIdx, n);
+        if (board[next[0]][next[1]] != -1) {
+          nextIdx = board[next[0]][next[1]];
+        }
+        if (nextIdx == n * n) {
+          return curr[1] + 1;
+        }
+        if (!vis[nextIdx]) {
+          queue.offer(new int[]{nextIdx, curr[1] + 1});
+          vis[nextIdx] = true;
+        }
+      }
+    }
+    return -1;
+  }
+
+  /**
+   * idx to row and column.
+   * @param id int
+   * @param n int
+   * @return int[]
+   */
+  public int[] id2rc(int id, int n) {
+    int r = (id - 1) / n;
+    int c = (id - 1) % n;
+    if (r % 2 == 1) {
+      c = n - c - 1;
+    }
+    return new int[]{n - 1 - r, c};
+  }
 }
