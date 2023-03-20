@@ -408,4 +408,29 @@ public class stack {
       return res[1];
     }
   }
+
+  /**
+   * Leetcode 921 : Minimum Add to Make Parentheses Valid.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param s string
+   * @return int
+   */
+  public int minAddToMakeValid(String s) {
+    Stack<Character> stack = new Stack<>();
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.charAt(i);
+      if (c == '(') {
+        stack.push(c);
+      }
+      if (c == ')') {
+        if (stack.isEmpty() || stack.peek() == ')') {
+          stack.push(c);
+        } else {
+          stack.pop();
+        }
+      }
+    }
+    return stack.size();
+  }
 }

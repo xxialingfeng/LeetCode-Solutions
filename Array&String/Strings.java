@@ -1665,5 +1665,87 @@ public class Strings {
     }
     return res;
   }
+
+  /**
+   * Leetcode 916 : Word Subsets.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(n * m)
+   * @param words1
+   * @param words2
+   * @return
+   */
+  public List<String> wordSubsets(String[] words1, String[] words2) {
+    Map<Character, Integer> mapAll = new HashMap<>();
+    for (String str : words2) {
+      Map<Character, Integer> mapTemp = new HashMap<>();
+      char[] crr = str.toCharArray();
+      for (char c : crr) {
+        mapTemp.put(c, mapTemp.getOrDefault(c, 0) + 1);
+      }
+      for (char c : mapTemp.keySet()) {
+        if (mapAll.containsKey(c)) {
+          if (mapAll.get(c) < mapTemp.get(c)) {
+            mapAll.put(c, mapTemp.get(c));
+          }
+        } else {
+          mapAll.put(c, mapTemp.get(c));
+        }
+      }
+    }
+    List<String> res = new ArrayList<>();
+    for (String str : words1) {
+      boolean flag = true;
+      int[] curr = new int[26];
+      for (int i = 0; i < str.length(); i++) {
+        curr[str.charAt(i) - 'a']++;
+      }
+      for (int i = 0; i < curr.length; i++) {
+        if (curr[i] != 0) {
+          for (char c : mapAll.keySet()) {
+            if (curr[c - 'a'] < mapAll.get(c)) {
+              flag = false;
+            }
+          }
+        }
+      }
+      if (flag) {
+        res.add(str);
+      }
+    }
+    return res;
+  }
+
+  /**
+   * Leetcode 917 : Reverse Only Letters.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param s string
+   * @return string
+   */
+  public String reverseOnlyLetters(String s) {
+    int l = 0;
+    int r = s.length() - 1;
+    char[] crr = s.toCharArray();
+    while (l < r) {
+      while (l < r && !Character.isLetter(crr[l])) {
+        l++;
+      }
+      while (l < r && !Character.isLetter(crr[r])) {
+        r--;
+      }
+      if (l < r) {
+        swap(crr, l, r);
+        l++;
+        r--;
+      }
+    }
+    return new String(crr);
+  }
+
+  public void swap(char[] c, int i, int j) {
+    char temp = c[i];
+    c[i] = c[j];
+    c[j] = temp;
+  }
 }
 

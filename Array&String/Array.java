@@ -1716,4 +1716,92 @@ public class Array {
     }
     return res;
   }
+
+  /**
+   * Leetcode 915 : Partition Array into Disjoint Intervals。
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @return int
+   */
+  public int partitionDisjoint(int[] nums) {
+    int[] max = new int[nums.length];
+    int[] min = new int[nums.length];
+    int ma = nums[0];
+    int mi = nums[nums.length - 1];
+    for (int i = 0; i < nums.length; i++) {
+      ma = Math.max(ma, nums[i]);
+      max[i] = ma;
+    }
+    for (int i = nums.length - 1; i >= 0; i--) {
+      mi = Math.min(mi, nums[i]);
+      min[i] = mi;
+    }
+    int ans = 0;
+    while (ans <= nums.length - 2) {
+      if (max[ans] <= min[ans + 1]) {
+        return ans + 1;
+      }
+      ans++;
+    }
+    return 1;
+  }
+
+  /**
+   * Leetcode 918 : Maximum Sum Circular Subarray.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param nums int[]
+   * @return int
+   */
+  public int maxSubarraySumCircular(int[] nums) {
+    int[] dp = new int[nums.length + 1];
+    dp[0] = nums[0];
+    for (int i = 1; i < nums.length; i++) {
+      dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
+    }
+    int max = Integer.MIN_VALUE;
+    for (int i = 0; i < dp.length - 1; i++) {
+      max = Math.max(max, dp[i]);
+    }
+    if (nums.length > 2) {
+      int sum = nums[0] + nums[nums.length - 1];
+      int min = nums[1];
+      int curr = 0;
+      for (int i = 1; i < nums.length - 1; i++) {
+        sum += nums[i];
+        curr = Math.min(curr, 0) + nums[i];
+        min = Math.min(min, curr);
+      }
+      return Math.max(sum - min, max);
+    } else {
+      return max;
+    }
+  }
+
+  /**
+   * Leetcode 922 : Sort Array By Parity II.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param nums int[]
+   * @return int[]
+   */
+  public int[] sortArrayByParityII(int[] nums) {
+    int l = 0;
+    int r = nums.length - 1;
+    while (l < nums.length && r >= 0) {
+      while (l < nums.length &&  nums[l] % 2 == 0) {
+        l += 2;
+      }
+      while (r >= 0 && nums[r] % 2 == 1) {
+        r -= 2;
+      }
+      if (l < nums.length && r >= 0) {
+        swap(nums, l, r);
+        l += 2;
+        r -= 2;
+      }
+    }
+    return nums;
+  }
 }

@@ -1,6 +1,7 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -637,5 +638,48 @@ public class Tree {
     dfs897(node.left);
     list.add(node.val);
     dfs897(node.right);
+  }
+
+  /**
+   * Leetcode 919 : Complete Binary Tree Inserter.
+   * @Difficulty: Medium
+   */
+  class CBTInserter {
+    Map<Integer, TreeNode> map;
+    int size;
+
+    public CBTInserter(TreeNode root) {
+      map = new HashMap<>();
+      Queue<TreeNode> queue = new LinkedList<>();
+      queue.offer(root);
+      int index = 0;
+      while (!queue.isEmpty()) {
+        TreeNode curr = queue.poll();
+        map.put(++index, curr);
+        if (curr.left != null) {
+          queue.offer(curr.left);
+        }
+        if (curr.right != null) {
+          queue.offer(curr.right);
+        }
+      }
+      size = index;
+    }
+
+    public int insert(int val) {
+      TreeNode node = new TreeNode(val);
+      map.put(++size, node);
+      TreeNode parent = map.get(size / 2);
+      if (size % 2 == 0) {
+        parent.left = node;
+      } else {
+        parent.right = node;
+      }
+      return parent.val;
+    }
+
+    public TreeNode get_root() {
+      return map.get(1);
+    }
   }
 }
