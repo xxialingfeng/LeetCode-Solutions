@@ -535,4 +535,91 @@ public class UnionFInd {
     return true;
   }
 
+  /**
+   * Leetcode 924 : Minimize Malware Spread.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(N2) & O(N)
+   * @param graph int[][]
+   * @param initial int[]
+   * @return int
+   */
+  public int minMalwareSpread(int[][] graph, int[] initial) {
+    UFwithSize uf = new UFwithSize(graph.length);
+    for (int i = 0; i < graph.length; i++) {
+      for (int j = i + 1; j < graph.length; j++) {
+        if (graph[i][j] == 1) {
+          uf.union(i, j);
+        }
+      }
+    }
+
+    int[] count = new int[graph.length];
+    for (int node : initial) {
+      count[uf.find(node)]++;
+    }
+
+    int ans = -1;
+    int ansSize = -1;
+    for (int node : initial) {
+      int root = uf.find(node);
+      if (count[root] == 1) {
+        int rootSize = uf.size(root);
+        if (rootSize > ansSize) {
+          ansSize = rootSize;
+          ans = node;
+        } else if (rootSize == ansSize && node < ans) {
+          ansSize = rootSize;
+          ans = node;
+        }
+      }
+    }
+    if (ans == -1) {
+      ans = Integer.MAX_VALUE;
+      for (int node : initial) {
+        ans = Math.min(ans, node);
+      }
+    }
+    return ans;
+  }
+
+
+  public class UFwithSize{
+    int[] parents;
+    int[] size;
+
+    public UFwithSize(int n) {
+      parents = new int[n];
+      for (int i = 0; i < parents.length; i++) {
+        parents[i] = i;
+      }
+      size = new int[n];
+      Arrays.fill(size, 1);
+    }
+
+    public boolean isConn(int x, int v) {
+      return parents[x] == parents[v];
+    }
+
+    public int find(int x) {
+      if (parents[x] != x) {
+        parents[x] = find(parents[x]);
+      }
+      return parents[x];
+    }
+
+    public void union(int x, int v) {
+      int rootx = find(x);
+      int rootv = find(v);
+      if (rootx == rootv) {
+        return;
+      }
+      parents[rootx] = rootv;
+      size[rootv] += size[rootx];
+    }
+
+    public int size(int x) {
+      return size[find(x)];
+    }
+  }
+
 }

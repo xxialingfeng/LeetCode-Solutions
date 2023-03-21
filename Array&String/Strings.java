@@ -1747,5 +1747,48 @@ public class Strings {
     c[i] = c[j];
     c[j] = temp;
   }
+
+  /**
+   * Leetcode 925 : Long Pressed Name.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param name string
+   * @param typed string
+   * @return boolean
+   */
+  public boolean isLongPressedName(String name, String typed) {
+    int idx = 0;
+    int idxTyped = 0;
+    if (typed.length() < name.length()) {
+      return false;
+    }
+    if (typed.length() == name.length()) {
+      return name.equals(typed);
+    }
+    while (idx < name.length() && idxTyped < typed.length()) {
+      if (name.charAt(idx) != typed.charAt(idxTyped)) {
+        return false;
+      }
+      int countN = 1;
+      int countT = 0;
+      while (idxTyped < typed.length() && typed.charAt(idxTyped) == name.charAt(idx)) {
+        idxTyped++;
+        countT++;
+      }
+      int curr = idx + 1;
+      while (curr < name.length() && name.charAt(curr) == name.charAt(idx)) {
+        curr++;
+        countN++;
+      }
+      if (countN > countT) {
+        return false;
+      }
+      idx = curr;
+    }
+    if (idxTyped != typed.length() || idx != name.length()) {
+      return false;
+    }
+    return true;
+  }
 }
 

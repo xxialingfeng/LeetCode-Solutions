@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -588,4 +589,37 @@ math {
     return t >= 2;
 
   }
+
+  /**
+   * Leetcode 923 : 3Sum With Multiplicity.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(
+   * @param arr
+   * @param target
+   * @return
+   */
+  public int threeSumMulti(int[] arr, int target) {
+    Arrays.sort(arr);
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int num : arr) {
+      map.put(num, map.getOrDefault(num, 0) + 1);
+    }
+    long ans = 0;
+    for (int i = 0; i < arr.length; i += map.get(arr[i]) ) {
+      int n = map.get(arr[i]);
+      if (n >= 3 && 3 * arr[i] == target) {
+        ans = (ans + (long) (n - 2) * (n - 1) * n / 6) % 1000000007;
+      }
+      if (n >= 2 && map.containsKey(target - 2 * arr[i]) && target != 3 * arr[i]) {
+        ans = (ans + (long) n * (n - 1) / 2 * map.get(target - 2 * arr[i])) % 1000000007;
+      }
+      for (int j = i + n; j < arr.length; j += map.get(arr[j])) {
+        if (map.containsKey(target - arr[i] - arr[j]) && target - arr[i] - arr[j] > arr[j]) {
+          ans = (ans + (long) n * map.get(arr[j]) * map.get(target - arr[i] - arr[j])) % 1000000007;
+        }
+      }
+    }
+    return (int) (ans % 1000000007);
+  }
+
 }
