@@ -583,7 +583,7 @@ public class UnionFInd {
   }
 
 
-  public class UFwithSize{
+  public class UFwithSize {
     int[] parents;
     int[] size;
 
@@ -620,6 +620,53 @@ public class UnionFInd {
     public int size(int x) {
       return size[find(x)];
     }
+  }
+
+  /**
+   * Leetcode 928 : Minimize Malware Spread II.
+   * @Difficulty: hard
+   * @OptimalComplexity: O(n * n) & O(n)
+   * @param graph int[][]
+   * @param initial int[]
+   * @return int
+   */
+  public int minMalwareSpreadII(int[][] graph, int[] initial) {
+    int minM = graph.length;
+    Arrays.sort(initial);
+    int idx = initial[0];
+    for (int node : initial) {
+      UFwithSize uf = new UFwithSize(graph.length);
+      for (int i = 0; i < graph.length; i++) {
+        if (i == node) {
+          continue;
+        }
+        for (int j = 0; j < graph.length; j++) {
+          if (j == node) {
+            continue;
+          }
+          if (graph[i][j] == 1) {
+            uf.union(i, j);
+          }
+        }
+      }
+      int m = 0;
+      Set<Integer> set = new HashSet<>();
+      for (int i : initial) {
+        if (i == node) {
+          continue;
+        }
+        if (set.contains(uf.find(i))) {
+          continue;
+        }
+        set.add(uf.find(i));
+        m += uf.size(uf.find(i));
+      }
+      if (m < minM) {
+        minM = m;
+        idx = node;
+      }
+    }
+    return idx;
   }
 
 }

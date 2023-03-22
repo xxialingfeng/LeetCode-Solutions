@@ -1804,4 +1804,42 @@ public class Array {
     }
     return nums;
   }
+
+  /**
+   * Leetcode 927 : Three Equal Parts.
+   * @Difficulty: O(n) & O(n)
+   * @param arr int[]
+   * @return int[]
+   */
+  public int[] threeEqualParts(int[] arr) {
+    int n = arr.length, cnt = 0, tailZeros = 0;
+    int[] ones = new int[n];
+    for (int i = 0; i < n; ++i) {
+      if (arr[i] == 1) ones[cnt++] = i;
+    }
+    int[] def = {-1, -1};
+    //特判一下
+    if (cnt == 0) return new int[]{0, n - 1};
+    if (cnt % 3 != 0) return def;
+
+    cnt /= 3;
+    //最后一个数的末尾 0 是固定的，统计一下末尾 0
+    for (int i = n - 1; arr[i] != 1; i--) tailZeros++;
+
+    //根据统计的 1，找到前两个数的末尾 1 根据末尾 0 数去找真正的末尾
+    int tail1 = ones[cnt - 1];
+    int tail2 = ones[cnt * 2 - 1];
+    for (int i = 0; i < tailZeros; ++i) {
+      tail1++;
+      tail2++;
+      if (arr[tail1] != 0 || arr[tail2] != 0) return def;
+    }
+
+    //比较三个数是否相等
+    for (int i = tail1, j = tail2, k = n - 1; i >= 0 && j > tail1 && k > tail2; i--, j--, k--) {
+      if (arr[i] != arr[j] || arr[i] != arr[k]) return def;
+    }
+
+    return new int[]{tail1, tail2 + 1};
+  }
 }

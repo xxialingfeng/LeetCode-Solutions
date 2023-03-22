@@ -79,4 +79,27 @@ public class bit {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 1915 : Number of Wonderful Substrings.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * 10) & Omin(n, 2^10)
+   * @param word string
+   * @return long
+   */
+  public long wonderfulSubstrings(String word) {
+    int[] map = new int[1 << 10];
+    long ret = 0;
+    map[0] = 1;
+    int cur = 0;
+    for (char c : word.toCharArray()) {
+      cur ^= (1 << c - 'a');
+      for (int i = 0; i < 10; i++) {
+        ret += map[cur ^ (1 << i)];
+      }
+      ret += map[cur];
+      map[cur]++;
+    }
+    return ret;
+  }
 }

@@ -1785,10 +1785,57 @@ public class Strings {
       }
       idx = curr;
     }
-    if (idxTyped != typed.length() || idx != name.length()) {
+    return idxTyped == typed.length() && idx == name.length();
+  }
+
+  /**
+   * Leetcode 929 : Unique Email Addresses.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n2) & O(n)
+   * @param emails list of strings
+   * @return int
+   */
+  public int numUniqueEmails(String[] emails) {
+
+    boolean[] vis = new boolean[emails.length];
+    Arrays.fill(vis, false);
+    int ans = emails.length;
+    for (int i = 0; i < emails.length; i++) {
+      if (vis[i]) {
+        continue;
+      }
+      for (int j = i + 1; j < emails.length; j++) {
+        if (vis[j] == true) {
+          continue;
+        }
+        if (isSameAddr(emails[i], emails[j])) {
+          vis[j] = true;
+          ans--;
+        }
+      }
+    }
+    return ans;
+  }
+
+  public boolean isSameAddr(String a, String b) {
+    String[] la = a.split("\\@");
+    String[] lb = b.split("\\@");
+    if (!lb[1].equals(la[1])) {
       return false;
     }
-    return true;
+    String prefixa = la[0];
+    String prefixb = lb[0];
+    prefixa = prefixa.replaceAll("\\.", "");
+    prefixb = prefixb.replaceAll("\\.", "");
+    int idxa = prefixa.indexOf('+');
+    if (idxa != -1) {
+      prefixa = prefixa.substring(0, idxa);
+    }
+    int idxb = prefixb.indexOf('+');
+    if (idxb != -1) {
+      prefixb = prefixb.substring(0, idxb);
+    }
+    return prefixb.equals(prefixa);
   }
 }
 
