@@ -1065,4 +1065,33 @@ public class DP {
     }
     return Math.min(dp[m][0], dp[m][1]);
   }
+
+  private final int[][] path = {{4, 6}, {6, 8}, {7, 9}, {4, 8}, {3, 9, 0}, {}, {1, 7, 0}, {2, 6}, {1, 3}, {4, 2}};
+
+  /**
+   * Leetcode 935 : Knight Dialer.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * 10 * m) & O(n * 10)
+   * @param n int
+   * @return i t
+   */
+  public int knightDialer(int n) {
+    int[][] dp = new int[n][10];
+    for (int num = 0; num < 10; num++) {
+      dp[0][num] = 1;
+    }
+
+    for (int time = 1; time < n; time++) {
+      for (int num = 0; num < 10; num++) {
+        for (int arrive : path[num]) {
+          dp[time][num] = (dp[time][num] + dp[time - 1][arrive]) % 1000000007;
+        }
+      }
+    }
+    int res = 0;
+    for (int num = 0; num < 10; num++) {
+      res = (res + dp[n - 1][num]) % 1000000007;
+    }
+    return res;
+  }
 }

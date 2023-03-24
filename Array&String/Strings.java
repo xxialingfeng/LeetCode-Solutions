@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -1836,6 +1837,50 @@ public class Strings {
       prefixb = prefixb.substring(0, idxb);
     }
     return prefixb.equals(prefixa);
+  }
+
+  /**
+   * Leetcode 937 : Reorder Data in Log Files.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlogn) & O(n)
+   * @param logs list of strings
+   * @return list of strings
+   */
+  public String[] reorderLogFiles(String[] logs) {
+    List<String> listDigit = new ArrayList<>();
+    PriorityQueue<String> queue = new PriorityQueue<>(new Comparator<String>() {
+      @Override
+      public int compare(String a, String b) {
+        String[] spa = a.split(" ");
+        String[] spb = b.split(" ");
+        String toCompa = a.substring(spa[0].length() + 1, a.length());
+        String toCompb = b.substring(spb[0].length() + 1, b.length());
+        if (toCompa.equals(toCompb)) {
+          return spa[0].compareTo(spb[0]);
+        }
+        return toCompa.compareTo(toCompb);
+      }
+    });
+    for (String log : logs) {
+      String[] sp = log.split(" ");
+      String tag = sp[0];
+      if (sp.length > 1 && Character.isDigit(sp[1].charAt(0))) {
+        listDigit.add(log);
+      } else {
+        queue.offer(log);
+      }
+    }
+    String[] ans = new String[queue.size() + listDigit.size()];
+    int cnt = 0;
+    while (!queue.isEmpty()) {
+      ans[cnt] = queue.poll();
+      cnt++;
+    }
+    for (int i = 0; i < listDigit.size(); i++) {
+      ans[cnt] = listDigit.get(i);
+      cnt++;
+    }
+    return ans;
   }
 }
 

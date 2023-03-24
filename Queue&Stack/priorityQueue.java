@@ -258,6 +258,30 @@ public class priorityQueue {
     }
   }
 
+  /**
+   * Leetcode 933 : Number of Recent Calls.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(1) & O(n)
+   */
+  class RecentCounter {
+    PriorityQueue<Integer> queue = new PriorityQueue<>();
+    public RecentCounter() {
+
+    }
+
+    public int ping(int t) {
+      if (queue.isEmpty()) {
+        queue.offer(t);
+        return 1;
+      }
+      while (!queue.isEmpty() && t - queue.peek() > 3000) {
+        queue.poll();
+      }
+      queue.offer(t);
+      return queue.size();
+    }
+  }
+
 
 
 }

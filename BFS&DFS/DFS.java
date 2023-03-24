@@ -1684,4 +1684,137 @@ public class DFS {
     dfs(node.left, list);
     dfs(node.right, list);
   }
+
+  int min931 = Integer.MAX_VALUE;
+  int[][] memo931;
+
+  /**
+   * Leetcode 931 : Minimum Falling Path Sum.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlogn) & O(n2)
+   * @param matrix int[][]
+   * @return int
+   */
+  public int minFallingPathSum(int[][] matrix) {
+    memo931 = new int[matrix.length][matrix[0].length];
+    for (int i = 0; i < matrix[0].length; i++) {
+      min931 = Math.min(min931, dfs931(matrix, 0, i));
+    }
+    return min931;
+  }
+
+  public int dfs931(int[][] matrix, int i, int j) {
+    if (i < 0 || i >= matrix.length || j < 0 || j >= matrix[0].length) {
+      return Integer.MAX_VALUE;
+    }
+    if (i == matrix.length - 1) {
+      return matrix[i][j];
+    }
+    if (memo931[i][j] != 0) {
+      return memo931[i][j];
+    }
+    int sum = matrix[i][j];
+    int toAdd = Math.min(dfs931(matrix, i + 1, j - 1), Math.min(dfs931(matrix, i + 1, j), dfs931(matrix, i + 1, j + 1)));
+
+    sum += toAdd;
+    memo931[i][j] = sum;
+    return sum;
+
+  }
+
+  boolean[][] vis;
+  List<int[]> listone = new ArrayList<>();
+  List<int[]> listtwo = new ArrayList<>();
+
+  /**
+   * leetcode 934 : Shortest Bridge.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(n2)
+   * @param grid int[][]
+   * @return int
+   */
+  public int shortestBridge(int[][] grid) {
+    vis = new boolean[grid.length][grid.length];
+    int cx = 0;
+    int cy = 0;
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid.length; j++) {
+        if (grid[i][j] == 1) {
+          cx = i;
+          cy = j;
+          break;
+        }
+      }
+    }
+    dfsOne(grid, cx, cy);
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid.length; j++) {
+        if (grid[i][j] == 1 && !vis[i][j]) {
+          dfsTwo(grid, i, j);
+          break;
+        }
+      }
+    }
+    int min = Integer.MAX_VALUE;
+    for (int[] i : listone) {
+      for (int[] j : listtwo) {
+        min = Math.min(dis(i, j) - 1, min);
+      }
+    }
+    return min;
+  }
+
+  public int dis(int[] a, int[] b) {
+    return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
+  }
+
+  public void dfsOne(int[][] grid, int i, int j) {
+    vis[i][j] = true;
+    listone.add(new int[]{i, j});
+    for (int[] dir : directions) {
+      int x = i + dir[0];
+      int y = j + dir[1];
+      if (x >= 0 && x < grid.length && y >= 0 && y < grid.length && grid[x][y] == 1 && !vis[x][y]) {
+        dfsOne(grid, x, y);
+      }
+    }
+  }
+
+  public void dfsTwo(int[][] grid, int i, int j) {
+    vis[i][j] = true;
+    listtwo.add(new int[]{i, j});
+    for (int[] dir : directions) {
+      int x = i + dir[0];
+      int y = j + dir[1];
+      if (x >= 0 && x < grid.length && y >= 0 && y < grid.length && grid[x][y] == 1 && !vis[x][y]) {
+        dfsTwo(grid, x, y);
+      }
+    }
+  }
+
+  /**
+   * Leetcode 938 : Range Sum of BST.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param root tree node
+   * @param low int
+   * @param high int
+   * @return int
+   */
+  public int rangeSumBST(TreeNode root, int low, int high) {
+    if (root == null) {
+      return 0;
+    }
+    int sum = 0;
+    if (root.val >= low && root.val <= high) {
+      sum += root.val + rangeSumBST(root.left, low, high) + rangeSumBST(root.right, low, high);
+    }
+    if (root.val < low) {
+      sum += rangeSumBST(root.right, low, high);
+    }
+    if (root.val > high) {
+      sum += rangeSumBST(root.left, low, high);
+    }
+    return sum;
+  }
 }

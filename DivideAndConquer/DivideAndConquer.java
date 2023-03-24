@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class DivideAndConquer {
 
   /**
@@ -73,5 +75,41 @@ public class DivideAndConquer {
     } else {
       return scoreOfParentheses(s.substring(0, len)) + scoreOfParentheses(s.substring(len));
     }
+  }
+
+  /**
+   * Leetcode 932 : Beautiful Array.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlogn) & O(nlogn)
+   * @param n int
+   * @return int[]
+   */
+  public int[] beautifulArray(int n) {
+    int[] ans = new int[n];
+    Arrays.fill(ans, 1);
+    part(ans, 0, n - 1);
+    return ans;
+  }
+
+  /**
+   * partition.
+   * @param ans int[]
+   * @param lo int
+   * @param hi int
+   */
+  public void part(int[] ans, int lo, int hi) {
+    if (hi <= lo) {
+      return;
+    }
+    int mid = lo + (hi - lo) / 2;
+    part(ans, lo, mid);
+    part(ans, mid + 1, hi);
+    for (int i = lo; i <= mid; i++) {
+      ans[i] = 2 * ans[i] - 1;
+    }
+    for (int i = mid + 1; i <= hi; i++) {
+      ans[i] = 2 * ans[i];
+    }
+    return;
   }
 }

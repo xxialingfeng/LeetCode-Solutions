@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -1841,5 +1842,45 @@ public class Array {
     }
 
     return new int[]{tail1, tail2 + 1};
+  }
+
+  /**
+   * Leetcode 939 ： Minimum Area Rectangle.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m2 * p * q) & O(m)
+   * @param points int[][]
+   * @return int
+   */
+  public int minAreaRect(int[][] points) {
+
+    Map<Integer, List<Integer>> map = new HashMap<>();
+    for (int[] temp : points) {
+      if (!map.containsKey(temp[0])) {
+        map.put(temp[0], new ArrayList<>());
+      }
+      map.get(temp[0]).add(temp[1]);
+    }
+    int min = Integer.MAX_VALUE;
+    for (int key : map.keySet()) {
+      if (map.get(key).size() <= 1) {
+        continue;
+      }
+      List<Integer> list = map.get(key);
+      int y1 = -1;
+      int y2 = -1;
+      for (int i = 0; i < list.size(); i++) {
+        for (int j = i + 1; j < list.size(); j++) {
+          y1 = list.get(i);
+          y2 = list.get(j);
+          for (int k : map.keySet()) {
+            if (map.get(k).size() > 1 && k != key && map.get(k).contains(y1) && map.get(k).contains(y2)) {
+              min = Math.min(min, Math.abs(key - k) * Math.abs(y1 - y2));
+            }
+          }
+        }
+      }
+
+    }
+    return min == Integer.MAX_VALUE ? 0 : min;
   }
 }
