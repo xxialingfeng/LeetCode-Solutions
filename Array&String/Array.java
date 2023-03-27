@@ -1883,4 +1883,91 @@ public class Array {
     }
     return min == Integer.MAX_VALUE ? 0 : min;
   }
+
+  /**
+   * letcode 941 : Valid Mountain Array.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param arr int[]
+   * @return boolean
+   */
+  public boolean validMountainArray(int[] arr) {
+    int l = 0;
+    int r = arr.length - 1;
+    while (l < r) {
+      while (l < r && arr[l] < arr[l + 1]) {
+        l++;
+      }
+      while (l < r && arr[r] < arr[r - 1]) {
+        r--;
+      }
+      if (l != r) {
+        return false;
+      }
+    }
+    if (l == arr.length - 1 || r == 0) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Leetcode 942 : DI String Match.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s string
+   * @return int[]
+   */
+  public int[] diStringMatch(String s) {
+    int[] ans = new int[s.length() + 1];
+    int maxN = s.length();
+    int minN = 0;
+    int cnt = 0;
+    while (cnt < s.length()) {
+      if (s.charAt(cnt) == 'I') {
+        ans[cnt] = minN;
+        minN++;
+        cnt++;
+      } else {
+        ans[cnt] = maxN;
+        maxN--;
+        cnt++;
+      }
+    }
+    ans[ans.length - 1] = minN;
+    return ans;
+  }
+
+  /**
+   * Leetcode 945 : Minimum Increment to Make Array Unique.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlogn) & O(logn)
+   * @param nums int[]
+   * @return int
+   */
+  public int minIncrementForUnique(int[] nums) {
+    Arrays.sort(nums);
+    int ans = 0;
+    Set<Integer> set = new HashSet<>();
+    for (int num : nums) {
+      set.add(num);
+    }
+    PriorityQueue<Integer> queue = new PriorityQueue<>();
+    for (int i = 1; i < nums.length; i++) {
+      if (nums[i] == nums[i - 1]) {
+        queue.offer(nums[i]);
+      }
+    }
+    for (int i = 1; i <= 1000010; i++) {
+      if (queue.isEmpty()) {
+        break;
+      }
+      int n = queue.peek();
+      if (!set.contains(i) && i > n) {
+        ans += i - n;
+        queue.poll();
+      }
+    }
+    return ans;
+  }
 }

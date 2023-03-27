@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
@@ -432,5 +433,37 @@ public class stack {
       }
     }
     return stack.size();
+  }
+
+  /**
+   * Leetcode 946 : Validate Stack Sequences
+   * @param pushed int[]
+   * @param popped int[]
+   * @return boolean
+   */
+  public boolean validateStackSequences(int[] pushed, int[] popped) {
+    Map<Integer, Integer> pushidxMap = new HashMap<>();
+    List<Integer> pushlist = new ArrayList<>();
+    for (int i = 0; i < popped.length; i++) {
+      pushidxMap.put(pushed[i], i);
+
+    }
+    boolean[] poped = new boolean[pushed.length];
+    int curridx = 0;
+    for (int k : popped) {
+      int idx = pushidxMap.get(k);
+      for (int i = curridx; i <= idx; i++) {
+        if (!poped[i]) {
+          pushlist.add(pushed[i]);
+        }
+      }
+      if (k != pushlist.get(pushlist.size() - 1)) {
+        return false;
+      }
+      pushlist.remove(pushlist.size() - 1);
+      poped[idx] = true;
+      curridx = idx;
+    }
+    return true;
   }
 }

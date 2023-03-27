@@ -1882,5 +1882,113 @@ public class Strings {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 943 : Find the Shortest Superstring.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(N^2 * (2 ^ N + W) & O (N * (2 ^ N + W)
+   * @param words list of strings
+   * @return string
+   */
+  public String shortestSuperstring(String[] words) {
+    int N = words.length;
+    int[][] overlaps = new int[N][N];
+    for (int i = 0; i < N; i++) {
+      for (int j = 0; j < N; j++) {
+        if (i != j) {
+          int m = Math.min(words[i].length(), words[j].length());
+          for (int k = m; true; --k) {
+            if (words[i].endsWith(words[j].substring(0, k))) {
+              overlaps[i][j] = k;
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    int[][] dp = new int[1 << N][N];
+    int[][] parent = new int[1 << N][N];
+    for (int mask = 0; mask < (1 << N); ++mask) {
+      Arrays.fill(parent[mask], -1);
+
+      for (int bit = 0; bit < N; ++bit) {
+        if (((mask >> bit) & 1) > 0) {
+          int pmask = mask ^ (1 << bit);
+          if (pmask == 0) {
+            continue;
+          }
+          for (int i = 0; i < N; i++) {
+            if (((pmask >> i) & 1) > 0) {
+              int val = dp[pmask][i] + overlaps[i][bit];
+              if (val > dp[mask][bit]) {
+                dp[mask][bit] = val;
+                parent[mask][bit] = i;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    int[] perm = new int[N];
+    boolean[] seen = new boolean[N];
+    int t = 0;
+    int mask = (1 << N) - 1;
+
+    int p = 0;
+    for (int j = 0; j < N; j++) {
+      if (dp[(1 << N) - 1][j] > dp[(1 << N) - 1][p]) {
+        p = j;
+      }
+    }
+
+    while (p != -1) {
+      perm[t++] = p;
+      seen[p] = true;
+      int p2 = parent[mask][p];
+      mask ^= 1 << p;
+      p = p2;
+    }
+
+    for (int i = 0; i < t / 2; i++) {
+      int v = perm[i];
+      perm[i] = perm[t - 1 - i];
+      perm[t - 1 - i] = v;
+    }
+
+    for (int i = 0; i < N; ++i) if (!seen[i])
+      perm[t++] = i;
+
+    // Reconstruct final answer given perm
+    StringBuilder ans = new StringBuilder(words[perm[0]]);
+    for (int i = 1; i < N; ++i) {
+      int overlap = overlaps[perm[i-1]][perm[i]];
+      ans.append(words[perm[i]].substring(overlap));
+    }
+
+    return ans.toString();
+  }
+
+  /**
+   * Leetcode 944 : Delete Columns to Make Sorted.
+   * @param strs list of strings
+   * @return int
+   */
+  public int minDeletionSize(String[] strs) {
+    int ans = 0;
+    for (int j = 0; j < strs[0].length(); j++) {
+      StringBuilder sb = new StringBuilder();
+      for (String str : strs) {
+        sb.append(str.charAt(j));
+      }
+      char[] crr = sb.toString().toCharArray();
+      Arrays.sort(crr);
+      if (!sb.toString().equals(new String(crr))) {
+        ans++;
+      }
+    }
+    return ans;
+  }
 }
 
