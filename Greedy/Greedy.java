@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -116,5 +117,37 @@ public class Greedy {
       }
     }
     return String.valueOf(chars);
+  }
+
+  /**
+   * Leetcode 948 : Bag of Tokens.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlogn) & O(1)
+   * @param tokens int[]
+   * @param power int
+   * @return int
+   */
+  public int bagOfTokensScore(int[] tokens, int power) {
+    Arrays.sort(tokens);
+    int currP = power;
+    int ans = 0;
+    int i = 0;
+    int maxP = tokens.length - 1;
+    while (i <= maxP) {
+      if (currP >= tokens[i]) {
+        ans++;
+        currP -= tokens[i];
+        i++;
+      } else {
+        if (ans >= 1) {
+          currP += tokens[maxP] - tokens[i];
+          maxP--;
+          i++;
+        } else {
+          return ans;
+        }
+      }
+    }
+    return ans;
   }
 }

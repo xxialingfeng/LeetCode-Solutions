@@ -1,4 +1,5 @@
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 
 public class deque {
@@ -70,6 +71,29 @@ public class deque {
       }
       return -1;
     }
+  }
+
+  /**
+   * Leetcode 950 : Reveal Cards In Increasing Order.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlogn) & O(n)
+   * @param deck int[]
+   * @return int[]
+   */
+  public int[] deckRevealedIncreasing(int[] deck) {
+    Arrays.sort(deck);
+    Deque<Integer> deque = new ArrayDeque<>();
+    for (int i = 0; i < deck.length; i++) {
+      deque.add(i);
+    }
+    int[] ans = new int[deck.length];
+    for (int card : deck) {
+      ans[deque.pollFirst()] = card;
+      if (!deque.isEmpty()) {
+        deque.add(deque.pollFirst());
+      }
+    }
+    return ans;
   }
 
 }

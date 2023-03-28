@@ -1817,4 +1817,53 @@ public class DFS {
     }
     return sum;
   }
+
+  /**
+   * Leetcode 949 : Largest Time for Given Digits.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(4!) & O(n)
+   * @param arr int[]
+   * @return string
+   */
+  public String largestTimeFromDigits(int[] arr) {
+    Arrays.sort(arr);
+    if (arr[0] > 2) {
+      return "";
+    }
+    if (arr[0] == 2 && arr[1] > 4) {
+      return "";
+    }
+    if (arr[3] == 0) {
+      return "00:00";
+    }
+    vis949 = new boolean[4];
+    dfs949(arr, vis949, 0, "");
+    return max.equals("0000") ? "" : max.substring(0, 2) + ":" + max.substring(2, 4);
+  }
+  String max = "0000";
+  boolean[] vis949;
+
+  /**
+   * dfs method for leetcode 949.
+   * @param arr int[]
+   * @param vis boolean[]
+   * @param cnt  int
+   * @param curr string
+   */
+  public void dfs949(int[] arr, boolean[] vis, int cnt, String curr) {
+    if (cnt == 4) {
+      if (Integer.parseInt(curr) < 2400 && Integer.parseInt(curr.substring(2, 4)) < 60) {
+        if (Integer.parseInt(curr) > Integer.parseInt(max)) {
+          max = curr;
+        }
+      }
+    }
+    for (int i = 0; i < arr.length; i++) {
+      if (!vis[i]) {
+        vis[i] = true;
+        dfs949(arr, vis, cnt + 1, curr + arr[i]);
+        vis[i] = false;
+      }
+    }
+  }
 }

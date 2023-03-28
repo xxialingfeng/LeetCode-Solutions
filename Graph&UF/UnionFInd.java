@@ -346,6 +346,7 @@ public class UnionFInd {
   public static class UF {
     int[] parents;
     int[] size;
+    int cnt;
 
     /**
      * constructor.
@@ -375,6 +376,7 @@ public class UnionFInd {
       }
       parents[rootx] =  rooty;
       size[rooty] += size[rootx];
+      cnt--;
     }
 
     public int getSize(int x) {
@@ -667,6 +669,25 @@ public class UnionFInd {
       }
     }
     return idx;
+  }
+
+  /**
+   * Leetcode 947 : Most Stones Removed with Same Row or Column.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param stones
+   * @return
+   */
+  public int removeStones(int[][] stones) {
+    UF uf = new UF(stones.length);
+    for (int i = 0; i < stones.length; i++) {
+      for (int j = i + 1; j < stones.length; j++) {
+        if (stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1]) {
+          uf.union(i, j);
+        }
+      }
+    }
+    return stones.length - uf.cnt;
   }
 
 }
