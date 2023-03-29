@@ -690,4 +690,29 @@ public class UnionFInd {
     return stones.length - uf.cnt;
   }
 
+  /**
+   * Leetcode 952 : Largest Component Size by Common Factor.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n * a(n) * sqrt(m)) & O(m)
+   */
+  public int largestComponentSize(int[] nums) {
+    int m = Arrays.stream(nums).max().getAsInt();
+    UF uf = new UF(m + 1);
+    for (int num : nums) {
+      for (int i = 2; i * i <= num; i++) {
+        if (num % i == 0) {
+          uf.union(num, i);
+          uf.union(num, num / i);
+        }
+      }
+    }
+    int[] count = new int[m + 1];
+    int ans = 0;
+    for (int num : nums) {
+      int root = uf.find(num);
+      count[root]++;
+      ans = Math.max(ans, count[root]);
+    }
+    return ans;
+  }
 }

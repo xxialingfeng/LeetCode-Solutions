@@ -682,4 +682,60 @@ public class Tree {
       return map.get(1);
     }
   }
+
+  /**
+   * Leetcode 951 : Flip Equivalent Binary Trees.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param root1 treenode
+   * @param root2 treenode
+   * @return boolean
+   */
+  public boolean flipEquiv(TreeNode root1, TreeNode root2) {
+    if (equal(root1, root2)) {
+      return true;
+    }
+    if (root1 == null && root2 == null) {
+      return true;
+    }
+    if (root1 == null) {
+      return false;
+    }
+    if (root2 == null) {
+      return false;
+    }
+    if (root1.val != root2.val) {
+      return false;
+    }
+    if ((root1.left != null && root2.left != null && root1.left.val == root2.left.val) || (root1.left == null && root2.left == null)) {
+      return flipEquiv(root1.left, root2.left) && flipEquiv(root1.right, root2.right);
+    } else {
+      TreeNode temp = root1.left;
+      root1.left = root1.right;
+      root1.right = temp;
+      return flipEquiv(root1.left, root2.left) && flipEquiv(root1.right, root2.right);
+    }
+  }
+
+  /**
+   * if two trees are identical.
+   * @param node1 treenode
+   * @param node2 treenode
+   * @return boolean
+   */
+  public boolean equal(TreeNode node1, TreeNode node2) {
+    if (node1 == null && node2 == null) {
+      return true;
+    }
+    if (node1 == null) {
+      return false;
+    }
+    if (node2 == null) {
+      return false;
+    }
+    if (node1.val != node2.val) {
+      return false;
+    }
+    return equal(node1.left, node2.left) && equal(node1.right, node2.right);
+  }
 }
