@@ -1971,4 +1971,37 @@ public class Array {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 953 : Verifying an Alien Dictionary.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(26) & O(m * n)
+   * @param words list of strings
+   * @param order string
+   * @return boolean
+   */
+  public boolean isAlienSorted(String[] words, String order) {
+    Map<Character, Integer> map = new HashMap<>();
+    int id = 0;
+    for (char c : order.toCharArray()) {
+      map.put(c, ++id);
+    }
+    for (int i = 1; i < words.length; i++) {
+      String curr = words[i];
+      String prev = words[i - 1];
+      if (prev.startsWith(curr) && !prev.equals(curr)) {
+        return false;
+      }
+      for (int j = 0; j < Math.min(curr.length(), prev.length()); j++) {
+        if (map.get(curr.charAt(j)) == map.get(prev.charAt(j))) {
+          continue;
+        } else if (map.get(curr.charAt(j)) > map.get(prev.charAt(j))) {
+          break;
+        } else {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 }

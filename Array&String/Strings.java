@@ -1990,5 +1990,35 @@ public class Strings {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 955 : Delete Columns to Make Sorted II..
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(n)
+   * @param strs list of strings
+   * @return int
+   */
+  public int minDeletionSize955(String[] strs) {
+    int ans = 0;
+    boolean[] vis = new boolean[strs.length];
+    for (int i = 0; i < strs[0].length(); i++) {
+      boolean flag = true;
+      for (int j = 1; j < strs.length; j++) {
+        if (!vis[j] && strs[j].charAt(i) < strs[j - 1].charAt(i)) {
+          ans++;
+          flag = false;
+          break;
+        }
+      }
+      if (flag) {
+        for (int j = 1; j < strs.length; j++) {
+          if (strs[j].charAt(i) > strs[j - 1].charAt(i)) {
+            vis[j] = true;
+          }
+        }
+      }
+    }
+    return ans;
+  }
 }
 
