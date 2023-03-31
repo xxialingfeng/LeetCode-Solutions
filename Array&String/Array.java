@@ -2004,4 +2004,45 @@ public class Array {
     }
     return true;
   }
+
+  /**
+   * Leetcode 957 : Prison Cells After N Days.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(2^N) & (2^N * N)
+   * @param cells int[]
+   * @param n int
+   * @return int
+   */
+  public int[] prisonAfterNDays(int[] cells, int n) {
+    Map<Integer, int[]> map = new HashMap<>();
+    Set<Integer> set = new HashSet<>();
+    for (int i = 1; i <= 2 << 6; i++) {
+      List<Integer> index = new ArrayList<>();
+      for (int j = 1; j < cells.length - 1; j++) {
+        if ((cells[j - 1] == 0 && cells[j + 1] == 0) || (cells[j - 1] == 1 && cells[j + 1] == 1)) {
+          index.add(j);
+        }
+      }
+      int[] toAdd = new int[8];
+      for (Integer integer : index) {
+        toAdd[integer] = 1;
+      }
+      map.put(i, toAdd);
+      cells = toAdd;
+      int temp = 1 << 9;
+      for (int j = 0; j <= 7; j++) {
+        if (toAdd[7 - j] == 1) {
+          temp = temp | (1 << j);
+        }
+      }
+      if (set.contains(temp)) {
+        break;
+      }
+      set.add(temp);
+    }
+
+    int size = set.size();
+    int day = n % size;
+    return map.get(day == 0 ? size : day);
+  }
 }

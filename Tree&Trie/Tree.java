@@ -738,4 +738,66 @@ public class Tree {
     }
     return equal(node1.left, node2.left) && equal(node1.right, node2.right);
   }
+
+  /**
+   * Leetcode 958 : Check Completeness of a Binary Tree.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(N）& O（N)
+   * @return boolean
+   */
+  public boolean isCompleteTree(TreeNode root) {
+    if (root == null) {
+      return true;
+    }
+    if (root.left == null && root.right != null) {
+      return false;
+    }
+    List<Integer> list = levelOrder(root);
+    TreeNode stand = createTree(list, 0);
+    return isEqual(stand, root);
+
+  }
+
+  public List<Integer> levelOrder(TreeNode node) {
+    Queue<TreeNode> queue = new LinkedList<>();
+    List<Integer> list = new ArrayList<>();
+    queue.offer(node);
+    while (!queue.isEmpty()) {
+      TreeNode curr = queue.poll();
+      list.add(curr.val);
+      if (curr.left != null) {
+        queue.offer(curr.left);
+      }
+      if (curr.right != null) {
+        queue.offer(curr.right);
+      }
+    }
+    return list;
+  }
+
+  public TreeNode createTree(List<Integer> list, int idx) {
+    if (idx >= list.size()) {
+      return null;
+    }
+    TreeNode root = new TreeNode(list.get(idx));
+    root.left = createTree(list, idx * 2 + 1);
+    root.right = createTree(list, idx * 2 + 2);
+    return root;
+  }
+
+  public boolean isEqual(TreeNode a, TreeNode b) {
+    if (a == null && b == null) {
+      return true;
+    }
+    if (a == null && b != null) {
+      return false;
+    }
+    if (a != null && b == null) {
+      return false;
+    }
+    if (a.val != b.val) {
+      return false;
+    }
+    return isEqual(a.left, b.left) && isEqual(a.right, b.right);
+  }
 }
