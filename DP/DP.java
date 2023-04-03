@@ -1130,4 +1130,35 @@ public class DP {
     return dp[rods.length][0] / 2;
   }
 
+  /**
+   * Leetcode 960 : Delete Columns to Make Sorted III.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n * m * m) & O(m)
+   * @param strs list of strings
+   * @return int
+   */
+  public int minDeletionSize(String[] strs) {
+    int[] dp = new int[strs[0].length()];
+    Arrays.fill(dp, 1);
+    for (int i = 0; i < strs[0].length(); i++) {
+      for (int j = 0; j < i; j++) {
+        boolean flag = true;
+        for (String str : strs) {
+          if (str.charAt(j) > str.charAt(i)) {
+            flag = false;
+            break;
+          }
+        }
+        if (flag) {
+          dp[i] = Math.max(dp[i], dp[j] + 1);
+        }
+      }
+    }
+    int keep_len = 0;
+    for (int d : dp) {
+      keep_len = Math.max(d, keep_len);
+    }
+    return strs[0].length() - keep_len;
+  }
+
 }

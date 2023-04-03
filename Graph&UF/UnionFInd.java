@@ -715,4 +715,41 @@ public class UnionFInd {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 959 : Regions Cut By Slashes.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2logn) & O(n2)
+   * @param grid list of strings
+   * @return int
+   */
+  public int regionsBySlashes(String[] grid) {
+    int n = grid.length;
+    int total = n * n * 4;
+    UF uf = new UF(total);
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        int pos = i * n + j;
+        if (j > 0) {
+          uf.union(pos * 4 + 3, (pos - 1) * 4 + 1);
+        }
+        if (i < n - 1) {
+          uf.union(pos * 4 + 2, (pos + n) * 4);
+        }
+        int seat = pos * 4;
+        if (grid[i].charAt(j) == '/') {
+          uf.union(seat, seat + 3);
+          uf.union(seat + 1, seat + 2);
+        } else if (grid[i].charAt(j) == '\\') {
+          uf.union(seat, seat + 1);
+          uf.union(seat + 2, seat + 3);
+        } else {
+          uf.union(seat, seat + 1);
+          uf.union(seat + 1, seat + 2);
+          uf.union(seat + 2, seat + 3);
+        }
+      }
+    }
+    return uf.cnt;
+  }
 }
