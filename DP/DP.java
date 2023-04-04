@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**.
  * A collection for leetcode problems related to dynamic programming
@@ -1159,6 +1160,34 @@ public class DP {
       keep_len = Math.max(d, keep_len);
     }
     return strs[0].length() - keep_len;
+  }
+
+  /**
+   * Leetcode 975 : Odd Even Jump.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(
+   * @param arr O(nlogn) & O(n)
+   * @return int[]
+   */
+  public int oddEvenJumps(int[] arr) {
+    int len = arr.length;
+    int[] dp = new int[len];
+    TreeMap<Integer, Integer> map = new TreeMap<>();
+    dp[len - 1] = 3;
+    map.put(arr[len - 1], len - 1);
+    int sum = 1;
+    for (int i = len - 2; i >= 0; i--) {
+      Integer j;
+      if ((j = map.ceilingKey(arr[i])) != null && dp[map.get(j)] >= 2) {
+        dp[i] = 1;
+        sum++;
+      }
+      if ((j = map.floorKey(arr[i])) != null && ((j = map.get(j)) == len - 1 || dp[j] == 1 || dp[j] == 3)) {
+        dp[i] += 2;
+      }
+      map.put(arr[i], i);
+    }
+    return sum;
   }
 
 }

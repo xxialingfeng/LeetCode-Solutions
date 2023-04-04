@@ -1866,4 +1866,45 @@ public class DFS {
       }
     }
   }
+
+  Map<Long, Long> map964 = new HashMap<>();
+
+  /**
+   * Leetcode 964 : Least Operators to Express Number.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(log(target)) & O(log(target))
+   * @param x int
+   * @param target int
+   * @return int
+   */
+  public int leastOpsExpressTarget(int x, int target) {
+    return x == target ? 0 : (int)dfs(x, target);
+  }
+
+  public long dfs(long i, long target) {
+    if (map964.containsKey(target)) {
+      return map964.get(target);
+    }
+    if (i == target) {
+      return 0;
+    } else if (i > target) {
+      return Math.min(2 * target - 1, 2 * (i - target));
+    } else {
+      int p = 0;
+      long xp = i;
+      while (xp < target) {
+        xp *= i;
+        ++p;
+      }
+      if (target == xp) {
+        return p;
+      }
+      if (xp - target >= target) {
+        return p - 1 + 1 + dfs(i, target - xp / i);
+      } else {
+        map964.put(target, Math.min(p - 1 + dfs(i, target - xp / i), p + dfs(i, xp - target)) + 1);
+        return map964.get(target);
+      }
+    }
+  }
 }
