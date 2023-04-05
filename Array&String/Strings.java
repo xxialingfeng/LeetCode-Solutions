@@ -2020,5 +2020,55 @@ public class Strings {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 966 : Vowel Spellchecker.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(m + n)
+   * @param wordlist list of strings
+   * @param queries list of strings
+   * @return list of strings
+   */
+  public String[] spellchecker(String[] wordlist, String[] queries) {
+    String[] ans = new String[queries.length];
+    Arrays.fill(ans, "");
+    Map<String, String> map = new HashMap<>();
+    for (String word : wordlist) {
+      String wordLC = word.toLowerCase();
+      map.putIfAbsent(wordLC, word);
+      map.putIfAbsent(makeVowel(wordLC), word);
+    }
+    Set<String> all = new HashSet<>();
+    for (String word : wordlist) {
+      all.add(word);
+    }
+    for (int i = 0; i < queries.length; i++) {
+      String curr = queries[i].toLowerCase();
+      String mv = makeVowel(queries[i].toLowerCase());
+      if (all.contains(queries[i])) {
+        ans[i] = queries[i];
+      } else if (map.containsKey(curr)) {
+        ans[i] = map.get(curr);
+      } else if (!map.containsKey(curr) && map.containsKey(mv)) {
+        ans[i] = map.get(mv);
+      }
+    }
+    return ans;
+  }
+
+  private boolean isVowel(char c) {
+    return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+  }
+
+
+  public String makeVowel(String a) {
+    char[] letters = a.toCharArray();
+    for (int i = 0; i < letters.length; i++) {
+      if (isVowel(letters[i])) {
+        letters[i] = '*';
+      }
+    }
+    return String.valueOf(letters);
+  }
 }
 

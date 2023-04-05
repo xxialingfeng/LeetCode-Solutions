@@ -2045,4 +2045,97 @@ public class Array {
     int day = n % size;
     return map.get(day == 0 ? size : day);
   }
+
+  /**
+   * Leetcode 962 : Maximum Width Ramp.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlogn) & O(N)
+   * @param nums int[]
+   * @return int
+   */
+  public int maxWidthRamp(int[] nums) {
+    Integer[] temp = new Integer[nums.length];
+    for (int i = 0; i < nums.length; i++) {
+      temp[i] = i;
+    }
+    Arrays.sort(temp, (i, j) -> ((Integer) nums[i]).compareTo(nums[j]));
+    int ans = 0;
+    int m = nums.length;
+    for (int i : temp) {
+      ans = Math.max(ans, i - m);
+      m = Math.min(m, i);
+    }
+    return ans;
+  }
+
+  /**
+   * Leetcode 963 : Minimum Area Rectangle II.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n4) & O(1)
+   * @param points int[][]
+   * @return double
+   */
+  public double minAreaFreeRect(int[][] points) {
+    if (points.length < 4) {
+      return 0;
+    }
+    double ans = Double.MAX_VALUE / 2;
+    for (int i = 0; i < points.length; i++) {
+      for (int j = i + 1; j < points.length; j++) {
+        for (int k = j + 1; k < points.length; k++) {
+          int[] point1 = points[i];
+          int[] point2 = points[j];
+          int[] point3 = points[k];
+          for (int l = k + 1; l < points.length; l++) {
+            int[] point4 = points[l];
+            if (isRec(point1, point2, point3, point4)) {
+              ans = Math.min(ans, area(point1[0], point1[1], point2[0], point2[1], point3[0], point3[1], point4[0], point4[1]));
+            }
+          }
+        }
+      }
+    }
+    return ans == Double.MAX_VALUE / 2 ? 0 : ans;
+  }
+
+  public boolean isRec(int[] point1, int[] point2, int[] point3, int[] point4) {
+    double x1 = point1[0];
+    double y1 = point1[1];
+    double x2 = point2[0];
+    double y2 = point2[1];
+    double x3 = point3[0];
+    double y3 = point3[1];
+    double x4 = point4[0];
+    double y4 = point4[1];
+    double midx = (x1 + x2 + x3 + x4) / 4;
+    double midy = (y1 + y2 + y3 + y4) / 4;
+    return dis(midx, midy, x1, y1) == dis(midx, midy, x2, y2) && dis(midx, midy, x1, y1) == dis(midx, midy, x3, y3) && dis(midx, midy, x1, y1) == dis(midx, midy, x4, y4);
+  }
+
+  public double dis(double x1, double y1, double x2, double y2) {
+    return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+  }
+
+  public double disDouble(double x1, double y1, double x2, double y2) {
+    return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+  }
+
+  public double area(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
+    double dis12 = disDouble(x1, y1, x2, y2);
+    double dis13 = disDouble(x1, y1, x3, y3);
+    double dis14 = disDouble(x1, y1, x4, y4);
+    double dis23 = disDouble(x2, y2, x3, y3);
+    double dis24 = disDouble(x2, y2, x4, y4);
+    double dis34 = disDouble(x3, y3, x4, y4);
+    if ((dis12 + dis13) == dis23) {
+      return dis(x1, y1, x2, y2) * dis(x1, y1, x3, y3);
+    }
+    if ((dis12 + dis14) == dis24) {
+      return dis(x1, y1, x2, y2) * dis(x1, y1, x4, y4);
+    }
+    if ((dis13 + dis14) == dis34) {
+      return dis(x1, y1, x3, y3) * dis(x1, y1, x4, y4);
+    }
+    return 1;
+  }
 }
