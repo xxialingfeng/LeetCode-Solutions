@@ -622,4 +622,99 @@ math {
     return (int) (ans % 1000000007);
   }
 
+  /**
+   * Leetcode 970 : Powerful Integers.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(m * n) & O(n)
+   * @param x int
+   * @param y int
+   * @param bound int
+   * @return list of integer
+   */
+  public List<Integer> powerfulIntegers(int x, int y, int bound) {
+    List<Integer> ans = new ArrayList<>();
+    if (x == 1 && y == 1) {
+      if (bound == 0 || bound == 1) {
+        return new ArrayList<>();
+      } else {
+        ans.add(2);
+        return ans;
+      }
+    }
+    if (x == 1) {
+      int count = 0;
+      while (Math.pow(y, count) + 1 <= bound) {
+        ans.add((int)Math.pow(y, count) + 1);
+        count++;
+      }
+      return ans;
+    }
+    if (y == 1) {
+      int count = 0;
+      while (Math.pow(x, count) + 1 <= bound) {
+        ans.add((int)Math.pow(x, count) + 1);
+        count++;
+      }
+      return ans;
+    }
+    Set<Double> set = new HashSet<>();
+    int count = 0;
+    double sum = 0;
+    boolean xbound = false;
+    boolean ybound = true;
+    while (sum <= bound) {
+      sum = Math.pow(x, count);
+      count++;
+    }
+    for (int i = 0; i < count; i++) {
+      int cnty = 0;
+      while (Math.pow(x, i) + Math.pow(y, cnty) <= bound) {
+        set.add(Math.pow(x, i) + Math.pow(y, cnty));
+        cnty++;
+      }
+    }
+    for (double res : set) {
+      ans.add((int)res);
+    }
+    return ans;
+  }
+
+  /**
+   * Leetcode 972 : Equal Rational Numbers.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param s string
+   * @param t string
+   * @return boolean
+   */
+  public boolean isRationalEqual(String s, String t) {
+    String[] sp = s.split("\\.");
+    String[] tp = t.split("\\.");
+    double sd = divide(sp);
+    double td = divide(tp);
+    return Math.abs(Integer.parseInt(sp[0]) - Integer.parseInt(tp[0]) + sd - td)<0.00000001;
+  }
+
+  public double divide(String[] n) {
+    if (n.length == 1) {
+      return 0;
+    }
+    double b = 0;
+    double c = 0;
+    for (int i = 0; i < n[1].length(); i++) {
+      if (n[1].charAt(i) == '(') {
+        if (i > 0) {
+          b = (double)Integer.parseInt(n[1].substring(0,i)) / Math.pow(10,i);
+        }
+        String s = n[1].substring(i + 1, n[1].length() - 1);
+        c = (double)Integer.parseInt(s) / (Math.pow(10,i) * (Math.pow(10,s.length()) - 1));
+        break;
+      }
+      if (i == n[1].length() - 1) {
+        return (double) Integer.parseInt(n[1]) / Math.pow(10, n[1].length());
+      }
+    }
+    return b + c;
+  }
+
 }

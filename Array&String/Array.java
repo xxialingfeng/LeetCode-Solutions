@@ -2138,4 +2138,63 @@ public class Array {
     }
     return 1;
   }
+
+  /**
+   * Leetcode 969 : Pancake Sorting.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(n)
+   * @param arr int[]
+   * @return list of integer
+   */
+  public List<Integer> pancakeSort(int[] arr) {
+    List<Integer> ans = new ArrayList<>();
+    int lastIdx = arr.length - 1;
+    Set<Integer> set = new HashSet<>();
+    while (lastIdx != 0) {
+      if (sorted(arr)) {
+        return ans;
+      }
+      Map<Integer, Integer> map = new HashMap<>();
+      for (int i = 0; i < arr.length; i++) {
+        map.put(arr[i], i);
+      }
+      int max = 0;
+      for (int i = 0; i < arr.length; i++) {
+        if (!set.contains(arr[i])) {
+          max = Math.max(max, arr[i]);
+        }
+      }
+      set.add(max);
+      int maxIdx = map.get(max);
+      if (maxIdx == lastIdx) {
+        lastIdx--;
+      } else {
+        int temp;
+        for (int start = 0, end = maxIdx; start < end; start++, end--) {
+          temp = arr[start];
+          arr[start] = arr[end];
+          arr[end] = temp;
+        }
+        for (int start = 0, end = lastIdx; start < end; start++, end--) {
+          temp = arr[start];
+          arr[start] = arr[end];
+          arr[end] = temp;
+        }
+        ans.add(maxIdx + 1);
+        ans.add(lastIdx + 1);
+        lastIdx--;
+      }
+    }
+    return ans;
+
+  }
+
+  public boolean sorted(int[] arr) {
+    for (int i = 1; i < arr.length; i++) {
+      if (arr[i] < arr[i - 1]) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

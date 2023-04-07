@@ -1907,4 +1907,112 @@ public class DFS {
       }
     }
   }
+
+  List<Integer> list967 = new ArrayList<>();
+  Set<Integer> set967 = new HashSet<>();
+
+  /**
+   * Leetcode 967 : Numbers With Same Consecutive Differences.
+   * @param n int
+   * @param k int
+   * @return int[]
+   */
+  public int[] numsSameConsecDiff(int n, int k) {
+    for (int j = 0; j <= 9; j++) {
+      dfs967(n, k, j, 1, 0, 0);
+    }
+    int[] ans = new int[list967.size()];
+    for (int i = 0; i < ans.length; i++) {
+      ans[i] = list967.get(i);
+    }
+    return ans;
+  }
+
+  public void dfs967(int n, int k, int idx, int count, int len, int curr) {
+    if (len == n) {
+      if (!set967.contains(curr) && String.valueOf(curr).length() == n) {
+        set967.add(curr);
+        list967.add(curr);
+      }
+      return;
+    }
+    int up = idx + k;
+    int down = idx - k;
+    if (up <= 9) {
+      dfs967(n, k, up, count * 10, len + 1, curr + count * up);
+    }
+    if (down >= 0) {
+      dfs967(n, k, down, count * 10, len + 1, curr + count * down);
+    }
+  }
+
+  int ans968 = 0;
+  public int minCameraCover(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    if (dfs(root) == 2) {
+      ans968++;
+    }
+    return ans968;
+  }
+
+  public int dfs(TreeNode node) {
+    if (node == null) {
+      return 1;
+    }
+    int left = dfs(node.left);
+    int right = dfs(node.right);
+    if (left == 2 || right == 2) {
+      ans968++;
+      return 0;
+    } else if (left == 0 || right == 0) {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
+
+  int i = 0;
+  boolean flag971 = false;
+  List<Integer> ans971 = new ArrayList<>();
+  public List<Integer> flipMatchVoyage(TreeNode root, int[] voyage) {
+    if (root == null) {
+      return ans971;
+    }
+    dfs971(root, voyage);
+    if (flag971) {
+      List<Integer> spe = new ArrayList<>();
+      spe.add(-1);
+      return spe;
+    }
+    return ans971;
+  }
+
+  public void dfs971(TreeNode root, int[] voyage) {
+    if (root == null) {
+      return;
+    }
+    if (root.val != voyage[i]) {
+      flag971 = true;
+      return;
+    }
+    if (root.left != null && root.left.val != voyage[i + 1]) {
+      flip(root);
+      ans971.add(root.val);
+    }
+    i++;
+    dfs971(root.left, voyage);
+    dfs971(root.right, voyage);
+  }
+
+  public void flip(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    TreeNode temp = null;
+    temp = root.left;
+    root.left = root.right;
+    root.right = temp;
+  }
 }
