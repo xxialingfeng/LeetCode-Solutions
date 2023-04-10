@@ -2197,4 +2197,39 @@ public class Array {
     }
     return true;
   }
+
+  /**
+   * Leetcode 976 : Largest Perimeter Triangle.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(1)
+   * @param nums int[]
+   * @return int
+   */
+  public int largestPerimeter(int[] nums) {
+    Arrays.sort(nums);
+    for (int i = nums.length - 1; i >= 2; i--) {
+      int a = nums[i];
+      int b = nums[i - 1];
+      int c = nums[i - 2];
+      if (a < b + c) {
+        return a + b + c;
+      }
+    }
+    return 0;
+  }
+
+  /**
+   * Leetcode 977 ：
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(nlogn) & O(1)
+   * @param nums int[]
+   * @return int[]
+   */
+  public int[] sortedSquares(int[] nums) {
+    for (int i = 0; i < nums.length; i++) {
+      nums[i] = nums[i] * nums[i];
+    }
+    Arrays.sort(nums);
+    return nums;
+  }
 }

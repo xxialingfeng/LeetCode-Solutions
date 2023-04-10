@@ -717,4 +717,29 @@ math {
     return b + c;
   }
 
+  /**
+   * Leetcode 974 : Subarray Sums Divisible by K.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @param k int
+   * @return int
+   */
+  public int subarraysDivByK(int[] nums, int k) {
+    int ans = 0;
+    int sum = 0;
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, 1);
+    for (int num : nums) {
+      sum += num;
+      int currm = (sum % k + k) % k;
+      int currc = map.getOrDefault(currm, 0);
+      ans += currc;
+      map.put(currm, currc + 1);
+    }
+    return ans;
+  }
+
+
+
 }

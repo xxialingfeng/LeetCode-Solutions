@@ -282,6 +282,37 @@ public class priorityQueue {
     }
   }
 
+  /**
+   * Leetcode 973 : K Closest Points to Origin.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(nlogk) & O(n)
+   * @param points int[][]
+   * @param k int
+   * @return int[][]
+   */
+  public int[][] kClosest(int[][] points, int k) {
+    if (k == points.length) {
+      return points;
+    }
+    PriorityQueue<int[]> queue = new PriorityQueue<>(new Comparator<int[]>() {
+      @Override
+      public int compare(int[] a, int[] b) {
+        return a[0] * a[0] + a[1] * a[1] - b[0] * b[0] - b[1] * b[1];
+      }
+    });
+    for (int[] point : points) {
+      queue.offer(point);
+    }
+    int idx = 0;
+    while (idx < k) {
+      points[idx] = queue.poll();
+      idx++;
+    }
+    int[][] ans = new int[k][2];
+    System.arraycopy(points, 0, ans, 0, k);
+    return ans;
+  }
+
 
 
 }
