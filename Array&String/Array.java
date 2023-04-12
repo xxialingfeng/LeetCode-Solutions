@@ -2232,4 +2232,49 @@ public class Array {
     Arrays.sort(nums);
     return nums;
   }
+
+  /**
+   * Leetcode 985 : Sum of Even Numbers After Queries.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @param queries int[][]
+   * @return int[]
+   */
+  public int[] sumEvenAfterQueries(int[] nums, int[][] queries) {
+    int initsum = 0;
+    for (int num : nums) {
+      if (num % 2 == 0) {
+        initsum += num;
+      }
+    }
+    int[] ans = new int[nums.length];
+    for (int i = 0; i < queries.length; i++) {
+      int[] query = queries[i];
+      int val = query[0];
+      int idx = query[1];
+      if ((nums[idx] > 0 ? nums[idx] : -1 * nums[idx]) % 2 == 1) {
+        if (Math.abs(nums[idx] + val) % 2 == 0) {
+          nums[idx] += val;
+          initsum += (nums[idx]);
+          ans[i] = initsum;
+        } else {
+          nums[idx] += val;
+          ans[i] = initsum;
+        }
+      } else {
+        if ((nums[idx] + val) % 2 == 0) {
+          nums[idx] += val;
+          initsum += val;
+          ans[i] = initsum;
+        } else {
+          initsum -= nums[idx];
+          nums[idx] += val;
+          ans[i] = initsum;
+        }
+
+      }
+    }
+    return ans;
+  }
 }

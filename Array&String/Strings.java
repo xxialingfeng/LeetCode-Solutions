@@ -2070,5 +2070,34 @@ public class Strings {
     }
     return String.valueOf(letters);
   }
+
+  /**
+   * Leetcode 984 :  String Without AAA or BBB.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(a + b) & O(a + b)
+   * @param a int
+   * @param b int
+   * @return string
+   */
+  public String strWithout3a3b(int a, int b) {
+    if (a == 0) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < b; i++) {
+        sb.append("b");
+      }
+      return sb.toString();
+    }
+    if (b == 0) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < a; i++) {
+        sb.append("a");
+      }
+      return sb.toString();
+    }
+    if (a == b) {
+      return "ab" + strWithout3a3b(a - 1, b - 1);
+    }
+    return a > b ? "aab" + strWithout3a3b(a - 2, b - 1) : "bba" + strWithout3a3b(a - 1, b - 2);
+  }
 }
 

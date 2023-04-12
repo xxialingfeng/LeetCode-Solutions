@@ -1190,4 +1190,28 @@ public class DP {
     return sum;
   }
 
+  /**
+   * Leetcode 983 : Minimum Cost For Tickets.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param days int[]
+   * @param costs int[]
+   * @return int
+   */
+  public int mincostTickets(int[] days, int[] costs) {
+    int[] dp = new int[days[days.length - 1] + 1];
+    Set<Integer> set = new HashSet<>();
+    for (int day : days) {
+      set.add(day);
+    }
+    for (int i = 1; i <= days[days.length - 1]; i++) {
+      if (set.contains(i)) {
+        dp[i] = Math.min(dp[i - 1] + costs[0], Math.min(dp[i - 7 > 0 ? i - 7 : 0] + costs[1], dp[i - 30 > 0 ? i - 30 : 0] + costs[2]));
+      } else {
+        dp[i] = dp[i - 1];
+      }
+    }
+    return dp[days[days.length - 1]];
+  }
+
 }

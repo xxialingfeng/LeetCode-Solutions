@@ -2015,4 +2015,104 @@ public class DFS {
     root.left = root.right;
     root.right = temp;
   }
+
+  int ans979 = 0;
+
+  /**
+   * Leetcode 979 : Distribute Coins in Binary Tree.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(N) & O(H)
+   * @param root treenode
+   * @return int
+   */
+  public int distributeCoins(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    lrd(root);
+    return ans979;
+
+  }
+
+  public int lrd(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    if (root.left != null) {
+      root.val += lrd(root.left);
+    }
+    if (root.right != null) {
+      root.val += lrd(root.right);
+    }
+    ans979 += Math.abs(root.val - 1);
+    return root.val - 1;
+  }
+
+  boolean[][] vis980;
+  int ans980 = 0;
+
+  /**
+   * Leetcode 980 : Unique Paths III
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(4^(R+C)) & (R*C)
+   * @param grid int[][]
+   * @return int
+   */
+  public int uniquePathsIII(int[][] grid) {
+    vis = new boolean[grid.length][grid[0].length];
+    int sx = 0;
+    int sy = 0;
+    int tot = 0;
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[0].length; j++) {
+        if (grid[i][j] == 1) {
+          sx = i;
+          sy = j;
+          break;
+        }
+        if (grid[i][j] == 0) {
+          tot++;
+        }
+      }
+    }
+    for (int i = 0; i < grid.length; i++) {
+      for (int j = 0; j < grid[0].length; j++) {
+        if (grid[i][j] == -1) {
+          vis980[i][j] = true;
+        }
+      }
+    }
+    vis980[sx][sy] = true;
+    dfs(grid, vis980, sx, sy);
+    return ans980;
+  }
+
+  public void dfs(int[][] grid, boolean[][] vis, int i, int j) {
+    if (grid[i][j] == 2) {
+      if (allvis(vis)) {
+        ans980++;
+      }
+      return;
+    }
+    for (int[] direction : directions) {
+      int x = i + direction[0];
+      int y = j + direction[1];
+      if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && !vis980[x][y] && grid[x][y] != -1) {
+        vis980[x][y] = true;
+        dfs(grid, vis, x, y);
+        vis980[x][y] = false;
+      }
+    }
+  }
+
+  public boolean allvis(boolean[][] vis) {
+    for (boolean[] v : vis) {
+      for (boolean b : v) {
+        if (b == false) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 }

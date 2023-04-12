@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This is a collection of leetcode problems related to bits.
  */
@@ -101,5 +104,30 @@ public class bit {
       map[cur]++;
     }
     return ret;
+  }
+
+  /**
+   * Leetcode 982 : Triples with Bitwise AND Equal To Zero.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n2) & O(n2)
+   * @param nums int[]
+   * @return int
+   */
+  public int countTriplets(int[] nums) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int k : nums) {
+      for (int num : nums) {
+        map.put(k & num, map.getOrDefault(k & num, 0) + 1);
+      }
+    }
+    int res = 0;
+    for (int and : map.keySet()) {
+      for (int num : nums) {
+        if ((and & num) == 0) {
+          res += map.get(and);
+        }
+      }
+    }
+    return res;
   }
 }
