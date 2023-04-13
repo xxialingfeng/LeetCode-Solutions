@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 class Node {
@@ -2114,5 +2116,85 @@ public class DFS {
       }
     }
     return true;
+  }
+
+  StringBuilder sb988;
+  String res988;
+
+  /**
+   * Leetcode 988 : Smallest String Starting From Leaf.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root treenode
+   * @return string
+   */
+  public String smallestFromLeaf(TreeNode root) {
+    if (root == null) {
+      return "";
+    }
+    sb988 = new StringBuilder();
+    dfs988(root);
+    return res988;
+  }
+
+  public void dfs988(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    sb988.insert(0, (char) ('a' + root.val));
+    if (root.left == null && root.right == null) {
+      String toCom = sb988.toString();
+      if (res988 == null || toCom.compareTo(res988) < 0) {
+        res988 = toCom;
+      }
+    }
+    dfs988(root.left);
+    dfs988(root.right);
+    sb988.deleteCharAt(0);
+  }
+
+  TreeMap<Integer, List<int[]>> map987;
+
+  /**
+   * Leetcode 987 : Vertical Order Traversal of a Binary Tree.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(nlogn) & O(n)
+   * @param root treenode
+   * @return list of list of integer
+   */
+  public List<List<Integer>> verticalTraversal(TreeNode root) {
+    map987 = new TreeMap<>();
+    dfs987(root, 0, 0);
+    List<List<Integer>> ans = new ArrayList<>();
+    for (int key : map987.keySet()) {
+      List<int[]> temp = map987.get(key);
+      temp.sort(new Comparator<int[]>() {
+        @Override
+        public int compare(int[] a, int[] b) {
+          if (a[0] == b[0]) {
+            return a[1] - b[1];
+          }
+          return a[0] - b[0];
+        }
+      });
+      List<Integer> toAdd = new ArrayList<>();
+      for (int[] arr : temp) {
+        toAdd.add(arr[1]);
+      }
+      ans.add(toAdd);
+    }
+    return ans;
+  }
+
+  public void dfs987(TreeNode node, int idx, int level) {
+    if (node == null) {
+      return;
+    }
+    if (!map987.containsKey(idx)) {
+      map987.put(idx, new ArrayList<>());
+    }
+    map987.get(idx).add(new int[]{level, node.val});
+    dfs987(node.left, idx - 1, level + 1);
+    dfs987(node.right, idx + 1, level + 1);
   }
 }

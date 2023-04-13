@@ -2277,4 +2277,36 @@ public class Array {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 986 ： Interval List Intersections.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param firstList int[][]
+   * @param secondList int[][]
+   * @return int[][]
+   */
+  public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+    int idxf = 0;
+    int idxs = 0;
+    List<int[]> list = new ArrayList<>();
+    while (idxf < firstList.length && idxs < secondList.length) {
+      if (firstList[idxf][1] < secondList[idxs][0]) {
+        idxf++;
+      } else if (firstList[idxf][0] > secondList[idxs][1]) {
+        idxs++;
+      } else if (firstList[idxf][1] <= secondList[idxs][1] && firstList[idxf][1] >= secondList[idxs][0]) {
+        list.add(new int[]{Math.max(secondList[idxs][0], firstList[idxf][0]), firstList[idxf][1]});
+        idxf++;
+      } else if (firstList[idxf][1] >= secondList[idxs][1] && secondList[idxs][1] >= firstList[idxf][0]) {
+        list.add(new int[]{Math.max(secondList[idxs][0], firstList[idxf][0]), secondList[idxs][1]});
+        idxs++;
+      }
+    }
+    int[][] ans = new int[list.size()][2];
+    for (int i = 0; i < list.size(); i++) {
+      ans[i] = list.get(i);
+    }
+    return ans;
+  }
 }
