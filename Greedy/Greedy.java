@@ -150,4 +150,26 @@ public class Greedy {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 991 : Broken Calculator.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param startValue int
+   * @param target int
+   * @return int
+   */
+  public int brokenCalc(int startValue, int target) {
+    int ans = 0;
+    while (startValue < target) {
+      if (target % 2 == 0) {
+        target /= 2;
+        ans++;
+      } else {
+        target = (target + 1) / 2;
+        ans += 2;
+      }
+    }
+    return ans + startValue - target;
+  }
 }

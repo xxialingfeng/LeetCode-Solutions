@@ -2309,4 +2309,173 @@ public class Array {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 989 : Add to Array-Form of Integer.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param num int[]
+   * @param k int
+   * @return list of integer
+   */
+  public List<Integer> addToArrayForm(int[] num, int k) {
+    List<Integer> ans = new ArrayList<>();
+    boolean add = false;
+    for (int i = num.length - 1; i >= 0; i--) {
+      int toAdd = k % 10;
+      num[i] += toAdd;
+      if (num[i] >= 10) {
+        num[i] -= 10;
+        if (i >= 1) {
+          num[i - 1] += 1;
+        } else {
+          add = true;
+          k /= 10;
+          break;
+        }
+      }
+      k /= 10;
+    }
+    if (k == 0) {
+      if (add) {
+        ans.add(1);
+      }
+    }
+    while (k > 0) {
+      if (add) {
+        int toAdd = k % 10;
+        ans.add(0, toAdd + 1);
+        add = false;
+      } else {
+        int toAdd = k % 10;
+        ans.add(0, toAdd);
+      }
+      k /= 10;
+    }
+    for (int i : num) {
+      ans.add(i);
+    }
+    List<Integer> res = new ArrayList<>();
+    int[] curr = new int[ans.size()];
+    for (int i = ans.size() - 1; i >= 0; i--) {
+      curr[i] = ans.get(i);
+    }
+    for (int i = curr.length - 1; i >= 0; i--) {
+      if (curr[i] >= 10) {
+        curr[i] -= 10;
+        if (i >= 1) {
+          curr[i - 1] += 1;
+        } else {
+          res.add(1);
+          break;
+        }
+      }
+    }
+    for (int i : curr) {
+      res.add(i);
+    }
+    return res;
+  }
+
+  int[][] directions = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+  /**
+   * Leetcode 994 : Rotting Oranges.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n2) & O(n2)
+   * @param grid int[][]
+   * @return int
+   */
+  public int orangesRotting(int[][] grid) {
+    int m = grid.length;
+    int n = grid[0].length;
+    boolean[][] visisted = new boolean[m][n];
+    int ans = 0;
+    int cnt = 0;
+    for (int[] ints : grid) {
+      for (int j = 0; j < n; j++) {
+        if (ints[j] == 1) {
+          cnt++;
+        }
+      }
+    }
+    while (cnt != 0) {
+      visisted = new boolean[m][n];
+      for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+          if (grid[i][j] == 2) {
+            visisted[i][j] = true;
+          }
+        }
+      }
+      boolean flag = false;
+      for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+          if (visisted[i][j] && grid[i][j] == 2) {
+            for (int[] dir : directions) {
+              int x = i + dir[0];
+              int y = j + dir[1];
+              if (x >= 0 && x < m && y >= 0 && y < n && grid[x][y] == 1) {
+                flag = true;
+                grid[x][y] = 2;
+                cnt--;
+              }
+            }
+          }
+        }
+      }
+      ans++;
+      if (!flag && !allRot(grid)) {
+        return -1;
+      }
+    }
+    return ans;
+  }
+
+  public boolean allRot(int[][] grid) {
+    for (int[] ints : grid) {
+      for (int j = 0; j < grid[0].length; j++) {
+        if (ints[j] == 1) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Leetcode 992 : Subarrays with K Different Integers.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @param k int
+   * @return int
+   */
+  public int subarraysWithKDistinct(int[] nums, int k) {
+    return subarraysWithMostK(nums, k) - subarraysWithMostK(nums, k - 1);
+  }
+
+  public  int subarraysWithMostK(int[] nums, int k) {
+    Map<Integer, Integer> map = new HashMap<>();
+    int count = 0;
+    int left = 0;
+    int right = 0;
+    int res = 0;
+    while (right < nums.length) {
+      map.put(nums[right], map.getOrDefault(nums[right], 0) + 1);
+      if (map.get(nums[right]) == 1) {
+        count++;
+      }
+      right++;
+      while (count > k) {
+        map.put(nums[left], map.get(nums[left]) - 1);
+        if (map.get(nums[left]) == 0) {
+          count--;
+        }
+        left++;
+      }
+      res += right - left;
+    }
+    return res;
+  }
 }

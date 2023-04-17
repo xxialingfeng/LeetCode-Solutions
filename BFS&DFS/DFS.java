@@ -2197,4 +2197,34 @@ public class DFS {
     dfs987(node.left, idx - 1, level + 1);
     dfs987(node.right, idx + 1, level + 1);
   }
+
+  Map<Integer, int[]> map993 = new HashMap<>();
+
+  /**
+   * Leetcide 993 : Cousins in Binary Tree.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param root treenode
+   * @param x int
+   * @param y int
+   * @return boolean
+   */
+  public boolean isCousins(TreeNode root, int x, int y) {
+    if (root == null) {
+      return true;
+    }
+    dfs(root, 0, new TreeNode(-1));
+    int[] xd = map993.get(x);
+    int[] yd = map993.get(y);
+    return xd[0] == yd[0] && xd[1] != yd[1];
+  }
+
+  public void dfs(TreeNode node, int level, TreeNode parent) {
+    if (node == null) {
+      return;
+    }
+    map993.put(node.val, new int[]{level, parent.val});
+    dfs(node.left, level + 1, node);
+    dfs(node.right, level + 1, node);
+  }
 }

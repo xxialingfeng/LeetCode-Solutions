@@ -379,6 +379,10 @@ public class UnionFInd {
       cnt--;
     }
 
+    public boolean isConnected(int x, int v) {
+      return find(x) == find(v);
+    }
+
     public int getSize(int x) {
       return size[find(x)];
     }
@@ -751,5 +755,33 @@ public class UnionFInd {
       }
     }
     return uf.cnt;
+  }
+
+  /**
+   * Leetcode 990 : Satisfiability of Equality Equations.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(N + nlogn) & O(n)
+   * @param equations list of strings
+   * @return boolean
+   */
+  public boolean equationsPossible(String[] equations) {
+    UF uf = new UF(26);
+    Arrays.sort(equations, (a, b) -> (b.charAt(1) - a.charAt(1)));
+    for (String curr : equations) {
+      if (curr.charAt(0) == curr.charAt(3)) {
+        if (!curr.substring(1, 3).equals("==")) {
+          return false;
+        }
+      } else {
+        if (curr.substring(1, 3).equals("==")) {
+          uf.union(curr.charAt(0) - 'a', curr.charAt(3) - 'a');
+        } else {
+          if (uf.isConnected(curr.charAt(0) - 'a', curr.charAt(3) - 'a')) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
 }
