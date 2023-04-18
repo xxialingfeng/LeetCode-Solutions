@@ -130,4 +130,32 @@ public class bit {
     }
     return res;
   }
+
+  /**
+   * Leetcode 995 : Minimum Number of K Consecutive Bit Flips.'
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @param k int
+   * @return int
+   */
+  public int minKBitFlips(int[] nums, int k) {
+    int times = 0;
+    int[] hint = new int[nums.length];
+    int flip = 0;
+    for (int i = 0; i < nums.length; i++) {
+      flip ^= hint[i];
+      if (nums[i] == flip) {
+        times++;
+        if (i + k > nums.length) {
+          return -1;
+        }
+        flip ^= 1;
+        if (i + k < nums.length) {
+          hint[i + k] ^= 1;
+        }
+      }
+    }
+    return times;
+  }
 }

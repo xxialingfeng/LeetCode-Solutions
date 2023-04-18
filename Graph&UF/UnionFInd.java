@@ -784,4 +784,46 @@ public class UnionFInd {
     }
     return true;
   }
+
+  /**
+   * Leetcode 997 : Find the Town Judge.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n2) & O(n)
+   * @param n int
+   * @param trust int[][]
+   * @return int
+   */
+  public int findJudge(int n, int[][] trust) {
+    if (trust.length == 0) {
+      return n == 1 ? 1 : -1;
+    }
+    Set<Integer> set = new HashSet<>();
+    for (int[] curr : trust) {
+      set.add(curr[0]);
+    }
+    if (set.size() == n) {
+      return -1;
+    }
+    for (int i = 1; i <= n; i++) {
+      boolean flag = true;
+      if (!set.contains(i)) {
+        UF uf = new UF(n + 1);
+        for (int[] ints : trust) {
+          if (ints[1] == i) {
+            uf.union(i, ints[0]);
+          }
+        }
+        for (int j = 1; j <= n; j++) {
+          if (!uf.isConnected(i, j)) {
+            flag = false;
+            break;
+          }
+        }
+        if (flag) {
+          return i;
+        }
+      }
+    }
+    return -1;
+  }
 }

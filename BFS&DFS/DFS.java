@@ -2227,4 +2227,49 @@ public class DFS {
     dfs(node.left, level + 1, node);
     dfs(node.right, level + 1, node);
   }
+
+  int ans996 = 0;
+
+  /**
+   * Leetcode 996 : Number of Squareful Arrays.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(N!) & O(N)
+   * @param nums int[]
+   * @return int
+   */
+  public int numSquarefulPerms(int[] nums) {
+    boolean[] vis = new boolean[nums.length];
+    Arrays.sort(nums);
+    dfs(nums, 0, vis, -1);
+    return ans996;
+  }
+
+  public void dfs(int[] nums, int curridx, boolean[] vis, int pre) {
+    if (curridx == nums.length) {
+      ans996++;
+      return;
+    }
+    Set<Integer> set = new HashSet<>();
+    for (int i = 0; i < nums.length; i++) {
+      if (set.contains(nums[i])) {
+        continue;
+      }
+      if (!vis[i]) {
+        vis[i] = true;
+        set.add(nums[i]);
+        if (pre != -1 && check(pre, nums[i])) {
+          dfs(nums, curridx + 1, vis, nums[i]);
+        } else if (pre == -1) {
+          dfs(nums, curridx + 1, vis, nums[i]);
+        }
+        vis[i] = false;
+      }
+    }
+
+  }
+
+  public boolean check(int x,int y) {
+    int t = (int) Math.sqrt(x + y);
+    return t * t == x + y;
+  }
 }
