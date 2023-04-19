@@ -2478,4 +2478,71 @@ public class Array {
     }
     return res;
   }
+
+  /**
+   * Leetcode 999 : Available Captures for Rook.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n2) & O(1)
+   * @param board int[][]
+   * @return int
+   */
+  public int numRookCaptures(char[][] board) {
+    int x = -1;
+    int y = -1;
+    for (int i = 0; i < 8; i++) {
+      for (int j = 0; j < 8; j++) {
+        if (board[i][j] == 'R') {
+          x = i;
+          y = j;
+        }
+      }
+    }
+    int up = x - 1;
+    int down = x + 1;
+    int left = y - 1;
+    int right = y + 1;
+    int ans = 0;
+    while (up >= 0) {
+      if (board[up][y] == '.') {
+        up--;
+      } else if (board[up][y] == 'B') {
+        break;
+      } else if (board[up][y] == 'p') {
+        ans++;
+        break;
+      }
+    }
+    while (down < 8) {
+      if (board[down][y] == '.') {
+        down++;
+      } else if (board[down][y] == 'B') {
+        break;
+      } else if (board[down][y] == 'p') {
+        ans++;
+        break;
+      }
+    }
+    while (left >= 0) {
+      if (board[x][left] == '.') {
+        left--;
+      } else if (board[x][left] == 'B') {
+        break;
+      } else if (board[x][left] == 'p') {
+        ans++;
+        break;
+      }
+    }
+
+    while (right < 8) {
+      if (board[x][right] == '.') {
+        right++;
+      } else if (board[x][right] == 'B') {
+        break;
+      } else if (board[x][right] == 'p') {
+        ans++;
+        break;
+      }
+    }
+    return ans;
+  }
 }

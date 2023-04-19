@@ -1214,4 +1214,40 @@ public class DP {
     return dp[days[days.length - 1]];
   }
 
+  /**
+   * Leetcode 1000 : Minimum Cost to Merge Stones.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n^3) & O(n^2)
+   * @param stones int[][]
+   * @param k int
+   * @return int
+   */
+  public int mergeStones(int[] stones, int k) {
+    int n = stones.length;
+    if (n == 1) {
+      return 0;
+    }
+    if ((n - 1) % (k - 1) != 0) {
+      return -1;
+    }
+    int[][] dp = new int[n][n];
+    int[] prefix = new int[stones.length + 1];
+    for (int i = 1; i <= stones.length; i++) {
+      prefix[i] = prefix[i - 1] + stones[i - 1];
+    }
+    for (int j = 1; j < n; j++) {
+      for (int i = j - 1; i >= 0; i--) {
+        dp[i][j] = 0x3f3f3f3f;
+        for (int l = i; l < j; l += k - 1) {
+          dp[i][j] = Math.min(dp[i][j], dp[i][l] + dp[l + 1][j]);
+        }
+        if ((j - i) % (k - 1) == 0) {
+          dp[i][j] += prefix[j + 1] - prefix[i];
+        }
+      }
+    }
+    return dp[0][n - 1];
+
+  }
+
 }

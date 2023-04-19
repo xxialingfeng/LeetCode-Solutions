@@ -800,4 +800,26 @@ public class Tree {
     }
     return isEqual(a.left, b.left) && isEqual(a.right, b.right);
   }
+
+  /**
+   * Leetcode 998 : Maximum Binary Tree II.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param root treenode
+   * @param val int
+   * @return treenode
+   */
+  public TreeNode insertIntoMaxTree(TreeNode root, int val) {
+    if (root == null) {
+      return new TreeNode(val);
+    }
+    if (root.val > val) {
+      root.right = insertIntoMaxTree(root.right, val);
+      return root;
+    } else {
+      TreeNode toAdd = new TreeNode(val);
+      toAdd.left = root;
+      return toAdd;
+    }
+  }
 }
