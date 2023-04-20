@@ -2545,4 +2545,34 @@ public class Array {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 1002 : Find Common Characters.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n2) & O(n2)
+   * @param words list of strings
+   * @return list of strings
+   */
+  public List<String> commonChars(String[] words) {
+    List<int[]> list = new ArrayList<>();
+    for (String word : words) {
+      int[] toAdd = new int[26];
+      for (int i = 0; i < word.length(); i++) {
+        toAdd[word.charAt(i) - 'a']++;
+      }
+      list.add(toAdd);
+    }
+    List<String> ans = new ArrayList<>();
+    for (int i = 0; i < 26; i++) {
+      int min = 101;
+      for (int j = 0; j < list.size(); j++) {
+        min = Math.min(list.get(j)[i], min);
+      }
+      char c = (char)(i + 'a');
+      for (int j = 0; j < min; j++) {
+        ans.add("" + c);
+      }
+    }
+    return ans;
+  }
 }

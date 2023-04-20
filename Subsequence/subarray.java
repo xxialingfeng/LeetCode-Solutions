@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A collection of leetcode problems related to subarray
+ * A collection of leetcode problems related to subarray.
  */
 public class subarray {
 
