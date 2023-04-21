@@ -313,6 +313,30 @@ public class priorityQueue {
     return ans;
   }
 
+  /**
+   * Leetcode 1005 : Maximize Sum Of Array After K Negations.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param nums int[]
+   * @param k int
+   * @return int
+   */
+  public int largestSumAfterKNegations(int[] nums, int k) {
+    PriorityQueue<Integer> queue = new PriorityQueue<>();
+    for (int num : nums) {
+      queue.offer(num);
+    }
+    for (int i = 0; i < k; i++) {
+      int curr = queue.poll();
+      queue.offer(curr * -1);
+    }
+    int sum = 0;
+    while (!queue.isEmpty()) {
+      sum += queue.poll();
+    }
+    return sum;
+  }
+
 
 
 }

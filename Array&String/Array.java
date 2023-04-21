@@ -2575,4 +2575,103 @@ public class Array {
     }
     return ans;
   }
+
+  /**
+   * Leetcode 1001 : Grid Illumination.
+   * @Difficulty: Hard
+   * @OptimalComplexity: O(n * m) & O(N)
+   * @param n int
+   * @param lamps int[][]
+   * @param queries int[][]
+   * @return int
+   */
+  public int[] gridIllumination(int n, int[][] lamps, int[][] queries) {
+    Map<Integer, Integer> rows = new HashMap<>();
+    Map<Integer, Integer> columns = new HashMap<>();
+    Map<Integer, Integer> diagonal = new HashMap<>();
+    Map<Integer, Integer> antiDiagonal = new HashMap<>();
+    Set<String> points = new HashSet<>();
+    for (int[] lamp : lamps) {
+      if (!points.add(lamp[0] + "+" + lamp[1])) {
+        continue;
+      }
+      rows.put(lamp[0], rows.getOrDefault(lamp[0],0) + 1);
+      columns.put(lamp[1], columns.getOrDefault(lamp[1],0) + 1);
+      diagonal.put(lamp[0]-lamp[1], diagonal.getOrDefault(lamp[0] - lamp[1], 0) + 1);
+      antiDiagonal.put(lamp[0]+lamp[1], antiDiagonal.getOrDefault(lamp[0] + lamp[1], 0) + 1);
+    }
+    int[] res = new int[queries.length];
+    for (int i = 0; i < queries.length; i++) {
+      int row = queries[i][0];
+      int column = queries[i][1];
+      if(rows.getOrDefault(row, 0) > 0) res[i] = 1;
+      else if(columns.getOrDefault(column,0) > 0) res[i] = 1;
+      else if(diagonal.getOrDefault(row - column, 0) > 0) res[i] = 1;
+      else if(antiDiagonal.getOrDefault(row + column, 0) > 0) res[i] = 1;
+      for(int x = row - 1; x <= row + 1; x++){
+        for(int y = column - 1; y <= column + 1; y++) {
+          if(x < 0 || y < 0 || x >= n || y >= n) continue;
+          if(points.remove(x + "+" + y)){
+            rows.put(x,rows.get(x) - 1);
+            if(rows.get(x) == 0) rows.remove(x);
+            columns.put(y,columns.get(y) - 1);
+            if(columns.get(y) == 0) columns.remove(y);
+            diagonal.put(x-y,diagonal.get(x-y) - 1);
+            if(diagonal.get(x-y) == 0) diagonal.remove(x-y);
+            antiDiagonal.put(x+y,antiDiagonal.get(x+y) - 1);
+            if(antiDiagonal.get(x+y) == 0) antiDiagonal.remove(x+y);
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  /**
+   * Leetcode 1007 : Minimum Domino Rotations For Equal Row.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(n)
+   * @param tops int[]
+   * @param bottoms int[]
+   * @return int
+   */
+  public int minDominoRotations(int[] tops, int[] bottoms) {
+    int t = tops[0];
+    int b = bottoms[0];
+    boolean flagt = true;
+    boolean flagb = true;
+    for (int i = 1; i < tops.length; i++) {
+      if (tops[i] != t && bottoms[i] != t) {
+        flagt = false;
+      }
+      if (bottoms[i] != b && tops[i] != b) {
+        flagb = false;
+      }
+    }
+    if (!flagb && !flagt) {
+      return -1;
+    } else if (flagt) {
+      Map<Integer, Integer> mapt = new HashMap<>();
+      Map<Integer, Integer> mapb = new HashMap<>();
+      for (int i : tops) {
+        mapt.put(i, mapt.getOrDefault(i, 0) + 1);
+      }
+      for (int i : bottoms) {
+        mapb.put(i, mapb.getOrDefault(i, 0) + 1);
+      }
+      return Math.min(tops.length - mapt.get(t), tops.length - mapb.get(t));
+
+    } else {
+      Map<Integer, Integer> mapt = new HashMap<>();
+      Map<Integer, Integer> mapb = new HashMap<>();
+      for (int i : tops) {
+        mapt.put(i, mapt.getOrDefault(i, 0) + 1);
+      }
+      for (int i : bottoms) {
+        mapb.put(i, mapb.getOrDefault(i, 0) + 1);
+      }
+      return Math.min(tops.length - mapt.get(b), tops.length - mapb.get(b));
+
+    }
+  }
 }

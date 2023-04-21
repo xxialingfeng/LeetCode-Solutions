@@ -740,6 +740,47 @@ math {
     return ans;
   }
 
+  /**
+   * Leetcode 1006 : Clumsy Factorial.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n) & O(1)
+   * @param n int
+   * @return int
+   */
+  public int clumsy(int n) {
+    if (n == 1) {
+      return 1;
+    }
+    if (n == 2) {
+      return 2;
+    }
+    if (n == 3) {
+      return 6;
+    }
+    int ans = n * (n - 1) / (n - 2) + n - 3;
+    int i;
+    for (i = n - 4; i >= 4; i -= 4) {
+      ans -= arithm(i);
+    }
+    if (i == 0) {
+      return ans;
+    }
+    if (i == 1) {
+      return ans - 1;
+    }
+    if (i == 2) {
+      return ans - 2;
+    }
+    if (i == 3) {
+      return ans - 6;
+    }
+    return ans;
+  }
+
+  public int arithm(int n) {
+    return n * (n - 1) / (n - 2) - n + 3;
+  }
+
 
 
 }
