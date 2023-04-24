@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -157,5 +159,53 @@ public class bit {
       }
     }
     return times;
+  }
+
+  /**
+   * Leetcode 1009 : Complement of Base 10 Integer.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(logn) & O(n)
+   * @param n int
+   * @return int
+   */
+  public int bitwiseComplement(int n) {
+    if (n == 0) {
+      return 1;
+    }
+    List<Integer> list = new ArrayList<>();
+    while (n != 0) {
+      list.add(n % 2);
+      n /= 2;
+    }
+    int sum = 0;
+    int cnt = 0;
+    for (Integer integer : list) {
+      if (integer == 0) {
+        sum += Math.pow(2, cnt);
+      }
+      cnt++;
+    }
+    return sum;
+  }
+
+  /**
+   * Leetcode 1009 : Complement of Base 10 Integer.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(logn) & O(1)
+   * @param n int
+   * @return int
+   */
+  public int bitwiseComplementWithBit(int n) {
+    if (n == 0) {
+      return 1;
+    }
+    int ans = 0;
+    int cnt = 0;
+    while (n != 0) {
+      ans += ((n & 1) ^ 1) << cnt;
+      n >>= 1;
+      cnt++;
+    }
+    return ans;
   }
 }

@@ -2674,4 +2674,31 @@ public class Array {
 
     }
   }
+
+  /**
+   * Leetcode 1010 ： Pairs of Songs With Total Durations Divisible by 60。
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(n * m) & O(n)
+   * @param time int[]
+   * @return int
+   */
+  public int numPairsDivisibleBy60(int[] time) {
+    Arrays.sort(time);
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int t : time) {
+      map.put(t, map.getOrDefault(t, 0) + 1);
+    }
+    long sum = 0;
+    for (int key : map.keySet()) {
+      if (map.get(key) > 1 && (key % 60 == 0 || 2 * key % 60 == 0)) {
+        sum += ((long)map.get(key) * (map.get(key) - 1)) / 2;
+      }
+      for (int i = key + 1; i <= time[time.length - 1]; i++) {
+        if (map.containsKey(i) && (i + key) % 60 == 0) {
+          sum += map.get(i) * map.get(key);
+        }
+      }
+    }
+    return (int)sum;
+  }
 }

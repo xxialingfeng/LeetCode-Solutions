@@ -822,4 +822,38 @@ public class Tree {
       return toAdd;
     }
   }
+
+  /**
+   * Leetcode 1008 : Construct Binary Search Tree from Preorder Traversal.
+   * @Difficulty: Medium
+   * @OptimalComplexity: O(N) & O(N)
+   * @param preorder int[]
+   * @return treenode
+   */
+  public TreeNode bstFromPreorder(int[] preorder) {
+    if (preorder.length == 0) {
+      return null;
+    }
+    TreeNode root = new TreeNode(preorder[0]);
+    int idx = -1;
+    for (int i = 0; i < preorder.length; i++) {
+      if (preorder[i] > preorder[0]) {
+        idx = i;
+        break;
+      }
+    }
+    if (idx == -1) {
+      int[] left = new int[preorder.length - 1];
+      System.arraycopy(preorder, 1, left, 0, preorder.length - 1);
+      root.left = bstFromPreorder(left);
+    } else {
+      int[] left = new int[idx - 1];
+      int[] right = new int[preorder.length - idx];
+      System.arraycopy(preorder, 1, left, 0, left.length);
+      System.arraycopy(preorder, idx, right, 0, right.length);
+      root.left = bstFromPreorder(left);
+      root.right = bstFromPreorder(right);
+    }
+    return root;
+  }
 }
