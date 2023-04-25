@@ -134,4 +134,38 @@ public class TwoPointers {
     return ans;
   }
 
+  /**
+   * Leetcode 1013 : Partition Array Into Three Parts With Equal Sum.
+   * @Difficulty: Easy
+   * @OptimalComplexity: O(n) & O(n)
+   * @param arr int[]
+   * @return boolean
+   */
+  public boolean canThreePartsEqualSum(int[] arr) {
+    int sum = 0;
+    for (int num : arr) {
+      sum += num;
+    }
+    if (sum % 3 != 0) {
+      return false;
+    }
+    int target = sum / 3;
+    int[] prefix = new int[arr.length + 1];
+    for (int i = 1; i < prefix.length; i++) {
+      prefix[i] = prefix[i - 1] + arr[i - 1];
+    }
+    int l = 1;
+    int r = arr.length - 1;
+    while (l < prefix.length && prefix[l] != target) {
+      l++;
+    }
+    while (r >= 0 && sum - prefix[r] != target) {
+      r--;
+    }
+    if (r <= l) {
+      return false;
+    }
+    return prefix[r] - prefix[l] == target;
+  }
+
 }
